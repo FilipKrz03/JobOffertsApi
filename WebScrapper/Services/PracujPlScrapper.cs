@@ -26,17 +26,9 @@ namespace WebScrapperService.Services
 
         public void ScrapOfferts()
         {
-            bool isInit = true;
-
             while(true)
             {
                 _driver.Navigate().GoToUrl(FullUrl);
-
-                if(isInit)
-                {
-                    _driver.FindElement(By.CssSelector("[data-test='button-submitCookie']")).Click();
-                    isInit = false;
-                }
 
                 var jobElements = _driver.FindElements(By.ClassName("c1fljezf")).ToList();
 
