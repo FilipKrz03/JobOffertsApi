@@ -12,7 +12,7 @@ namespace WebScrapperService.Services
 {
     public class TheProtocolScrapper : IScrapperService
     {
-        private int PageNumber { get; set; } = 1;
+        private int PageNumber { get; set; } = 64;
         private const string BaseUrl =
             "https://theprotocol.it/filtry/umowa-o-staz-praktyki,umowa-agencyjna,umowa-o-dzielo,umowa-na-zastepstwo,umowa-zlecenie,umowa-o-prace,kontrakt-b2b;c?pageNumber=";
 
@@ -30,25 +30,15 @@ namespace WebScrapperService.Services
         public void ScrapOfferts()
         {
 
-            bool isInit = true;
-
             while (true)
             {
                 _driver.Navigate().GoToUrl(FullUrl);
 
-                if (isInit)
-                {
-                    AcceptCookies();
-                    isInit = false;
-                }
-
                 _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
                 SecurityChecker();
-
-                var offertsList = _driver.FindElement(By.CssSelector("[data-test='offersList']"));
                 
-                var jobElements = offertsList.FindElements(By.CssSelector("[data-test='list-item-offer']")).ToList();
+                var jobElements = _driver.FindElements(By.CssSelector("[data-test='offersList'] [data-test='list-item-offer']")).ToList();
 
                 if (jobElements.Count == 0) break;
 
@@ -68,6 +58,8 @@ namespace WebScrapperService.Services
             _driver.Navigate().GoToUrl(jobPageLink);
 
             SecurityChecker();
+
+            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
 
             try
             {
@@ -94,11 +86,6 @@ namespace WebScrapperService.Services
             }
 
             return links;
-        }
-
-        private void AcceptCookies()
-        {
-            _driver.FindElement(By.CssSelector("[data-test='button-acceptAll']")).Click();
         }
 
         private void SecurityChecker()
