@@ -10,35 +10,29 @@ using OpenQA.Selenium.Support.UI;
 
 namespace WebScrapperService.Services
 {
-    public class TheProtocolScrapper : IScrapperService
+    public class TheProtocolScrapper : BaseJobScrapper, IScrapperService
     {
-        private int PageNumber { get; set; } = 64;
-        private const string BaseUrl =
-            "https://theprotocol.it/filtry/umowa-o-staz-praktyki,umowa-agencyjna,umowa-o-dzielo,umowa-na-zastepstwo,umowa-zlecenie,umowa-o-prace,kontrakt-b2b;c?pageNumber=";
-
-        private string FullUrl => $"{BaseUrl}{PageNumber}";
-
-        private readonly ChromeDriver _driver;
         private readonly IJavaScriptExecutor _jse;
 
-        public TheProtocolScrapper()
+        public TheProtocolScrapper() : base
+            ("https://theprotocol.it/filtry/umowa-o-staz-praktyki,umowa-agencyjna,umowa-o-dzielo,umowa-na-zastepstwo,umowa-zlecenie,umowa-o-prace,kontrakt-b2b;c?pageNumber=",
+            "[data-test='offersList'] [data-test='list-item-offer']", "[data-test='text-offerTitle']", "[data-test='text-offerEmployer']", null)
+
         {
-            _driver = new ChromeDriver();
             _jse = (IJavaScriptExecutor)_driver;
         }
 
-        public void ScrapOfferts()
+        public new void ScrapOfferts()
         {
-
             while (true)
             {
                 _driver.Navigate().GoToUrl(FullUrl);
 
+                SecurityChecker();
+
                 _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
-                SecurityChecker();
-                
-                var jobElements = _driver.FindElements(By.CssSelector("[data-test='offersList'] [data-test='list-item-offer']")).ToList();
+                var jobElements = GetJobElementsFromPage();
 
                 if (jobElements.Count == 0) break;
 
@@ -53,7 +47,7 @@ namespace WebScrapperService.Services
             }
         }
 
-        private void GetJobDetail(string jobPageLink)
+        protected new void GetJobDetail(string jobPageLink)
         {
             _driver.Navigate().GoToUrl(jobPageLink);
 
@@ -74,7 +68,7 @@ namespace WebScrapperService.Services
             }
         }
 
-        private IEnumerable<string> GetJobLinks(List<IWebElement> elements)
+        private new IEnumerable<string> GetJobLinks(ICollection<IWebElement> elements)
         {
             ICollection<string> links = new List<string>();
 
@@ -84,7 +78,6 @@ namespace WebScrapperService.Services
 
                 links.Add(href);
             }
-
             return links;
         }
 
@@ -96,7 +89,7 @@ namespace WebScrapperService.Services
 
                 if (h1 == "theprotocol.it")
                 {
-                    Thread.Sleep(5000);
+                    Task.Delay(2000).Wait();
                     _jse.ExecuteScript("document.querySelector('input').click()");
                 }
             }
