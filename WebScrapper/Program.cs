@@ -9,7 +9,7 @@ Console.WriteLine("Hello, World!");
 IHost _host = Host.CreateDefaultBuilder()
     .ConfigureServices(services =>
     {
-        services.AddSingleton<IScrapperService, NoFluffJobsScraper>();
+        services.AddSingleton<IScrapperService, TheProtocolScrapper>();
     }).Build();
 
 var app = _host.Services.GetRequiredService<IScrapperService>();
