@@ -14,6 +14,6 @@ namespace WebScrapperService.Services
     {
         public PracujPlScrapper(ILogger<PracujPlScrapper> log)
              : base(log , "https://it.pracuj.pl/praca?pn=",
-                  ".c1fljezf", "h1", "h2", ".core_n194fgoq"){ }
+                  ".c1fljezf", "h1", "h2" , "[data-test='text-benefit']",".core_n194fgoq"){ }
     }
 }

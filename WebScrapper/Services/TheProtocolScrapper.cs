@@ -17,59 +17,14 @@ namespace WebScrapperService.Services
 
         public TheProtocolScrapper(ILogger<TheProtocolScrapper> log) : base(log 
             , "https://theprotocol.it/filtry/umowa-o-staz-praktyki,umowa-agencyjna,umowa-o-dzielo,umowa-na-zastepstwo,umowa-zlecenie,umowa-o-prace,kontrakt-b2b;c?pageNumber=",
-            "[data-test='offersList'] [data-test='list-item-offer']", "[data-test='text-offerTitle']", "[data-test='text-offerEmployer']", null)
+            "[data-test='offersList'] [data-test='list-item-offer']", "[data-test='text-offerTitle']",
+            "[data-test='text-offerEmployer']", "[data-test='text-workplaceAddress']", null)
 
         {
             _jse = (IJavaScriptExecutor)_driver;
         }
 
-        public new void ScrapOfferts()
-        {
-            while (true)
-            {
-                _driver.Navigate().GoToUrl(FullUrl);
-
-                SecurityChecker();
-
-                _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-
-                var jobElements = GetJobElementsFromPage();
-
-                if (jobElements.Count == 0) break;
-
-                IEnumerable<string> jobLinks = GetJobLinks(jobElements);
-
-                foreach (var jobLink in jobLinks)
-                {
-                    GetJobDetail(jobLink);
-                }
-
-                PageNumber++;
-            }
-        }
-
-        protected new void GetJobDetail(string jobPageLink)
-        {
-            _driver.Navigate().GoToUrl(jobPageLink);
-
-            SecurityChecker();
-
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-
-            try
-            {
-                var jobTitle = _driver.FindElement(By.CssSelector("[data-test='text-offerTitle']")).Text;
-                var company = _driver.FindElement(By.CssSelector("[data-test='text-offerEmployer']")).Text;
-
-                Console.WriteLine($"Job title {jobTitle} , comapny {company}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error occured on GetJobDetailMethod", ex);
-            }
-        }
-
-        private new IEnumerable<string> GetJobLinks(ICollection<IWebElement> elements)
+        protected override IEnumerable<string> GetJobLinks(ICollection<IWebElement> elements)
         {
             ICollection<string> links = new List<string>();
 
@@ -82,6 +37,19 @@ namespace WebScrapperService.Services
             return links;
         }
 
+        protected override void NavigateToOffersPage(string offersPageLink)
+        {
+            base.NavigateToOffersPage(offersPageLink);
+            SecurityChecker();
+        }
+
+        protected override void NavigateToJobDetailPage(string jobPageLink)
+        {
+            base.NavigateToJobDetailPage(jobPageLink);
+            SecurityChecker();
+            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+        }
+
         private void SecurityChecker()
         {
             try
@@ -90,8 +58,10 @@ namespace WebScrapperService.Services
 
                 if (h1 == "theprotocol.it")
                 {
-                    Task.Delay(2000).Wait();
+                    
+                    Task.Delay(4000).Wait();
                     _jse.ExecuteScript("document.querySelector('input').click()");
+   
                 }
             }
             catch(Exception ex)

@@ -18,6 +18,7 @@ namespace WebScrapperService.Services
         protected readonly string JobElementOnPageSelector;
         protected readonly string JobTitleSelector;
         protected readonly string CompanySelector;
+        protected readonly string LocalizationSelector;
         protected readonly string? LinkSelector;
 
         protected readonly ChromeDriver _driver;
@@ -25,8 +26,8 @@ namespace WebScrapperService.Services
 
         protected string FullUrl => $"{BaseUrl}{PageNumber}";
 
-        protected BaseJobScrapper(ILogger<BaseJobScrapper> log , string baseUrl, string jobElementOnPageSelector, string jobTitleSelector,
-            string companySelector, string? linkSelector)
+        protected BaseJobScrapper(ILogger<BaseJobScrapper> log, string baseUrl, string jobElementOnPageSelector, string jobTitleSelector,
+            string companySelector, string localizationSelector, string? linkSelector)
         {
             _logger = log;
             _driver = new();
@@ -34,6 +35,7 @@ namespace WebScrapperService.Services
             JobElementOnPageSelector = jobElementOnPageSelector;
             JobTitleSelector = jobTitleSelector;
             CompanySelector = companySelector;
+            LocalizationSelector = localizationSelector;
             LinkSelector = linkSelector;
         }
 
@@ -41,7 +43,7 @@ namespace WebScrapperService.Services
         {
             while (true)
             {
-                _driver.Navigate().GoToUrl(FullUrl);
+                NavigateToOffersPage(FullUrl);
 
                 var jobElements = GetJobElementsFromPage();
 
@@ -51,23 +53,37 @@ namespace WebScrapperService.Services
 
                 foreach (string jobLink in jobLinks)
                 {
-                    GetJobDetail(jobLink);
+                    NavigateToJobDetailPage(jobLink);
+                    GetJobDetail();
                 }
 
                 PageNumber++;
             }
         }
 
-        protected virtual void GetJobDetail(string jobPageLink)
+        protected virtual void NavigateToOffersPage(string offersPageLink)
+        {
+            _driver.Navigate().GoToUrl(offersPageLink);
+
+            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+        }
+
+        protected virtual void NavigateToJobDetailPage(string jobPageLink)
         {
             _driver.Navigate().GoToUrl(jobPageLink);
+        }
+
+        protected virtual void GetJobDetail()
+        {
+            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
 
             try
             {
                 var jobTitle = _driver.FindElement(By.CssSelector(JobTitleSelector)).Text;
                 var company = _driver.FindElement(By.CssSelector(CompanySelector)).Text;
+                var localization = _driver.FindElement(By.CssSelector(LocalizationSelector)).Text;
 
-                Console.WriteLine($"Job title {jobTitle} , comapny {company}");
+                Console.WriteLine($"Job title {jobTitle} , comapny {company} , localization {localization}");
             }
             catch (Exception ex)
             {
@@ -77,7 +93,7 @@ namespace WebScrapperService.Services
 
         protected virtual ICollection<IWebElement> GetJobElementsFromPage()
         {
-            _logger.LogInformation("Offerts from page number {PageNumber} are utiling" , PageNumber);
+            _logger.LogInformation("Offerts from page number {PageNumber} are utiling", PageNumber);
 
             return _driver.FindElements(By.CssSelector(JobElementOnPageSelector)).ToList();
         }
