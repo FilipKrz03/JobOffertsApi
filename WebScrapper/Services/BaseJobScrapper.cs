@@ -1,5 +1,7 @@
-﻿using OpenQA.Selenium;
+﻿using Microsoft.Extensions.Logging;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +21,14 @@ namespace WebScrapperService.Services
         protected readonly string? LinkSelector;
 
         protected readonly ChromeDriver _driver;
+        protected readonly ILogger<BaseJobScrapper> _logger;
 
         protected string FullUrl => $"{BaseUrl}{PageNumber}";
 
-        protected BaseJobScrapper(string baseUrl, string jobElementOnPageSelector, string jobTitleSelector,
+        protected BaseJobScrapper(ILogger<BaseJobScrapper> log , string baseUrl, string jobElementOnPageSelector, string jobTitleSelector,
             string companySelector, string? linkSelector)
         {
+            _logger = log;
             _driver = new();
             BaseUrl = baseUrl;
             JobElementOnPageSelector = jobElementOnPageSelector;
@@ -67,12 +71,14 @@ namespace WebScrapperService.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError("Error occured on GetJobDetailMethod", ex);
             }
         }
 
         protected virtual ICollection<IWebElement> GetJobElementsFromPage()
         {
+            _logger.LogInformation("Offerts from page number {PageNumber} are utiling" , PageNumber);
+
             return _driver.FindElements(By.CssSelector(JobElementOnPageSelector)).ToList();
         }
 

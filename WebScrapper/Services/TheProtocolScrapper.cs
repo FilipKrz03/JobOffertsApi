@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebScrapperService.Interfaces;
 using OpenQA.Selenium.Support.UI;
+using Microsoft.Extensions.Logging;
 
 namespace WebScrapperService.Services
 {
@@ -14,8 +15,8 @@ namespace WebScrapperService.Services
     {
         private readonly IJavaScriptExecutor _jse;
 
-        public TheProtocolScrapper() : base
-            ("https://theprotocol.it/filtry/umowa-o-staz-praktyki,umowa-agencyjna,umowa-o-dzielo,umowa-na-zastepstwo,umowa-zlecenie,umowa-o-prace,kontrakt-b2b;c?pageNumber=",
+        public TheProtocolScrapper(ILogger<TheProtocolScrapper> log) : base(log 
+            , "https://theprotocol.it/filtry/umowa-o-staz-praktyki,umowa-agencyjna,umowa-o-dzielo,umowa-na-zastepstwo,umowa-zlecenie,umowa-o-prace,kontrakt-b2b;c?pageNumber=",
             "[data-test='offersList'] [data-test='list-item-offer']", "[data-test='text-offerTitle']", "[data-test='text-offerEmployer']", null)
 
         {
@@ -64,7 +65,7 @@ namespace WebScrapperService.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError("Error occured on GetJobDetailMethod", ex);
             }
         }
 
@@ -95,7 +96,7 @@ namespace WebScrapperService.Services
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                _logger.LogError("Error occured on SecurityChecker", ex);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using HtmlAgilityPack;
+﻿using Microsoft.Extensions.Logging;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
@@ -12,8 +12,8 @@ namespace WebScrapperService.Services
 {
     public class PracujPlScrapper : BaseJobScrapper, IScrapperService
     {
-        public PracujPlScrapper()
-             : base("https://it.pracuj.pl/praca?pn=",
+        public PracujPlScrapper(ILogger<PracujPlScrapper> log)
+             : base(log , "https://it.pracuj.pl/praca?pn=",
                   ".c1fljezf", "h1", "h2", ".core_n194fgoq"){ }
     }
 }
