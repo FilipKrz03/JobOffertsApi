@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Serilog;
@@ -19,6 +20,9 @@ namespace WebScrapperService.Services
         protected readonly string JobTitleSelector;
         protected readonly string CompanySelector;
         protected readonly string LocalizationSelector;
+        protected readonly string WorkModeSelector;
+        protected readonly string SenioritySelector;
+        protected readonly string TechnologiesSelector;
         protected readonly string? LinkSelector;
 
         protected readonly ChromeDriver _driver;
@@ -27,7 +31,8 @@ namespace WebScrapperService.Services
         protected string FullUrl => $"{BaseUrl}{PageNumber}";
 
         protected BaseJobScrapper(ILogger<BaseJobScrapper> log, string baseUrl, string jobElementOnPageSelector, string jobTitleSelector,
-            string companySelector, string localizationSelector, string? linkSelector)
+            string companySelector, string localizationSelector, string workModeSelector,
+            string senioritySelector, string technologiesSelector ,  string? linkSelector)
         {
             _logger = log;
             _driver = new();
@@ -36,6 +41,9 @@ namespace WebScrapperService.Services
             JobTitleSelector = jobTitleSelector;
             CompanySelector = companySelector;
             LocalizationSelector = localizationSelector;
+            WorkModeSelector = workModeSelector;
+            SenioritySelector = senioritySelector;
+            TechnologiesSelector = technologiesSelector;
             LinkSelector = linkSelector;
         }
 
@@ -82,8 +90,9 @@ namespace WebScrapperService.Services
                 var jobTitle = _driver.FindElement(By.CssSelector(JobTitleSelector)).Text;
                 var company = _driver.FindElement(By.CssSelector(CompanySelector)).Text;
                 var localization = _driver.FindElement(By.CssSelector(LocalizationSelector)).Text;
-
-                Console.WriteLine($"Job title {jobTitle} , comapny {company} , localization {localization}");
+                var workMode = _driver.FindElement(By.CssSelector(WorkModeSelector)).Text;
+                var seniority = _driver.FindElement(By.CssSelector(SenioritySelector)).Text;
+                var techologies = _driver.FindElements(By.CssSelector(TechnologiesSelector)).Select(e => e.Text).ToList();
             }
             catch (Exception ex)
             {

@@ -23,7 +23,7 @@ IHost _host = Host.CreateDefaultBuilder()
     })
     .ConfigureServices(services =>
     {
-        services.AddSingleton<IScrapperService, TheProtocolScrapper>();
+        services.AddSingleton<IScrapperService, PracujPlScrapper>();
     })
     .UseSerilog()
     .Build();

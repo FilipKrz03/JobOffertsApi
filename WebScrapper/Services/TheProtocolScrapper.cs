@@ -18,7 +18,9 @@ namespace WebScrapperService.Services
         public TheProtocolScrapper(ILogger<TheProtocolScrapper> log) : base(log 
             , "https://theprotocol.it/filtry/umowa-o-staz-praktyki,umowa-agencyjna,umowa-o-dzielo,umowa-na-zastepstwo,umowa-zlecenie,umowa-o-prace,kontrakt-b2b;c?pageNumber=",
             "[data-test='offersList'] [data-test='list-item-offer']", "[data-test='text-offerTitle']",
-            "[data-test='text-offerEmployer']", "[data-test='text-workplaceAddress']", null)
+            "[data-test='text-offerEmployer']", "[data-test='text-workplaceAddress']",
+            "[data-test='section-workModes'] .rootClass_rpqnjlt", "[data-test='section-positionLevels'] .rootClass_rpqnjlt",
+            "[data-test='chip-technology'] span", null)
 
         {
             _jse = (IJavaScriptExecutor)_driver;
@@ -58,10 +60,8 @@ namespace WebScrapperService.Services
 
                 if (h1 == "theprotocol.it")
                 {
-                    
                     Task.Delay(4000).Wait();
                     _jse.ExecuteScript("document.querySelector('input').click()");
-   
                 }
             }
             catch(Exception ex)
