@@ -4,9 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using WebScrapperService.Interfaces;
+using WebScrapperService.Producer;
 using WebScrapperService.Services;
-
-Console.WriteLine("Hello, World!");
 
 IHost _host = Host.CreateDefaultBuilder()
     .ConfigureAppConfiguration(builder =>
@@ -23,7 +22,8 @@ IHost _host = Host.CreateDefaultBuilder()
     })
     .ConfigureServices(services =>
     {
-        services.AddSingleton<IScrapperService, PracujPlScrapper>();
+        services.AddSingleton<IScrapperService, TheProtocolScrapper>();
+        services.AddScoped<IMessageProducer , MessageProducer>();
     })
     .UseSerilog()
     .Build();

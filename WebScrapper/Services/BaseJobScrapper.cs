@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Serilog;
@@ -7,13 +8,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using WebScrapperService.Dto;
+using WebScrapperService.Interfaces;
 
 namespace WebScrapperService.Services
 {
     public abstract class BaseJobScrapper
     {
         protected int PageNumber { get; set; } = 1;
+
+        protected readonly ChromeDriver _driver;
+        protected readonly ILogger<BaseJobScrapper> _logger;
+        protected readonly IMessageProducer _messageProducer;
 
         protected readonly string BaseUrl;
         protected readonly string JobElementOnPageSelector;
@@ -25,16 +33,15 @@ namespace WebScrapperService.Services
         protected readonly string TechnologiesSelector;
         protected readonly string? LinkSelector;
 
-        protected readonly ChromeDriver _driver;
-        protected readonly ILogger<BaseJobScrapper> _logger;
-
         protected string FullUrl => $"{BaseUrl}{PageNumber}";
 
-        protected BaseJobScrapper(ILogger<BaseJobScrapper> log, string baseUrl, string jobElementOnPageSelector, string jobTitleSelector,
+        protected BaseJobScrapper(ILogger<BaseJobScrapper> log, IMessageProducer messageProducer,
+            string baseUrl, string jobElementOnPageSelector, string jobTitleSelector,
             string companySelector, string localizationSelector, string workModeSelector,
-            string senioritySelector, string technologiesSelector ,  string? linkSelector)
+            string senioritySelector, string technologiesSelector, string? linkSelector)
         {
             _logger = log;
+            _messageProducer = messageProducer;
             _driver = new();
             BaseUrl = baseUrl;
             JobElementOnPageSelector = jobElementOnPageSelector;
@@ -55,14 +62,25 @@ namespace WebScrapperService.Services
 
                 var jobElements = GetJobElementsFromPage();
 
-                if (jobElements.Count == 0) break;
+                if (jobElements.Count == 0)
+                {
+                    _messageProducer.CloseConnection();
+                    break;
+                }
 
                 IEnumerable<string> jobLinks = GetJobLinks(jobElements);
 
                 foreach (string jobLink in jobLinks)
                 {
                     NavigateToJobDetailPage(jobLink);
-                    GetJobDetail();
+
+                    JobOffer? offer = GetJobDetail();
+
+                    if(offer != null)
+                    {
+                        _messageProducer.SendMessage(offer);
+                    }
+     
                 }
 
                 PageNumber++;
@@ -81,7 +99,7 @@ namespace WebScrapperService.Services
             _driver.Navigate().GoToUrl(jobPageLink);
         }
 
-        protected virtual void GetJobDetail()
+        protected virtual JobOffer? GetJobDetail()
         {
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
 
@@ -93,10 +111,14 @@ namespace WebScrapperService.Services
                 var workMode = _driver.FindElement(By.CssSelector(WorkModeSelector)).Text;
                 var seniority = _driver.FindElement(By.CssSelector(SenioritySelector)).Text;
                 var techologies = _driver.FindElements(By.CssSelector(TechnologiesSelector)).Select(e => e.Text).ToList();
+
+                return new(jobTitle, company, localization, workMode, seniority, techologies);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                _logger.LogError("Error occured on GetJobDetailMethod", ex);
+                _logger.LogError("Error ocuured when getting job details {ex}", ex);
+
+                return null;
             }
         }
 
