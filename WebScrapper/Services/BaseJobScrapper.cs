@@ -21,7 +21,7 @@ namespace WebScrapperService.Services
 
         protected readonly ChromeDriver _driver;
         protected readonly ILogger<BaseJobScrapper> _logger;
-        protected readonly IMessageProducer _messageProducer;
+        protected readonly IMessageProducer<JobOffer> _jobOfferMessageProducer;
 
         protected readonly string BaseUrl;
         protected readonly string JobElementOnPageSelector;
@@ -35,13 +35,13 @@ namespace WebScrapperService.Services
 
         protected string FullUrl => $"{BaseUrl}{PageNumber}";
 
-        protected BaseJobScrapper(ILogger<BaseJobScrapper> log, IMessageProducer messageProducer,
+        protected BaseJobScrapper(ILogger<BaseJobScrapper> log, IMessageProducer<JobOffer> jobOfferMessageProducer,
             string baseUrl, string jobElementOnPageSelector, string jobTitleSelector,
             string companySelector, string localizationSelector, string workModeSelector,
             string senioritySelector, string technologiesSelector, string? linkSelector)
         {
             _logger = log;
-            _messageProducer = messageProducer;
+            _jobOfferMessageProducer = jobOfferMessageProducer;
             _driver = new();
             BaseUrl = baseUrl;
             JobElementOnPageSelector = jobElementOnPageSelector;
@@ -64,7 +64,7 @@ namespace WebScrapperService.Services
 
                 if (jobElements.Count == 0)
                 {
-                    _messageProducer.CloseConnection();
+                    _jobOfferMessageProducer.CloseConnection();
                     break;
                 }
 
@@ -78,7 +78,7 @@ namespace WebScrapperService.Services
 
                     if(offer != null)
                     {
-                        _messageProducer.SendMessage(offer);
+                        _jobOfferMessageProducer.SendMessage(offer);
                     }
      
                 }

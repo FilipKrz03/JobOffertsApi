@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "WebScrapperService": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "RabbitConnectionUri": "amqp://guest:guest@localhost:5672"
+      }
+    }
+  }
+}
