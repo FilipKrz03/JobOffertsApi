@@ -23,8 +23,8 @@ IHost _host = Host.CreateDefaultBuilder()
     })
     .ConfigureServices(services =>
     {
-    services.AddSingleton<IScrapperService, TheProtocolScrapper>();
-    services.AddScoped<IMessageProducer<JobOffer> , JobOfferMessageProducer>();
+    services.AddSingleton<IScrapperService, PracujPlScrapper>();
+    services.AddScoped<IJobOfferMessageProducer , JobOfferMessageProducer>();
 
     })
     .UseSerilog()

@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
+using WebScrapperService.Dto;
 
 namespace WebScrapperService.Interfaces
 {
-    public interface IMessageProducer<T>
+    public interface IJobOfferMessageProducer
     {
-        void SendMessage (T message);      
+        void SendMessage (JobOffer message);      
         void CloseConnection();
     }
 }

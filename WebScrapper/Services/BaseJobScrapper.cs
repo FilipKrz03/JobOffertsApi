@@ -21,7 +21,7 @@ namespace WebScrapperService.Services
 
         protected readonly ChromeDriver _driver;
         protected readonly ILogger<BaseJobScrapper> _logger;
-        protected readonly IMessageProducer<JobOffer> _jobOfferMessageProducer;
+        protected readonly IJobOfferMessageProducer _jobOfferMessageProducer;
 
         protected readonly string BaseUrl;
         protected readonly string JobElementOnPageSelector;
@@ -35,7 +35,7 @@ namespace WebScrapperService.Services
 
         protected string FullUrl => $"{BaseUrl}{PageNumber}";
 
-        protected BaseJobScrapper(ILogger<BaseJobScrapper> log, IMessageProducer<JobOffer> jobOfferMessageProducer,
+        protected BaseJobScrapper(ILogger<BaseJobScrapper> log, IJobOfferMessageProducer jobOfferMessageProducer,
             string baseUrl, string jobElementOnPageSelector, string jobTitleSelector,
             string companySelector, string localizationSelector, string workModeSelector,
             string senioritySelector, string technologiesSelector, string? linkSelector)

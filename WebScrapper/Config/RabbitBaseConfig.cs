@@ -11,17 +11,9 @@ namespace WebScrapperService.Config
     {
         protected readonly IConnection _connection;
         protected readonly IModel _chanel;
-        protected readonly string ExchangeName;
-        protected readonly string RoutingKey;
-        protected readonly string QueueName;
-
-        public RabbitBaseConfig(string exchangeName, string routingKey,
-            string queueName, string clinetProvidedName)
+     
+        public RabbitBaseConfig (string clinetProvidedName)
         {
-            ExchangeName = exchangeName;
-            RoutingKey = routingKey;
-            QueueName = queueName;
-
             string connectionUri = Environment.GetEnvironmentVariable("RabbitConnectionUri")!;
 
             var factory = new ConnectionFactory()
@@ -32,10 +24,6 @@ namespace WebScrapperService.Config
 
             _connection = factory.CreateConnection();
             _chanel = _connection.CreateModel();
-
-            _chanel.ExchangeDeclare(exchangeName, ExchangeType.Direct);
-            _chanel.QueueDeclare(QueueName, false, false, false);
-            _chanel.QueueBind(QueueName, ExchangeName, RoutingKey, null);
         }
     }
 }
