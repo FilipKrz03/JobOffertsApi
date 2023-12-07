@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScrapperService", "WebSc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobOffersService", "JobOffersService", "{78405AD9-644F-4F3F-9F95-2910F54B48FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobOfferService", "JobOfferService\JobOfferService.csproj", "{3CC4460A-E340-43F9-B179-096823CD0961}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobOfferService", "JobOfferService\JobOfferService.csproj", "{3CC4460A-E340-43F9-B179-096823CD0961}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
