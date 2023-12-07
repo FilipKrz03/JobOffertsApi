@@ -19,10 +19,6 @@ namespace JobOfferService.Config
 
             _connection = factory.CreateConnection();
             _chanel = _connection.CreateModel();
-
-            //_chanel.ExchangeDeclare(exchangeName, ExchangeType.Direct);
-            //_chanel.QueueDeclare(QueueName, false, false, false);
-            //_chanel.QueueBind(QueueName, ExchangeName, RoutingKey, null);
         }
     }
 }
