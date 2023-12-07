@@ -24,7 +24,7 @@ IHost _host = Host.CreateDefaultBuilder()
     .ConfigureServices(services =>
     {
     services.AddSingleton<IScrapperService, PracujPlScrapper>();
-    services.AddScoped<IJobOfferMessageProducer , JobOfferMessageProducer>();
+    services.AddScoped<IJobOfferMessageProducer , JobMessageProducer>();
 
     })
     .UseSerilog()
