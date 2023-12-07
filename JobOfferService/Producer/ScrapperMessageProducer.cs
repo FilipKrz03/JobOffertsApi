@@ -8,7 +8,7 @@ using System.Threading.Channels;
 
 namespace JobOfferService.Producer
 {
-    public class ScrapperMessageProducer : RabbitBaseConfig
+    public class ScrapperMessageProducer : RabbitBaseConfig , IScrapperMessageProducer
     {
         public ScrapperMessageProducer() : base(RabbitMQJobOffersScraperEventProps.JOB_OFFERS_SCRAPPER_CLIENT_PROVIDED_NAME)
         {
