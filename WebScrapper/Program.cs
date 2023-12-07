@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using WebScrapperService.Consumer;
 using WebScrapperService.Dto;
 using WebScrapperService.Interfaces;
 using WebScrapperService.Producer;
@@ -25,12 +26,13 @@ IHost _host = Host.CreateDefaultBuilder()
     {
     services.AddSingleton<IScrapperService, PracujPlScrapper>();
     services.AddScoped<IJobOfferMessageProducer , JobMessageProducer>();
-
+    services.AddHostedService<OffersEventConsumer>();
     })
     .UseSerilog()
     .Build();
 
+_host.RunAsync().Wait();
 
-var app = _host.Services.GetRequiredService<IScrapperService>();
+//var app = _host.Services.GetRequiredService<IScrapperService>();
 
-app.ScrapOfferts();
+//app.ScrapOfferts();
