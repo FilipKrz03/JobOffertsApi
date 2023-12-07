@@ -1,5 +1,6 @@
 using JobOfferService.Interfaces;
 using JobOfferService.Producer;
+using JobOfferService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IScrapperMessageProducer, ScrapperMessageProducer>();
+builder.Services.AddHostedService<ScrapperEventManagerService>();
 
 
 var app = builder.Build();
