@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebScrapperService", "WebScrapper\WebScrapperService.csproj", "{D08537A0-71A6-44CC-9683-C8D8F20440B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScrapperService", "WebScrapper\WebScrapperService.csproj", "{D08537A0-71A6-44CC-9683-C8D8F20440B1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobOfferService", "JobOfferService", "{78405AD9-644F-4F3F-9F95-2910F54B48FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobOfferService", "JobOfferService\JobOfferService.csproj", "{3CC4460A-E340-43F9-B179-096823CD0961}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{D08537A0-71A6-44CC-9683-C8D8F20440B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D08537A0-71A6-44CC-9683-C8D8F20440B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D08537A0-71A6-44CC-9683-C8D8F20440B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CC4460A-E340-43F9-B179-096823CD0961}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CC4460A-E340-43F9-B179-096823CD0961}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CC4460A-E340-43F9-B179-096823CD0961}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CC4460A-E340-43F9-B179-096823CD0961}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3CC4460A-E340-43F9-B179-096823CD0961} = {78405AD9-644F-4F3F-9F95-2910F54B48FF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {302C81D0-E9D8-4ADB-B2D4-8155C79FDC67}
