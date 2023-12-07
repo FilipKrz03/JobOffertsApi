@@ -3,8 +3,8 @@
     public static class RabbitMQJobOffersScraperEventProps
     {
 
-        public const string JOB_OFFERS_SCRAPPER_CLIENT_PROVIDED_NAME = "Scrapper Events Producer";
-        public const string JOB_OFFERS_SCRAPER_EXCHANGE = "job_offer_scrapper_events";
+        public const string OFFERS_SCRAPPER_CLIENT_PROVIDED_NAME = "Offers Scrapper Events Producer";
+        public const string OFFERS_SCRAPER_EXCHANGE = "offers_scrapper_events";
 
         public const string OFFERS_CREATE_QUEUE = "offers.create";
 

@@ -10,19 +10,19 @@ namespace JobOfferService.Producer
 {
     public class ScrapperMessageProducer : RabbitBaseConfig , IScrapperMessageProducer
     {
-        public ScrapperMessageProducer() : base(RabbitMQJobOffersScraperEventProps.JOB_OFFERS_SCRAPPER_CLIENT_PROVIDED_NAME)
+        public ScrapperMessageProducer() : base(RabbitMQJobOffersScraperEventProps.OFFERS_SCRAPPER_CLIENT_PROVIDED_NAME)
         {
-            _chanel.ExchangeDeclare(RabbitMQJobOffersScraperEventProps.JOB_OFFERS_SCRAPER_EXCHANGE, ExchangeType.Direct);
+            _chanel.ExchangeDeclare(RabbitMQJobOffersScraperEventProps.OFFERS_SCRAPER_EXCHANGE, ExchangeType.Direct);
 
             _chanel.QueueDeclare(RabbitMQJobOffersScraperEventProps.OFFERS_CREATE_QUEUE, false, false, false);
             _chanel.QueueBind(RabbitMQJobOffersScraperEventProps.OFFERS_CREATE_QUEUE , 
-                RabbitMQJobOffersScraperEventProps.JOB_OFFERS_SCRAPER_EXCHANGE , RabbitMQJobOffersScraperEventProps.OFFERS_CREATE_ROUTING_KEY);
+                RabbitMQJobOffersScraperEventProps.OFFERS_SCRAPER_EXCHANGE , RabbitMQJobOffersScraperEventProps.OFFERS_CREATE_ROUTING_KEY);
         }
 
 
         public void SendCreateOffersMessage()
         {
-            _chanel.BasicPublish(RabbitMQJobOffersScraperEventProps.JOB_OFFERS_SCRAPER_EXCHANGE,
+            _chanel.BasicPublish(RabbitMQJobOffersScraperEventProps.OFFERS_SCRAPER_EXCHANGE,
                 RabbitMQJobOffersScraperEventProps.OFFERS_CREATE_ROUTING_KEY , null , null);
         }
         
