@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScrapperService", "WebScrapper\WebScrapperService.csproj", "{D08537A0-71A6-44CC-9683-C8D8F20440B1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobOfferService", "JobOfferService", "{78405AD9-644F-4F3F-9F95-2910F54B48FF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobOffersService", "JobOffersService", "{78405AD9-644F-4F3F-9F95-2910F54B48FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobOfferService", "JobOfferService\JobOfferService.csproj", "{3CC4460A-E340-43F9-B179-096823CD0961}"
 EndProject
