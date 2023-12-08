@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using WebScrapperService.Interfaces;
 using OpenQA.Selenium.Support.UI;
 using Microsoft.Extensions.Logging;
-using WebScrapperService.Dto;
 using JobOffersApiCore.Interfaces;
 
 namespace WebScrapperService.Services

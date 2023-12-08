@@ -1,4 +1,5 @@
-﻿using JobOffersApiCore.Interfaces;
+﻿using JobOffersApiCore.Dto;
+using JobOffersApiCore.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -11,7 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using WebScrapperService.Dto;
 using WebScrapperService.Interfaces;
 using WebScrapperService.Props;
 
@@ -76,7 +76,7 @@ namespace WebScrapperService.Services
                 {
                     NavigateToJobDetailPage(jobLink);
 
-                    JobOffer? offer = GetJobDetail();
+                    JobOfferRaw? offer = GetJobDetail();
 
                     if(offer != null)
                     {
@@ -102,7 +102,7 @@ namespace WebScrapperService.Services
             _driver.Navigate().GoToUrl(jobPageLink);
         }
 
-        protected virtual JobOffer? GetJobDetail()
+        protected virtual JobOfferRaw? GetJobDetail()
         {
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
 

@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using WebScrapperService.Consumer;
-using WebScrapperService.Dto;
 using WebScrapperService.Interfaces;
 using WebScrapperService.Producer;
 using WebScrapperService.Services;

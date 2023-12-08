@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebScrapperService.Dto;
 using WebScrapperService.Interfaces;
 using WebScrapperService.Props;
 
