@@ -1,13 +1,14 @@
-﻿using JobOfferService.Interfaces;
+﻿using JobOffersApiCore.Interfaces;
+using JobOfferService.Props;
 
 namespace JobOfferService.Services
 {
     public class ScrapperEventManagerService : BackgroundService
     {
 
-        IScrapperMessageProducer _scrapperMessageProducer;
+        IRabbitMessageProducer _scrapperMessageProducer;
 
-        public ScrapperEventManagerService(IScrapperMessageProducer scrapperMessageProducer)
+        public ScrapperEventManagerService(IRabbitMessageProducer scrapperMessageProducer)
         {
             _scrapperMessageProducer = scrapperMessageProducer;
         }
@@ -16,7 +17,8 @@ namespace JobOfferService.Services
         {
             while(!stoppingToken.IsCancellationRequested)
             {
-                _scrapperMessageProducer.SendCreateOffersMessage();
+                _scrapperMessageProducer.SendMessage
+                    (RabbitMQOffersScraperEventProps.OFFERS_SCRAPER_EXCHANGE, RabbitMQOffersScraperEventProps.OFFERS_CREATE_ROUTING_KEY);
 
                 await Task.Delay(TimeSpan.FromMinutes(1));
             }

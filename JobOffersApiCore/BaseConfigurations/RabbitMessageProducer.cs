@@ -28,6 +28,11 @@ namespace JobOffersApiCore.BaseConfigurations
             _chanel.BasicPublish(exchange, routingKey, null, messageBodyBytes);
         }
 
+        public void SendMessage(string exchange, string routingKey)
+        {
+            _chanel.BasicPublish(exchange, routingKey, null, null);
+        }
+
         public void CloseConnection()
         {
             _chanel.Close();

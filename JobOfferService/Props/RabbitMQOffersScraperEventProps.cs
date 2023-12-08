@@ -1,6 +1,6 @@
 ﻿namespace JobOfferService.Props
 {
-    public static class RabbitMQJobOffersScraperEventProps
+    public static class RabbitMQOffersScraperEventProps
     {
 
         public const string OFFERS_SCRAPPER_CLIENT_PROVIDED_NAME = "Offers Scrapper Events Producer";

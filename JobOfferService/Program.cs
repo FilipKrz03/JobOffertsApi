@@ -1,4 +1,4 @@
-using JobOfferService.Interfaces;
+using JobOffersApiCore.Interfaces;
 using JobOfferService.Producer;
 using JobOfferService.Services;
 
@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IScrapperMessageProducer, ScrapperMessageProducer>();
+builder.Services.AddSingleton<IRabbitMessageProducer, ScrapperMessageProducer>();
 builder.Services.AddHostedService<ScrapperEventManagerService>();
 
 

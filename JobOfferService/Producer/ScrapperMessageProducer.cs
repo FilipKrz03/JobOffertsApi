@@ -1,5 +1,5 @@
-﻿using JobOfferService.Config;
-using JobOfferService.Interfaces;
+﻿using JobOffersApiCore.BaseConfigurations;
+using JobOffersApiCore.Interfaces;
 using JobOfferService.Props;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -8,28 +8,16 @@ using System.Threading.Channels;
 
 namespace JobOfferService.Producer
 {
-    public class ScrapperMessageProducer : RabbitBaseConfig , IScrapperMessageProducer
+    public class ScrapperMessageProducer : RabbitMessageProducer , IRabbitMessageProducer
     {
-        public ScrapperMessageProducer() : base(RabbitMQJobOffersScraperEventProps.OFFERS_SCRAPPER_CLIENT_PROVIDED_NAME)
+        public ScrapperMessageProducer() : base(Environment.GetEnvironmentVariable("RabbitConnectionUri")!,
+            RabbitMQOffersScraperEventProps.OFFERS_SCRAPPER_CLIENT_PROVIDED_NAME)
         {
-            _chanel.ExchangeDeclare(RabbitMQJobOffersScraperEventProps.OFFERS_SCRAPER_EXCHANGE, ExchangeType.Direct);
+            _chanel.ExchangeDeclare(RabbitMQOffersScraperEventProps.OFFERS_SCRAPER_EXCHANGE, ExchangeType.Direct);
 
-            _chanel.QueueDeclare(RabbitMQJobOffersScraperEventProps.OFFERS_CREATE_QUEUE, false, false, false);
-            _chanel.QueueBind(RabbitMQJobOffersScraperEventProps.OFFERS_CREATE_QUEUE , 
-                RabbitMQJobOffersScraperEventProps.OFFERS_SCRAPER_EXCHANGE , RabbitMQJobOffersScraperEventProps.OFFERS_CREATE_ROUTING_KEY);
-        }
-
-
-        public void SendCreateOffersMessage()
-        {
-            _chanel.BasicPublish(RabbitMQJobOffersScraperEventProps.OFFERS_SCRAPER_EXCHANGE,
-                RabbitMQJobOffersScraperEventProps.OFFERS_CREATE_ROUTING_KEY , null , null);
-        }
-        
-        public void CloseConnection()
-        {
-            _connection.Close();
-            _chanel.Close();
+            _chanel.QueueDeclare(RabbitMQOffersScraperEventProps.OFFERS_CREATE_QUEUE, false, false, false);
+            _chanel.QueueBind(RabbitMQOffersScraperEventProps.OFFERS_CREATE_QUEUE , 
+                RabbitMQOffersScraperEventProps.OFFERS_SCRAPER_EXCHANGE , RabbitMQOffersScraperEventProps.OFFERS_CREATE_ROUTING_KEY);
         }
     }
 }
