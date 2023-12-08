@@ -7,15 +7,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebScrapperService.Interfaces;
 using WebScrapperService.Props;
 
 namespace WebScrapperService.Consumer
 {
     public class OffersEventConsumer : RabbitBaseConfig , IHostedService
     {
-        public OffersEventConsumer():base(Environment.GetEnvironmentVariable("RabbitConnectionUri")!
+
+        private readonly IOffersService _offersService;
+
+        public OffersEventConsumer(IOffersService offersService):base(Environment.GetEnvironmentVariable("RabbitConnectionUri")!
             , RabbitMQOffersEventProps.OFFERS_EVENT_CONSUMER_PROVIDED_NAME)
         {
+            _offersService = offersService;
+
             _chanel.ExchangeDeclare(RabbitMQOffersEventProps.OFFERS_EVENT_EXCHANGE, ExchangeType.Direct);
             _chanel.QueueDeclare(RabbitMQOffersEventProps.OFFERS_CREATE_EVENT_QUEUE_NAME, false, false, false);
             _chanel.QueueBind(RabbitMQOffersEventProps.OFFERS_CREATE_EVENT_QUEUE_NAME, RabbitMQOffersEventProps.OFFERS_EVENT_EXCHANGE,
@@ -25,6 +31,7 @@ namespace WebScrapperService.Consumer
 
             consumer.Received += (model, ea) =>
             {
+                _offersService.HandleOffersCreateAndUpdate();
                 Console.WriteLine($"Message reciver : queue : {ea.RoutingKey}");
             };
 

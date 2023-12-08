@@ -63,7 +63,7 @@ namespace WebScrapperService.Services
                 NavigateToOffersPage(FullUrl);
 
                 var jobElements = GetJobElementsFromPage();
-
+             
                 if (jobElements.Count == 0)
                 {
                     _jobOfferMessageProducer.CloseConnection();

@@ -20,7 +20,7 @@ namespace JobOfferService.Services
                 _scrapperMessageProducer.SendMessage
                     (RabbitMQOffersScraperEventProps.OFFERS_SCRAPER_EXCHANGE, RabbitMQOffersScraperEventProps.OFFERS_CREATE_ROUTING_KEY);
 
-                await Task.Delay(TimeSpan.FromMinutes(1));
+                await Task.Delay(TimeSpan.FromMinutes(60));
             }
         }
     }

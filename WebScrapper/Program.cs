@@ -26,9 +26,11 @@ IHost _host = Host.CreateDefaultBuilder()
     })
     .ConfigureServices(services =>
     {
-    services.AddSingleton<IScrapperService, PracujPlScrapper>();
-    services.AddScoped<IRabbitMessageProducer , JobMessageProducer>();
-    services.AddHostedService<OffersEventConsumer>();
+        services.AddScoped<IOffersService, OffersService>();
+        services.AddHostedService<OffersEventConsumer>();
+        services.AddSingleton<IScrapperService, PracujPlScrapper>();
+        services.AddSingleton<IScrapperService, TheProtocolScrapper>();
+        services.AddScoped<IRabbitMessageProducer, JobMessageProducer>();
     })
     .UseSerilog()
     .Build();

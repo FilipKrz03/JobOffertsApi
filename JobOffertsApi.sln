@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScrapperService", "WebSc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobOffersService", "JobOffersService", "{78405AD9-644F-4F3F-9F95-2910F54B48FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobOfferService", "JobOfferService\JobOfferService.csproj", "{3CC4460A-E340-43F9-B179-096823CD0961}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobOffersService", "JobOfferService\JobOffersService.csproj", "{3CC4460A-E340-43F9-B179-096823CD0961}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobOffersApiCore", "JobOffersApiCore\JobOffersApiCore.csproj", "{94ECC405-984E-4112-BBB0-35599D5E7716}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebScrapperService", "WebScrapperService", "{EF54BF5E-5BD0-4439-9C9E-798AE62677D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +36,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{D08537A0-71A6-44CC-9683-C8D8F20440B1} = {EF54BF5E-5BD0-4439-9C9E-798AE62677D7}
 		{3CC4460A-E340-43F9-B179-096823CD0961} = {78405AD9-644F-4F3F-9F95-2910F54B48FF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
