@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using JobOffersApiCore.Interfaces;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace JobOffersApiCore.BaseConfigurations
 {
-    public class RabbitMessageSender : RabbitBaseConfig
+    public class RabbitMessageProducer : RabbitBaseConfig , IRabbitMessageProducer
     {
-        public RabbitMessageSender(string connectionUri, string clientProvidedName) : base(connectionUri, clientProvidedName) { }
+        public RabbitMessageProducer(string connectionUri, string clientProvidedName) : base(connectionUri, clientProvidedName) { }
 
         public void SendMessage<T>(string exchange, string routingKey, T? message)
         {

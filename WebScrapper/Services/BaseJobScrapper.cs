@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using JobOffersApiCore.Interfaces;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using OpenQA.Selenium;
@@ -12,6 +13,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using WebScrapperService.Dto;
 using WebScrapperService.Interfaces;
+using WebScrapperService.Props;
 
 namespace WebScrapperService.Services
 {
@@ -21,7 +23,7 @@ namespace WebScrapperService.Services
 
         protected readonly ChromeDriver _driver;
         protected readonly ILogger<BaseJobScrapper> _logger;
-        protected readonly IJobOfferMessageProducer _jobOfferMessageProducer;
+        protected readonly IRabbitMessageProducer _jobOfferMessageProducer;
 
         protected readonly string BaseUrl;
         protected readonly string JobElementOnPageSelector;
@@ -35,7 +37,7 @@ namespace WebScrapperService.Services
 
         protected string FullUrl => $"{BaseUrl}{PageNumber}";
 
-        protected BaseJobScrapper(ILogger<BaseJobScrapper> log, IJobOfferMessageProducer jobOfferMessageProducer,
+        protected BaseJobScrapper(ILogger<BaseJobScrapper> log, IRabbitMessageProducer jobOfferMessageProducer,
             string baseUrl, string jobElementOnPageSelector, string jobTitleSelector,
             string companySelector, string localizationSelector, string workModeSelector,
             string senioritySelector, string technologiesSelector, string? linkSelector)
@@ -78,7 +80,8 @@ namespace WebScrapperService.Services
 
                     if(offer != null)
                     {
-                        _jobOfferMessageProducer.SendMessage(offer);
+                        _jobOfferMessageProducer.SendMessage
+                            (RabbitMQJobProps.JOB_OFFER_EXCHANGE, RabbitMQJobProps.JOB_CREATE_ROUTING_KEY, jobLink);
                     }
      
                 }

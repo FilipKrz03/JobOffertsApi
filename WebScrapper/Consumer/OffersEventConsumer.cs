@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using JobOffersApiCore.BaseConfigurations;
+using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
@@ -6,14 +7,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebScrapperService.Config;
 using WebScrapperService.Props;
 
 namespace WebScrapperService.Consumer
 {
     public class OffersEventConsumer : RabbitBaseConfig , IHostedService
     {
-        public OffersEventConsumer():base(RabbitMQOffersEventProps.OFFERS_EVENT_CONSUMER_PROVIDED_NAME)
+        public OffersEventConsumer():base(Environment.GetEnvironmentVariable("RabbitConnectionUri")!
+            , RabbitMQOffersEventProps.OFFERS_EVENT_CONSUMER_PROVIDED_NAME)
         {
             _chanel.ExchangeDeclare(RabbitMQOffersEventProps.OFFERS_EVENT_EXCHANGE, ExchangeType.Direct);
             _chanel.QueueDeclare(RabbitMQOffersEventProps.OFFERS_CREATE_EVENT_QUEUE_NAME, false, false, false);

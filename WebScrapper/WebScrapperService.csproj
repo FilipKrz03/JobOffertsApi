@@ -12,12 +12,16 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="RabbitMQ.Client" Version="6.7.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.8.0" />
     <PackageReference Include="Selenium.WebDriver" Version="4.15.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="119.0.6045.10500" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="8.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\JobOffersApiCore\JobOffersApiCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

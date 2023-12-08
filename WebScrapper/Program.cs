@@ -1,4 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using JobOffersApiCore.BaseConfigurations;
+using JobOffersApiCore.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,7 +27,7 @@ IHost _host = Host.CreateDefaultBuilder()
     .ConfigureServices(services =>
     {
     services.AddSingleton<IScrapperService, PracujPlScrapper>();
-    services.AddScoped<IJobOfferMessageProducer , JobMessageProducer>();
+    services.AddScoped<IRabbitMessageProducer , JobMessageProducer>();
     services.AddHostedService<OffersEventConsumer>();
     })
     .UseSerilog()
