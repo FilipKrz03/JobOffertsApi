@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobOffersApiCore", "JobOffe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebScrapperService", "WebScrapperService", "{EF54BF5E-5BD0-4439-9C9E-798AE62677D7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobOffersMapperService", "JobOffersMapperService", "{F2E5F6B5-3841-4732-AAD8-6F237159A148}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobOffersMapperService", "JobOffersMapperService\JobOffersMapperService.csproj", "{36F8628F-3E75-4DBA-908B-E9A160C5FBB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,10 @@ Global
 		{94ECC405-984E-4112-BBB0-35599D5E7716}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94ECC405-984E-4112-BBB0-35599D5E7716}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94ECC405-984E-4112-BBB0-35599D5E7716}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36F8628F-3E75-4DBA-908B-E9A160C5FBB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36F8628F-3E75-4DBA-908B-E9A160C5FBB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36F8628F-3E75-4DBA-908B-E9A160C5FBB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36F8628F-3E75-4DBA-908B-E9A160C5FBB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,6 +46,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D08537A0-71A6-44CC-9683-C8D8F20440B1} = {EF54BF5E-5BD0-4439-9C9E-798AE62677D7}
 		{3CC4460A-E340-43F9-B179-096823CD0961} = {78405AD9-644F-4F3F-9F95-2910F54B48FF}
+		{36F8628F-3E75-4DBA-908B-E9A160C5FBB3} = {F2E5F6B5-3841-4732-AAD8-6F237159A148}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {302C81D0-E9D8-4ADB-B2D4-8155C79FDC67}
