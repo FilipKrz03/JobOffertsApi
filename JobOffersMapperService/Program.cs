@@ -1,4 +1,6 @@
 ﻿using JobOffersMapperService.Consumer;
+using JobOffersMapperService.Interfaces;
+using JobOffersMapperService.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,6 +22,7 @@ IHost _host = Host.CreateDefaultBuilder()
     .ConfigureServices(services =>
     {
         services.AddHostedService<RawOffersConsumer>();
+        services.AddSingleton<IRawOfferService , RawOfferService>();
     })
     .UseSerilog()
     .Build();

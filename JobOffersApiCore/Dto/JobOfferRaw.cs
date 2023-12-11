@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 namespace JobOffersApiCore.Dto
 {
     public record JobOfferRaw(string JobTitle, string Company, string Localization,
-      string WorkMode, string Seniority, IEnumerable<string> RequiredTechnologies);
+      string WorkMode, string Seniority, IEnumerable<string> RequiredTechnologies , string JobLink);
 }

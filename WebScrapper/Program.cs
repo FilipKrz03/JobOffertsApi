@@ -34,8 +34,8 @@ IHost _host = Host.CreateDefaultBuilder()
     .UseSerilog()
     .Build();
 
-_host.RunAsync().Wait();
+//_host.RunAsync().Wait();
 
-//var app = _host.Services.GetRequiredService<IScrapperService>();
+var app = _host.Services.GetRequiredService<IScrapperService>();
 
-//app.ScrapOfferts();
+app.ScrapOfferts();

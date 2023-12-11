@@ -81,7 +81,7 @@ namespace WebScrapperService.Services
                     if(offer != null)
                     {
                         _jobOfferMessageProducer.SendMessage
-                            (RabbitMQJobProps.JOB_OFFER_EXCHANGE, RabbitMQJobProps.JOB_CREATE_ROUTING_KEY, jobLink);
+                            (RabbitMQJobProps.JOB_OFFER_EXCHANGE, RabbitMQJobProps.JOB_CREATE_ROUTING_KEY, offer);
                     }
      
                 }
@@ -115,7 +115,7 @@ namespace WebScrapperService.Services
                 var seniority = _driver.FindElement(By.CssSelector(SenioritySelector)).Text;
                 var techologies = _driver.FindElements(By.CssSelector(TechnologiesSelector)).Select(e => e.Text).ToList();
 
-                return new(jobTitle, company, localization, workMode, seniority, techologies);
+                return new(jobTitle, company, localization, workMode, seniority, techologies , _driver.Url);
             }
             catch(Exception ex)
             {
