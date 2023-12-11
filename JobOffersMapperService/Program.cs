@@ -1,9 +1,12 @@
 ﻿using JobOffersMapperService.Consumer;
+using JobOffersMapperService.DbContexts;
 using JobOffersMapperService.Interfaces;
 using JobOffersMapperService.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RabbitMQ.Client;
 using Serilog;
 
 IHost _host = Host.CreateDefaultBuilder()
@@ -19,10 +22,14 @@ IHost _host = Host.CreateDefaultBuilder()
         .WriteTo.Console()
         .CreateLogger();
     })
-    .ConfigureServices(services =>
+    .ConfigureServices((hostContext, services) =>
     {
+        services.AddDbContext<OffersBaseContext>(options =>
+        {
+            options.UseSqlServer(hostContext.Configuration.GetConnectionString("DefaultConnection")!);
+        });
         services.AddHostedService<RawOffersConsumer>();
-        services.AddSingleton<IRawOfferService , RawOfferService>();
+        services.AddSingleton<IRawOfferService, RawOfferService>();
     })
     .UseSerilog()
     .Build();
