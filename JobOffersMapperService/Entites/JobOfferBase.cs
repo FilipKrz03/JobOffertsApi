@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JobOffersApiCore.BaseObjects;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace JobOffersMapperService.Entites
 {
-    public class JobOfferBase
+    public class JobOfferBase : BaseEntity
     {
-        [Key]
-        public Guid Id {  get; set; }
 
         [Required]
         public string OfferTitle {  get; set; }

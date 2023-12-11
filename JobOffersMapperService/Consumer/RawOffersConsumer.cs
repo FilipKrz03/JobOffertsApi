@@ -28,18 +28,19 @@ namespace JobOffersMapperService.Consumer
             _chanel.QueueBind(RabbitMqJobHandleEventProps.JOB_HANDLE_QUEUE, RabbitMqJobHandleEventProps.JOB_OFFER_EXCHANGE,
                 RabbitMqJobHandleEventProps.JOB_HANDLE_ROUTING_KEY);
 
-            var consumer = new EventingBasicConsumer(_chanel);
+            var consumer = new AsyncEventingBasicConsumer(_chanel);
 
-            consumer.Received += (model, ea) =>
+            consumer.Received += async (model, ea) =>
             {
                 Console.WriteLine($"New event : {ea.RoutingKey}");
 
                 string body = Encoding.UTF8.GetString(ea.Body.ToArray());
 
-                _rawOffersService.HandleRawOffer(body);
+                await _rawOffersService.HandleRawOffer(body);
             };
 
-            _chanel.BasicConsume(RabbitMqJobHandleEventProps.JOB_HANDLE_QUEUE, true , consumer);
+            _chanel.BasicConsume(RabbitMqJobHandleEventProps.JOB_HANDLE_QUEUE, true, consumer);
+
         }
 
         public Task StartAsync(CancellationToken cancellationToken)

@@ -18,7 +18,8 @@ namespace JobOffersApiCore.BaseConfigurations
             var factory = new ConnectionFactory()
             {
                 Uri = new Uri(connectionUri),
-                ClientProvidedName = clinetProvidedName
+                ClientProvidedName = clinetProvidedName , 
+                DispatchConsumersAsync = true
             };
 
             _connection = factory.CreateConnection();

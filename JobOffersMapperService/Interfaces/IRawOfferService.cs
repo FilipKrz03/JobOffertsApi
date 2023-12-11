@@ -8,6 +8,6 @@ namespace JobOffersMapperService.Interfaces
 {
     public interface IRawOfferService
     {
-        public void HandleRawOffer(string body);
+        Task HandleRawOffer(string body);
     }
 }
