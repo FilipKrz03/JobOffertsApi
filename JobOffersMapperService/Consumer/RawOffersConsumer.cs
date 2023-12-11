@@ -2,6 +2,7 @@
 using JobOffersMapperService.Interfaces;
 using JobOffersMapperService.Props;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
@@ -17,11 +18,13 @@ namespace JobOffersMapperService.Consumer
     {
 
         private readonly IRawOfferService _rawOffersService;
+        private readonly ILogger<RawOffersConsumer> _logger;    
 
-        public RawOffersConsumer(IRawOfferService rawOfferService)
+        public RawOffersConsumer(IRawOfferService rawOfferService , ILogger<RawOffersConsumer> logger)
             :base(Environment.GetEnvironmentVariable("RabbitConnectionUri")! , RabbitMqJobHandleEventProps.JOB_HANDLE_CLIENT_PROVIDED_NAME)
         {
             _rawOffersService = rawOfferService;
+            _logger = logger;
 
             _chanel.ExchangeDeclare(RabbitMqJobHandleEventProps.JOB_OFFER_EXCHANGE, ExchangeType.Direct);
             _chanel.QueueDeclare(RabbitMqJobHandleEventProps.JOB_HANDLE_QUEUE, false, false, false);
@@ -45,7 +48,8 @@ namespace JobOffersMapperService.Consumer
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            Console.WriteLine("Consumer started work");
+            _logger.LogInformation("Raw offers consumer start working");
+
             return Task.CompletedTask;
         }
 
@@ -53,7 +57,9 @@ namespace JobOffersMapperService.Consumer
         {
             _connection.Close();
             _chanel.Close();
-            Console.WriteLine("Consumer end work");
+
+            _logger.LogWarning("Raw offers conusmer end working");
+
             return Task.CompletedTask;
         }
     }

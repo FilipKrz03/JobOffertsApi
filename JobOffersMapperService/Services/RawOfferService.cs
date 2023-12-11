@@ -43,6 +43,8 @@ namespace JobOffersMapperService.Services
                 var jobOfferBaseEntity = _mapper.Map<JobOfferRaw, JobOfferBase>(offer);
 
                 await _offersBaseRepository.Insert(jobOfferBaseEntity);
+
+                _logger.LogInformation("Handle raw offer - New offer added to base db");
             }
             catch (Exception ex)
             {
