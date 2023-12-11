@@ -13,12 +13,13 @@ namespace JobOffersApiCore.BaseObjects
         where TEntity : BaseEntity
     {
 
-        protected readonly TDbContext _context;
+        private readonly TDbContext _context;
 
         protected BaseRepository(TDbContext context)
         {
             _context = context;
         }
+
         public IQueryable<TEntity> Query()
         {
             return _context.Set<TEntity>();

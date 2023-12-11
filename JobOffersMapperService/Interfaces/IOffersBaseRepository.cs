@@ -12,6 +12,5 @@ namespace JobOffersMapperService.Interfaces
     public interface IOffersBaseRepository : IBaseRepository<JobOfferBase>
     {
         Task<bool> OfferExistAsync(JobOfferRaw offer);
-
     }
 }

@@ -26,15 +26,11 @@ IHost _host = Host.CreateDefaultBuilder()
     {
         services.AddScoped<IRawOfferService, RawOfferService>();
         services.AddScoped<IOffersBaseRepository, OffersBaseRepository>();
-
         services.AddHostedService<RawOffersConsumer>();
-
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
       
         services.AddDbContext<OffersBaseContext>(options =>
         {
-            
             options.UseSqlServer(hostContext.Configuration.GetConnectionString("DefaultConnection")!);
         });
     })
