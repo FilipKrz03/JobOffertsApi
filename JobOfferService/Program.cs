@@ -2,6 +2,7 @@ using JobOffersApiCore.Interfaces;
 using JobOfferService.Producer;
 using JobOfferService.Services;
 using JobOffersService.Consumer;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,8 +16,17 @@ builder.Services.AddSingleton<IRabbitMessageProducer, ScrapperMessageProducer>()
 builder.Services.AddHostedService<ScrapperEventManagerService>();
 builder.Services.AddHostedService<OffersToCreateConsumer>();
 
+Log.Logger = new LoggerConfiguration()
+      .ReadFrom.Configuration(builder.Configuration)
+      .Enrich.FromLogContext()
+      .WriteTo.Console()
+      .CreateLogger();
+        
 
-var app = builder.Build();
+builder.Host.UseSerilog();
+
+var app = builder
+    .Build();
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
@@ -24,6 +34,8 @@ var app = builder.Build();
 //    app.UseSwagger();
 //    app.UseSwaggerUI();
 //}
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 

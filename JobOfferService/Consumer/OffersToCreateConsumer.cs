@@ -7,9 +7,14 @@ namespace JobOffersService.Consumer
 {
     public class OffersToCreateConsumer : RabbitBaseConfig , IHostedService
     {
-        public OffersToCreateConsumer():base
+
+        private readonly ILogger<OffersToCreateConsumer> _logger;
+        
+        public OffersToCreateConsumer(ILogger<OffersToCreateConsumer> logger):base
             (Environment.GetEnvironmentVariable("RabbitConnectionUri")!, RabbitMqJobCreateEventPros.JOB_CREATE_CLIENT_PROVIDED_NAME , false)
         {
+            _logger = logger;
+
             _chanel.ExchangeDeclare(RabbitMqJobCreateEventPros.JOB_OFFER_EXCHANGE, ExchangeType.Direct);
             _chanel.QueueDeclare(RabbitMqJobCreateEventPros.JOB_CREATE_QUEUE, false, false, false);
 
@@ -20,7 +25,7 @@ namespace JobOffersService.Consumer
 
             consumer.Received += (model, ea) =>
             {
-                Console.WriteLine("Event recived");
+                _logger.LogInformation("Offers to create consumer recived event");
             };
 
             _chanel.BasicConsume(RabbitMqJobCreateEventPros.JOB_CREATE_QUEUE , true , consumer);
@@ -28,7 +33,7 @@ namespace JobOffersService.Consumer
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            Console.WriteLine("Start");
+            _logger.LogInformation("Offert to create consumer start working");
 
             return Task.CompletedTask;
         }
@@ -38,7 +43,7 @@ namespace JobOffersService.Consumer
             _chanel.Close();
             _connection.Close();
 
-            Console.WriteLine("End");
+            _logger.LogWarning("Offer to crate consumer end working");
 
             return Task.CompletedTask;
         }
