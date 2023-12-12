@@ -1,6 +1,8 @@
-﻿using JobOffersMapperService.Consumer;
+﻿using JobOffersApiCore.Interfaces;
+using JobOffersMapperService.Consumer;
 using JobOffersMapperService.DbContexts;
 using JobOffersMapperService.Interfaces;
+using JobOffersMapperService.Producer;
 using JobOffersMapperService.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +28,7 @@ IHost _host = Host.CreateDefaultBuilder()
     {
         services.AddScoped<IRawOfferService, RawOfferService>();
         services.AddScoped<IOffersBaseRepository, OffersBaseRepository>();
+        services.AddScoped<IRabbitMessageProducer, JobCreateMessageProducer>();
         services.AddHostedService<RawOffersConsumer>();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
       

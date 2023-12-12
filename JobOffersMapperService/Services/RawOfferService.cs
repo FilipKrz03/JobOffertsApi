@@ -40,7 +40,7 @@ namespace JobOffersMapperService.Services
                 bool offerExist = await _offersBaseRepository.OfferExistAsync(offer);
 
                 if (offerExist) return;
-
+                 
                 var jobOfferBaseEntity = _mapper.Map<JobOfferRaw, JobOfferBase>(offer);
 
                 await _offersBaseRepository.Insert(jobOfferBaseEntity);
