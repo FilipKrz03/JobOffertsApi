@@ -12,9 +12,9 @@ using WebScrapperService.Props;
 
 namespace WebScrapperService.Producer
 {
-    public class JobMessageProducer : RabbitMessageProducer , IRabbitMessageProducer
+    public class JobHandleMessageProducer : RabbitMessageProducer , IRabbitMessageProducer
     {
-        public JobMessageProducer():base(Environment.GetEnvironmentVariable("RabbitConnectionUri")! , RabbitMQJobProps.JOB_CREATE_CLIENT_PROVIDED_NAME)
+        public JobHandleMessageProducer():base(Environment.GetEnvironmentVariable("RabbitConnectionUri")! , RabbitMQJobProps.JOB_CREATE_CLIENT_PROVIDED_NAME)
         {
             _chanel.ExchangeDeclare(RabbitMQJobProps.JOB_OFFER_EXCHANGE, ExchangeType.Direct);
 
