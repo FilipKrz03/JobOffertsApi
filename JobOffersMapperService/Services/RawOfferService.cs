@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JobOffersApiCore.Dto;
+using JobOffersApiCore.Enum;
 using JobOffersApiCore.Interfaces;
 using JobOffersMapperService.DbContexts;
 using JobOffersMapperService.Entites;
@@ -43,6 +44,8 @@ namespace JobOffersMapperService.Services
                 var jobOfferBaseEntity = _mapper.Map<JobOfferRaw, JobOfferBase>(offer);
 
                 await _offersBaseRepository.Insert(jobOfferBaseEntity);
+
+                var processedJobOffer = _mapper.Map<JobOfferRaw, JobOfferProcessed>(offer);
 
                 _logger.LogInformation("Handle raw offer - New offer added to base db");
             }
