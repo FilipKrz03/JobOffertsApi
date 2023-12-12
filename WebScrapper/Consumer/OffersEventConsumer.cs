@@ -1,5 +1,6 @@
 ﻿using JobOffersApiCore.BaseConfigurations;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System;
@@ -16,11 +17,14 @@ namespace WebScrapperService.Consumer
     {
 
         private readonly IOffersService _offersService;
+        private readonly ILogger<OffersEventConsumer> _logger;  
 
-        public OffersEventConsumer(IOffersService offersService):base(Environment.GetEnvironmentVariable("RabbitConnectionUri")!
+        public OffersEventConsumer(IOffersService offersService  , ILogger<OffersEventConsumer> logger)
+            :base(Environment.GetEnvironmentVariable("RabbitConnectionUri")!
             , RabbitMQOffersEventProps.OFFERS_EVENT_CONSUMER_PROVIDED_NAME)
         {
             _offersService = offersService;
+            _logger = logger;
 
             _chanel.ExchangeDeclare(RabbitMQOffersEventProps.OFFERS_EVENT_EXCHANGE, ExchangeType.Direct);
             _chanel.QueueDeclare(RabbitMQOffersEventProps.OFFERS_CREATE_EVENT_QUEUE_NAME, false, false, false);
@@ -31,8 +35,9 @@ namespace WebScrapperService.Consumer
 
             consumer.Received += (model, ea) =>
             {
+                _logger.LogInformation("New event recived {message}", ea.RoutingKey);
+
                 _offersService.HandleOffersCreateAndUpdate();
-                Console.WriteLine($"Message reciver : queue : {ea.RoutingKey}");
             };
 
             _chanel.BasicConsume(RabbitMQOffersEventProps.OFFERS_CREATE_EVENT_QUEUE_NAME, true, consumer);
@@ -40,7 +45,8 @@ namespace WebScrapperService.Consumer
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            Console.WriteLine("Conusmer started");
+            _logger.LogInformation("Offers event consumer start working");
+
             return Task.CompletedTask;
         }
 
@@ -48,7 +54,9 @@ namespace WebScrapperService.Consumer
         {
             _chanel.Close();
             _connection.Close();
-            Console.WriteLine("Conusmer stopper");
+
+            _logger.LogWarning("Offers event consumer end working");
+
             return Task.CompletedTask;  
         }
     }

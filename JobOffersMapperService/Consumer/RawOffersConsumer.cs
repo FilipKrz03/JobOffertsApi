@@ -35,7 +35,7 @@ namespace JobOffersMapperService.Consumer
 
             consumer.Received += async (model, ea) =>
             {
-                Console.WriteLine($"New event : {ea.RoutingKey}");
+                _logger.LogInformation("New event recived - Raw offers consumer");
 
                 string body = Encoding.UTF8.GetString(ea.Body.ToArray());
 
