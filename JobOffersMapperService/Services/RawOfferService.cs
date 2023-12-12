@@ -5,6 +5,7 @@ using JobOffersApiCore.Interfaces;
 using JobOffersMapperService.DbContexts;
 using JobOffersMapperService.Entites;
 using JobOffersMapperService.Interfaces;
+using JobOffersMapperService.Props;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -21,12 +22,15 @@ namespace JobOffersMapperService.Services
         private readonly IOffersBaseRepository _offersBaseRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<RawOfferService> _logger;
+        private readonly IRabbitMessageProducer _jobCreateMessageProducer;
 
-        public RawOfferService(IOffersBaseRepository offersBaseRepository , IMapper mapper , ILogger<RawOfferService> logger)
+        public RawOfferService(IOffersBaseRepository offersBaseRepository , IMapper mapper , 
+            ILogger<RawOfferService> logger , IRabbitMessageProducer jobCreateMessageProducer)
         {
             _offersBaseRepository = offersBaseRepository;
             _mapper = mapper;
             _logger = logger;
+            _jobCreateMessageProducer = jobCreateMessageProducer;
         }
 
         public async Task HandleRawOffer(string body)
@@ -47,7 +51,13 @@ namespace JobOffersMapperService.Services
 
                 var processedJobOffer = _mapper.Map<JobOfferRaw, JobOfferProcessed>(offer);
 
-                _logger.LogInformation("Handle raw offer - New offer added to base db");
+                string processedJobOfferJson = JsonConvert.SerializeObject(processedJobOffer);
+
+                _jobCreateMessageProducer.SendMessage
+                    (RabbitMqJobCreateProps.JOB_OFFER_EXCHANGE , RabbitMqJobCreateProps.JOB_CREATE_ROUTING_KEY , processedJobOfferJson);
+
+                _logger.LogInformation
+                    ("Handle raw offer - New offer added to base db and create job offer event sended");
             }
             catch (Exception ex)
             {
