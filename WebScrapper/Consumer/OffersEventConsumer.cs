@@ -21,7 +21,7 @@ namespace WebScrapperService.Consumer
 
         public OffersEventConsumer(IOffersService offersService  , ILogger<OffersEventConsumer> logger)
             :base(Environment.GetEnvironmentVariable("RabbitConnectionUri")!
-            , RabbitMQOffersEventProps.OFFERS_EVENT_CONSUMER_PROVIDED_NAME)
+            , RabbitMQOffersEventProps.OFFERS_EVENT_CONSUMER_PROVIDED_NAME , false)
         {
             _offersService = offersService;
             _logger = logger;

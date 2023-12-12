@@ -1,6 +1,7 @@
 using JobOffersApiCore.Interfaces;
 using JobOfferService.Producer;
 using JobOfferService.Services;
+using JobOffersService.Consumer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IRabbitMessageProducer, ScrapperMessageProducer>();
 builder.Services.AddHostedService<ScrapperEventManagerService>();
+builder.Services.AddHostedService<OffersToCreateConsumer>();
 
 
 var app = builder.Build();

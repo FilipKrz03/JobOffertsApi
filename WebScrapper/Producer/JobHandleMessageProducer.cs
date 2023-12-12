@@ -14,7 +14,8 @@ namespace WebScrapperService.Producer
 {
     public class JobHandleMessageProducer : RabbitMessageProducer , IRabbitMessageProducer
     {
-        public JobHandleMessageProducer():base(Environment.GetEnvironmentVariable("RabbitConnectionUri")! , RabbitMQJobProps.JOB_CREATE_CLIENT_PROVIDED_NAME)
+        public JobHandleMessageProducer():
+            base(Environment.GetEnvironmentVariable("RabbitConnectionUri")! , RabbitMQJobProps.JOB_CREATE_CLIENT_PROVIDED_NAME , false)
         {
             _chanel.ExchangeDeclare(RabbitMQJobProps.JOB_OFFER_EXCHANGE, ExchangeType.Direct);
 

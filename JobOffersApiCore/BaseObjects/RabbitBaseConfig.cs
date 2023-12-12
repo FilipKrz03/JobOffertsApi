@@ -13,13 +13,13 @@ namespace JobOffersApiCore.BaseConfigurations
         protected readonly IConnection _connection;
         protected readonly IModel _chanel;
 
-        public RabbitBaseConfig(string connectionUri , string clinetProvidedName)
+        public RabbitBaseConfig(string connectionUri , string clinetProvidedName,  bool asyncMode)
         {
             var factory = new ConnectionFactory()
             {
                 Uri = new Uri(connectionUri),
                 ClientProvidedName = clinetProvidedName , 
-                DispatchConsumersAsync = true
+                DispatchConsumersAsync = asyncMode
             };
 
             _connection = factory.CreateConnection();

@@ -11,7 +11,8 @@ namespace JobOffersApiCore.BaseConfigurations
 {
     public class RabbitMessageProducer : RabbitBaseConfig , IRabbitMessageProducer
     {
-        public RabbitMessageProducer(string connectionUri, string clientProvidedName) : base(connectionUri, clientProvidedName) { }
+        public RabbitMessageProducer(string connectionUri, string clientProvidedName , bool asyncMode) : 
+            base(connectionUri, clientProvidedName , asyncMode) { }
 
         public void SendMessage<T>(string exchange, string routingKey, T? message)
         {

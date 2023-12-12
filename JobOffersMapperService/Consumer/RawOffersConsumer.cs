@@ -21,7 +21,7 @@ namespace JobOffersMapperService.Consumer
         private readonly ILogger<RawOffersConsumer> _logger;    
 
         public RawOffersConsumer(IRawOfferService rawOfferService , ILogger<RawOffersConsumer> logger)
-            :base(Environment.GetEnvironmentVariable("RabbitConnectionUri")! , RabbitMqJobHandleEventProps.JOB_HANDLE_CLIENT_PROVIDED_NAME)
+            :base(Environment.GetEnvironmentVariable("RabbitConnectionUri")! , RabbitMqJobHandleEventProps.JOB_HANDLE_CLIENT_PROVIDED_NAME , true)
         {
             _rawOffersService = rawOfferService;
             _logger = logger;

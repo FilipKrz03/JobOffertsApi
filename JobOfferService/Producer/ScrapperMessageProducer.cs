@@ -11,7 +11,7 @@ namespace JobOfferService.Producer
     public class ScrapperMessageProducer : RabbitMessageProducer , IRabbitMessageProducer
     {
         public ScrapperMessageProducer() : base(Environment.GetEnvironmentVariable("RabbitConnectionUri")!,
-            RabbitMQOffersScraperEventProps.OFFERS_SCRAPPER_CLIENT_PROVIDED_NAME)
+            RabbitMQOffersScraperEventProps.OFFERS_SCRAPPER_CLIENT_PROVIDED_NAME, false)
         {
             _chanel.ExchangeDeclare(RabbitMQOffersScraperEventProps.OFFERS_SCRAPER_EXCHANGE, ExchangeType.Direct);
 
