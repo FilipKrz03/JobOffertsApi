@@ -25,10 +25,9 @@ namespace JobOffersApiCore.BaseObjects
             return _context.Set<TEntity>();
         }
 
-        public async Task Insert(TEntity entity)
+        public void Insert(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
-            await SaveChangesAsync();
         }
 
         public async Task SaveChangesAsync()

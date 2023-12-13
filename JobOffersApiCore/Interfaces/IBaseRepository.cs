@@ -9,12 +9,9 @@ namespace JobOffersApiCore.Interfaces
 {
     public interface IBaseRepository<TEntity> where TEntity : BaseEntity
     {
-        Task Insert(TEntity entity);
+        void Insert(TEntity entity);
         Task SaveChangesAsync();
-
         void AddRange(IEnumerable<TEntity> entities);
         IQueryable<TEntity> Query();
-
-
     }
 }

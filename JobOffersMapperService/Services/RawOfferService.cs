@@ -48,7 +48,9 @@ namespace JobOffersMapperService.Services
                  
                 var jobOfferBaseEntity = _mapper.Map<JobOfferRaw, JobOfferBase>(offer);
 
-                await _offersBaseRepository.Insert(jobOfferBaseEntity);
+                _offersBaseRepository.Insert(jobOfferBaseEntity);
+
+                await _offersBaseRepository.SaveChangesAsync();
 
                 var processedJobOffer = _mapper.Map<JobOfferRaw, JobOfferProcessed>(offer);
 
