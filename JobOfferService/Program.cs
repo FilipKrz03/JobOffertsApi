@@ -21,6 +21,7 @@ builder.Services.AddDbContext<JobOffersContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
 });
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 Log.Logger = new LoggerConfiguration()
       .ReadFrom.Configuration(builder.Configuration)
