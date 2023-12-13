@@ -3,6 +3,7 @@ using JobOffersApiCore.Enum;
 
 namespace JobOffersService.Entities
 {
+    // Many to many realationship with Technology Entitie 
     public class JobOffer : BaseEntity
     {
         

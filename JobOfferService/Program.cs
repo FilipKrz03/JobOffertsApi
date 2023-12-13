@@ -2,6 +2,8 @@ using JobOffersApiCore.Interfaces;
 using JobOfferService.Producer;
 using JobOfferService.Services;
 using JobOffersService.Consumer;
+using JobOffersService.DbContexts;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IRabbitMessageProducer, ScrapperMessageProducer>();
 builder.Services.AddHostedService<ScrapperEventManagerService>();
 builder.Services.AddHostedService<OffersToCreateConsumer>();
+builder.Services.AddDbContext<JobOffersContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
+});
 
 Log.Logger = new LoggerConfiguration()
       .ReadFrom.Configuration(builder.Configuration)
