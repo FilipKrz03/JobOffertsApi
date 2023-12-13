@@ -25,7 +25,8 @@ namespace JobOffersMapperService.Profiles
             var seniority = ConvertSeniority(source.Seniority);
 
             return new
-                (source.OfferTitle, source.OfferCompany, source.Localization , source.WorkMode, seniority, source.RequiredTechnologies);
+                (source.OfferTitle, source.OfferCompany, source.Localization ,
+                source.WorkMode, source.RequiredTechnologies , source.OfferLink , seniority);
         }
 
         private Seniority ConvertSeniority(string source) => source.ToLower() switch

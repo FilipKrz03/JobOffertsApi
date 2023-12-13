@@ -3,6 +3,8 @@ using JobOfferService.Producer;
 using JobOfferService.Services;
 using JobOffersService.Consumer;
 using JobOffersService.DbContexts;
+using JobOffersService.Interfaces;
+using JobOffersService.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -15,6 +17,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IRabbitMessageProducer, ScrapperMessageProducer>();
+
+builder.Services.AddScoped<ITechnologyRepository, TechnologyRepository>();
+builder.Services.AddScoped<IProcessedOfferService, ProcessedOfferService>();
+
 builder.Services.AddHostedService<ScrapperEventManagerService>();
 builder.Services.AddHostedService<OffersToCreateConsumer>();
 builder.Services.AddDbContext<JobOffersContext>(options =>
@@ -22,6 +28,7 @@ builder.Services.AddDbContext<JobOffersContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
 });
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 Log.Logger = new LoggerConfiguration()
       .ReadFrom.Configuration(builder.Configuration)

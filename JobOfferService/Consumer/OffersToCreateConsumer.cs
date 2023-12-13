@@ -1,7 +1,9 @@
 ﻿using JobOffersApiCore.BaseConfigurations;
+using JobOffersService.Interfaces;
 using JobOffersService.Props;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Text;
 
 namespace JobOffersService.Consumer
 {
@@ -9,11 +11,14 @@ namespace JobOffersService.Consumer
     {
 
         private readonly ILogger<OffersToCreateConsumer> _logger;
-        
-        public OffersToCreateConsumer(ILogger<OffersToCreateConsumer> logger):base
-            (Environment.GetEnvironmentVariable("RabbitConnectionUri")!, RabbitMqJobCreateEventPros.JOB_CREATE_CLIENT_PROVIDED_NAME , false)
+        private readonly IServiceProvider _serviceProvider;
+
+        public OffersToCreateConsumer(ILogger<OffersToCreateConsumer> logger , 
+            IServiceProvider serviceProvider):base
+            (Environment.GetEnvironmentVariable("RabbitConnectionUri")!, RabbitMqJobCreateEventPros.JOB_CREATE_CLIENT_PROVIDED_NAME , true)
         {
             _logger = logger;
+            _serviceProvider = serviceProvider;
 
             _chanel.ExchangeDeclare(RabbitMqJobCreateEventPros.JOB_OFFER_EXCHANGE, ExchangeType.Direct);
             _chanel.QueueDeclare(RabbitMqJobCreateEventPros.JOB_CREATE_QUEUE, false, false, false);
@@ -21,11 +26,21 @@ namespace JobOffersService.Consumer
             _chanel.QueueBind(RabbitMqJobCreateEventPros.JOB_CREATE_QUEUE,
                 RabbitMqJobCreateEventPros.JOB_OFFER_EXCHANGE, RabbitMqJobCreateEventPros.JOB_CREATE_ROUTING_KEY);
 
-            var consumer = new EventingBasicConsumer(_chanel);
+            var consumer = new AsyncEventingBasicConsumer(_chanel);
 
-            consumer.Received += (model, ea) =>
+            consumer.Received += async (model, ea) =>
             {
                 _logger.LogInformation("Offers to create consumer recived event");
+
+                string body = Encoding.UTF8.GetString(ea.Body.ToArray());
+
+                using (IServiceScope scope = _serviceProvider.CreateScope())
+                {
+                    IProcessedOfferService processedOfferService = 
+                        scope.ServiceProvider.GetService<IProcessedOfferService>()!;
+
+                    await processedOfferService.HandleProcessedOffer(body);
+                }
             };
 
             _chanel.BasicConsume(RabbitMqJobCreateEventPros.JOB_CREATE_QUEUE , true , consumer);

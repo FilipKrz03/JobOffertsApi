@@ -1,4 +1,6 @@
 ﻿using JobOffersApiCore.Enum;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +10,5 @@ using System.Threading.Tasks;
 namespace JobOffersApiCore.Dto
 {
     public record JobOfferProcessed(string OfferTitle , string OfferCompany ,string Localization ,
-        string WorkMode , Seniority? Seniority , IEnumerable<string> RequiredTechnologies) { }
-    
+        string WorkMode , IEnumerable<string> RequiredTechnologies , string OfferLink , Seniority Seniority) { }
 }

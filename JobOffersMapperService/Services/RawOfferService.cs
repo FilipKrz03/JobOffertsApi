@@ -8,6 +8,7 @@ using JobOffersMapperService.Interfaces;
 using JobOffersMapperService.Props;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,10 +52,8 @@ namespace JobOffersMapperService.Services
 
                 var processedJobOffer = _mapper.Map<JobOfferRaw, JobOfferProcessed>(offer);
 
-                string processedJobOfferJson = JsonConvert.SerializeObject(processedJobOffer);
-
                 _jobCreateMessageProducer.SendMessage
-                    (RabbitMqJobCreateProps.JOB_OFFER_EXCHANGE , RabbitMqJobCreateProps.JOB_CREATE_ROUTING_KEY , processedJobOfferJson);
+                    (RabbitMqJobCreateProps.JOB_OFFER_EXCHANGE , RabbitMqJobCreateProps.JOB_CREATE_ROUTING_KEY , processedJobOffer);
 
                 _logger.LogInformation
                     ("Handle raw offer - New offer added to base db and create job offer event sended");
@@ -66,3 +65,5 @@ namespace JobOffersMapperService.Services
         }
     }
 }
+
+
