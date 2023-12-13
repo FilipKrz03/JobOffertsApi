@@ -16,19 +16,22 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddSingleton<IRabbitMessageProducer, ScrapperMessageProducer>();
 
 builder.Services.AddScoped<ITechnologyRepository, TechnologyRepository>();
 builder.Services.AddScoped<IProcessedOfferService, ProcessedOfferService>();
+builder.Services.AddScoped<IJobOfferRepository, JobOfferRepository>();
 
 builder.Services.AddHostedService<ScrapperEventManagerService>();
 builder.Services.AddHostedService<OffersToCreateConsumer>();
+
 builder.Services.AddDbContext<JobOffersContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
 });
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 Log.Logger = new LoggerConfiguration()
       .ReadFrom.Configuration(builder.Configuration)
@@ -36,7 +39,6 @@ Log.Logger = new LoggerConfiguration()
       .WriteTo.Console()
       .CreateLogger();
         
-
 builder.Host.UseSerilog();
 
 var app = builder

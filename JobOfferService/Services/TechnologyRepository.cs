@@ -14,5 +14,11 @@ namespace JobOffersService.Services
         {
             return await Query().ToListAsync();
         }
+
+        public async Task<List<Technology>> GetEntitiesFromTechnologiesNames(IEnumerable<string> technologyNames)
+        {
+            return await Query().Where
+                (t => technologyNames.Any(tn => t.TechnologyName == tn)).ToListAsync();
+        }
     }
 }

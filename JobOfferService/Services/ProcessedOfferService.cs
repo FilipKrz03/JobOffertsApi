@@ -13,12 +13,15 @@ namespace JobOffersService.Services
     {
 
         private readonly ITechnologyRepository _technologyRepository;
+        private readonly IJobOfferRepository _jobOfferRepository;
         private readonly ILogger<ProcessedOfferService> _logger;
         private readonly IMapper _mapper;
 
         public ProcessedOfferService(ITechnologyRepository technologyRepository , 
-            ILogger<ProcessedOfferService> logger , IMapper mapper)
+            ILogger<ProcessedOfferService> logger , IMapper mapper , 
+            IJobOfferRepository jobOfferRepository)
         {
+            _jobOfferRepository = jobOfferRepository;
             _technologyRepository = technologyRepository;
             _logger = logger;
             _mapper = mapper;
@@ -42,11 +45,21 @@ namespace JobOffersService.Services
                 _technologyRepository.AddRange(newTechnologiesEntites);
 
                 await _technologyRepository.SaveChangesAsync();
+
+                var jobOfferEntitie = _mapper.Map<JobOffer>(processedJobOffer);
+
+                jobOfferEntitie.Technologies = 
+                    await _technologyRepository.GetEntitiesFromTechnologiesNames(newTechnologies);
+
+                _jobOfferRepository.Insert(jobOfferEntitie);
+
+                await _jobOfferRepository.SaveChangesAsync();
+
+                _logger.LogInformation("New job offer succesfully added to database !");
             }
             catch(Exception ex)
             {
                 _logger.LogError("Error occured on Handle processed offer {ex}", ex);
-
             }
         }
     }
