@@ -12,7 +12,9 @@ namespace JobOffersApiCore.Interfaces
         Task Insert(TEntity entity);
         Task SaveChangesAsync();
 
+        void AddRange(IEnumerable<TEntity> entities);
         IQueryable<TEntity> Query();
+
 
     }
 }

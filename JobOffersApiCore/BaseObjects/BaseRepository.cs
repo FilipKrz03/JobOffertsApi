@@ -35,5 +35,10 @@ namespace JobOffersApiCore.BaseObjects
         {
             await _context.SaveChangesAsync();
         }
+
+        public void AddRange(IEnumerable<TEntity> entities)
+        {
+            _context.AddRange(entities);
+        }
     }
 }
