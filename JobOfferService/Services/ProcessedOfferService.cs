@@ -38,7 +38,7 @@ namespace JobOffersService.Services
                 var technologies = await _technologyRepository.GetTechnologies();
 
                 var newTechnologies = processedJobOffer.RequiredTechnologies.Where
-                    (t => technologies.All(t2 => t2.TechnologyName != t));
+                    (t => technologies.All(t2 => t2.TechnologyName.ToLower() != t.ToLower()));
 
                 var newTechnologiesEntites = _mapper.Map<IEnumerable<Technology>>(newTechnologies);
 
