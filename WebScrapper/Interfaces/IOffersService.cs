@@ -8,6 +8,6 @@ namespace WebScrapperService.Interfaces
 {
     public interface IOffersService
     {
-        public void HandleOffersCreateAndUpdate();
+        public void HandleOffersCreateAndUpdate(string routingKey);
     }
 }

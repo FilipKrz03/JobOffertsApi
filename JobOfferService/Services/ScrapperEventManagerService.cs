@@ -1,6 +1,7 @@
 ﻿using JobOffersApiCore.Interfaces;
 using JobOfferService.Props;
 using JobOffersService.Interfaces;
+using JobOffersService.Services;
 
 namespace JobOfferService.Services
 {
@@ -8,12 +9,12 @@ namespace JobOfferService.Services
     {
 
         private readonly IRabbitMessageProducer _scrapperMessageProducer;
-        private readonly IJobOfferRepository _jobOfferRepository;
+        private readonly IServiceProvider _serviceProvider;
 
         public ScrapperEventManagerService(IRabbitMessageProducer scrapperMessageProducer , 
-            IJobOfferRepository jobOfferRepository)
+            IServiceProvider serviceProvider)
         {
-            _jobOfferRepository = jobOfferRepository;
+            _serviceProvider = serviceProvider;
             _scrapperMessageProducer = scrapperMessageProducer;
         }
 
@@ -21,16 +22,22 @@ namespace JobOfferService.Services
         {
             while(!stoppingToken.IsCancellationRequested)
             {
-                bool isDatabaseInitialized = await _jobOfferRepository.IsDatabaseInitalized();
-
-                string routingKey = isDatabaseInitialized switch
+                using (IServiceScope scope = _serviceProvider.CreateScope())
                 {
-                    true => RabbitMQOffersScraperProps.OFFERS_UPDATE_ROUTING_KEY,
-                    false => RabbitMQOffersScraperProps.OFFERS_CREATE_ROUTING_KEY
-                };
+                    IJobOfferRepository jobOfferRepository = 
+                        scope.ServiceProvider.GetService<IJobOfferRepository>()!;
 
-                _scrapperMessageProducer.SendMessage
-                    (RabbitMQOffersScraperProps.OFFERS_SCRAPER_EXCHANGE, routingKey);
+                    bool isDatabaseInitialized = await jobOfferRepository.IsDatabaseInitalized();
+
+                    string routingKey = isDatabaseInitialized switch
+                    {
+                        true => RabbitMQOffersScraperProps.OFFERS_UPDATE_ROUTING_KEY,
+                        false => RabbitMQOffersScraperProps.OFFERS_CREATE_ROUTING_KEY
+                    };
+
+                    _scrapperMessageProducer.SendMessage
+                        (RabbitMQOffersScraperProps.OFFERS_SCRAPER_EXCHANGE, routingKey);
+                }
 
                 await Task.Delay(TimeSpan.FromMinutes(60), stoppingToken);
             }

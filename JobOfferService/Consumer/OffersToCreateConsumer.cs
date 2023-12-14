@@ -36,6 +36,8 @@ namespace JobOffersService.Consumer
 
                 using (IServiceScope scope = _serviceProvider.CreateScope())
                 {
+                    _logger.LogInformation("OffersToCreateConsumer recived an event");
+
                     IProcessedOfferService processedOfferService = 
                         scope.ServiceProvider.GetService<IProcessedOfferService>()!;
 

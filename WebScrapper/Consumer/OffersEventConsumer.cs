@@ -27,9 +27,14 @@ namespace WebScrapperService.Consumer
             _logger = logger;
 
             _chanel.ExchangeDeclare(RabbitMQOffersEventProps.OFFERS_EVENT_EXCHANGE, ExchangeType.Direct);
+
             _chanel.QueueDeclare(RabbitMQOffersEventProps.OFFERS_CREATE_EVENT_QUEUE_NAME, false, false, false);
             _chanel.QueueBind(RabbitMQOffersEventProps.OFFERS_CREATE_EVENT_QUEUE_NAME, RabbitMQOffersEventProps.OFFERS_EVENT_EXCHANGE,
                 RabbitMQOffersEventProps.OFFERS_CREATE_EVENT_ROUTRING_KEY);
+
+            _chanel.QueueDeclare(RabbitMQOffersEventProps.OFFERS_UPDATE_QUEUE , false, false, false);
+            _chanel.QueueBind(RabbitMQOffersEventProps.OFFERS_UPDATE_QUEUE, RabbitMQOffersEventProps.OFFERS_EVENT_EXCHANGE,
+                RabbitMQOffersEventProps.OFFERS_UPDATE_ROUTING_KEY);
 
             var consumer = new EventingBasicConsumer(_chanel);
 
@@ -37,10 +42,11 @@ namespace WebScrapperService.Consumer
             {
                 _logger.LogInformation("New event recived {message}", ea.RoutingKey);
 
-                _offersService.HandleOffersCreateAndUpdate();
+                _offersService.HandleOffersCreateAndUpdate(ea.RoutingKey);
             };
 
             _chanel.BasicConsume(RabbitMQOffersEventProps.OFFERS_CREATE_EVENT_QUEUE_NAME, true, consumer);
+            _chanel.BasicConsume(RabbitMQOffersEventProps.OFFERS_UPDATE_QUEUE, true, consumer);
         }
 
         public Task StartAsync(CancellationToken cancellationToken)

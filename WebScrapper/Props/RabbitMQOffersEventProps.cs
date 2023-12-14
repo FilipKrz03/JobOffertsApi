@@ -14,5 +14,8 @@ namespace WebScrapperService.Props
 
         public const string OFFERS_CREATE_EVENT_QUEUE_NAME = "offers.create";
         public const string OFFERS_CREATE_EVENT_ROUTRING_KEY = "offers.create";
+
+        public const string OFFERS_UPDATE_QUEUE = "offers.update";
+        public const string OFFERS_UPDATE_ROUTING_KEY = "offers.update";
     }
 }
