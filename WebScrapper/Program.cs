@@ -26,7 +26,7 @@ IHost _host = Host.CreateDefaultBuilder()
     {
         services.AddScoped<IOffersService, OffersService>();
         services.AddHostedService<OffersEventConsumer>();
-        services.AddSingleton<IScrapperService, TheProtocolScrapper>();
+        //services.AddSingleton<IScrapperService, TheProtocolScrapper>();
         services.AddSingleton<IScrapperService, PracujPlScrapper>();
         services.AddScoped<IRabbitMessageProducer, JobHandleMessageProducer>();
     })
@@ -37,4 +37,4 @@ IHost _host = Host.CreateDefaultBuilder()
 
 var app = _host.Services.GetRequiredService<IScrapperService>();
 
-app.ScrapOfferts();
+app.ScrapOfferts(false);

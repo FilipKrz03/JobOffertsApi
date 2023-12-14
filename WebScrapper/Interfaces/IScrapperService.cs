@@ -8,6 +8,6 @@ namespace WebScrapperService.Interfaces
 {
     public interface IScrapperService
     {
-        void ScrapOfferts();
+        void ScrapOfferts(bool isInit);
     }
 }

@@ -20,7 +20,7 @@ namespace WebScrapperService.Services
         {
             foreach(var service in _scrapperServices)
             {
-                service.ScrapOfferts();
+                //service.ScrapOfferts();
             }
         }
     }

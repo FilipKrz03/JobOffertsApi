@@ -56,14 +56,16 @@ namespace WebScrapperService.Services
             LinkSelector = linkSelector;
         }
 
-        public virtual void ScrapOfferts()
+        public virtual void ScrapOfferts(bool isInit)
         {
             while (true)
             {
+                if (!isInit && PageNumber == 10) break;
+
                 NavigateToOffersPage(FullUrl);
 
                 var jobElements = GetJobElementsFromPage();
-             
+
                 if (jobElements.Count == 0)
                 {
                     _jobOfferMessageProducer.CloseConnection();
@@ -78,14 +80,12 @@ namespace WebScrapperService.Services
 
                     JobOfferRaw? offer = GetJobDetail();
 
-                    if(offer != null)
+                    if (offer != null)
                     {
                         _jobOfferMessageProducer.SendMessage
                             (RabbitMQJobProps.JOB_OFFER_EXCHANGE, RabbitMQJobProps.JOB_CREATE_ROUTING_KEY, offer);
                     }
-     
                 }
-
                 PageNumber++;
             }
         }
@@ -115,9 +115,9 @@ namespace WebScrapperService.Services
                 var seniority = _driver.FindElement(By.CssSelector(SenioritySelector)).Text;
                 var techologies = _driver.FindElements(By.CssSelector(TechnologiesSelector)).Select(e => e.Text).ToList();
 
-                return new(jobTitle, company, localization, workMode, seniority, techologies , _driver.Url);
+                return new(jobTitle, company, localization, workMode, seniority, techologies, _driver.Url);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError("Error ocuured when getting job details {ex}", ex);
 
@@ -142,7 +142,6 @@ namespace WebScrapperService.Services
 
                 links.Add(href);
             }
-
             return links;
         }
     }
