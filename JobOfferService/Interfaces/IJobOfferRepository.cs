@@ -5,5 +5,6 @@ namespace JobOffersService.Interfaces
 {
     public interface IJobOfferRepository : IBaseRepository<JobOffer>
     {
+        Task<bool> IsDatabaseInitalized();
     }
 }

@@ -2,6 +2,7 @@
 using JobOffersService.DbContexts;
 using JobOffersService.Entities;
 using JobOffersService.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobOffersService.Services
 {
@@ -9,5 +10,9 @@ namespace JobOffersService.Services
     {
         public JobOfferRepository(JobOffersContext context) : base(context) { }
 
+        public async Task<bool> IsDatabaseInitalized()
+        {
+            return await Query().AnyAsync();
+        }
     }
 }
