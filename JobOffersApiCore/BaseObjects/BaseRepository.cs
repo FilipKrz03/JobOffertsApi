@@ -39,5 +39,15 @@ namespace JobOffersApiCore.BaseObjects
         {
             _context.AddRange(entities);
         }
+
+        public async Task<TEntity> GetById(Guid id)
+        {
+            return await _context.Set<TEntity>().Where(e => e.Id == id).SingleAsync();
+        }
+
+        public IQueryable<TEntity> GetByIdQuery(Guid id)
+        {
+            return _context.Set<TEntity>().Where(e => e.Id == id);
+        }
     }
 }
