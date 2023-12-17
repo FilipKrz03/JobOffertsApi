@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 namespace JobOffersService.Services
 {
 
-    public class JobOffersService : IJobOffersService
+    public class JobOfferService : IJobOfferService
     {
 
         private readonly IJobOfferRepository _jobOfferRepository;
         private readonly IMapper _mapper;
 
-        public JobOffersService(IJobOfferRepository jobOfferRepository , 
+        public JobOfferService(IJobOfferRepository jobOfferRepository , 
             IMapper mapper)
         {
             _jobOfferRepository = jobOfferRepository;

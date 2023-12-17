@@ -22,6 +22,7 @@ builder.Services.AddSingleton<IRabbitMessageProducer, ScrapperMessageProducer>()
 builder.Services.AddScoped<ITechnologyRepository, TechnologyRepository>();
 builder.Services.AddScoped<IProcessedOfferService, ProcessedOfferService>();
 builder.Services.AddScoped<IJobOfferRepository, JobOfferRepository>();
+builder.Services.AddScoped<IJobOfferService, JobOffersService.Services.JobOfferService>();
 
 builder.Services.AddHostedService<ScrapperEventManagerService>();
 builder.Services.AddHostedService<OffersToCreateConsumer>();
@@ -33,13 +34,13 @@ builder.Services.AddDbContext<JobOffersContext>(options =>
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-Log.Logger = new LoggerConfiguration()
-      .ReadFrom.Configuration(builder.Configuration)
-      .Enrich.FromLogContext()
-      .WriteTo.Console()
-      .CreateLogger();
+//Log.Logger = new LoggerConfiguration()
+//      .ReadFrom.Configuration(builder.Configuration)
+//      .Enrich.FromLogContext()
+//      .WriteTo.Console()
+//      .CreateLogger();
         
-builder.Host.UseSerilog();
+//builder.Host.UseSerilog();
 
 var app = builder
     .Build();
@@ -51,7 +52,7 @@ var app = builder
 //    app.UseSwaggerUI();
 //}
 
-app.UseSerilogRequestLogging();
+//app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 
