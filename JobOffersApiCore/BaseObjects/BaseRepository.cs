@@ -1,4 +1,5 @@
-﻿using JobOffersApiCore.Interfaces;
+﻿using JobOffersApiCore.Common;
+using JobOffersApiCore.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

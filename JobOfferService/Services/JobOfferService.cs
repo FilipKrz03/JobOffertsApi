@@ -34,9 +34,17 @@ namespace JobOffersService.Services
                return response.ReturnError(404, "Job offer not found");
             }
 
-            var jobOfferToReturn = _mapper.Map<JobOfferDetailResponse>(jobOffer);
+            return response.ReturnValue(_mapper.Map<JobOfferDetailResponse>(jobOffer));
+        }
 
-            return response.ReturnValue(jobOfferToReturn);
+        public async Task<Response<IEnumerable<JobOfferBasicResponse>>>
+            GetJobOffers(ResourceParamethers resourceParamethers)
+        {
+            Response<IEnumerable<JobOfferBasicResponse>> response = new();
+
+            var jobOffers = await _jobOfferRepository.GetJobOffersAsync(resourceParamethers);
+
+            return response.ReturnValue(_mapper.Map<IEnumerable<JobOfferBasicResponse>>(jobOffers));
         }
     }
 }

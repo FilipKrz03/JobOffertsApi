@@ -1,4 +1,5 @@
 ﻿using JobOffersApiCore.BaseObjects;
+using JobOffersApiCore.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
