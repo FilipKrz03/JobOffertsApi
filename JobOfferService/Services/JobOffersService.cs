@@ -1,4 +1,6 @@
-﻿using JobOffersApiCore.Helpers;
+﻿using AutoMapper;
+using JobOffersApiCore.Helpers;
+using JobOffersService.Dto;
 using JobOffersService.Entities;
 using JobOffersService.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -10,16 +12,18 @@ namespace JobOffersService.Services
     {
 
         private readonly IJobOfferRepository _jobOfferRepository;
+        private readonly IMapper _mapper;
 
-        public JobOffersService(IJobOfferRepository jobOfferRepository)
+        public JobOffersService(IJobOfferRepository jobOfferRepository , 
+            IMapper mapper)
         {
             _jobOfferRepository = jobOfferRepository;
+            _mapper = mapper;
         }
 
-
-        public async Task<Response<JobOffer>> GetJobOffer(Guid jobId)
+        public async Task<Response<JobOfferDetailResponse>> GetJobOfferDetail(Guid jobId)
         {
-            Response<JobOffer> response = new();
+            Response<JobOfferDetailResponse> response = new();
 
             var jobOffer = await _jobOfferRepository.GetByIdQuery(jobId)
                 .Include(e => e.Technologies).SingleAsync();
@@ -29,7 +33,9 @@ namespace JobOffersService.Services
                return response.ReturnError(404, "Job offer not found");
             }
 
-            return response.ReturnValue(jobOffer);
+            var jobOfferToReturn = _mapper.Map<JobOfferDetailResponse>(jobOffer);
+
+            return response.ReturnValue(jobOfferToReturn);
         }
     }
 }
