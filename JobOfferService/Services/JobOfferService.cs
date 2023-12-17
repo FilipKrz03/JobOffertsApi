@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JobOffersApiCore.Common;
 using JobOffersApiCore.Helpers;
 using JobOffersService.Dto;
 using JobOffersService.Entities;
