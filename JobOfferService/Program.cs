@@ -4,6 +4,7 @@ using JobOfferService.Services;
 using JobOffersService.Consumer;
 using JobOffersService.DbContexts;
 using JobOffersService.Interfaces;
+using JobOffersService.Repositories;
 using JobOffersService.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -34,25 +35,25 @@ builder.Services.AddDbContext<JobOffersContext>(options =>
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-//Log.Logger = new LoggerConfiguration()
-//      .ReadFrom.Configuration(builder.Configuration)
-//      .Enrich.FromLogContext()
-//      .WriteTo.Console()
-//      .CreateLogger();
-        
-//builder.Host.UseSerilog();
+Log.Logger = new LoggerConfiguration()
+      .ReadFrom.Configuration(builder.Configuration)
+      .Enrich.FromLogContext()
+      .WriteTo.Console()
+      .CreateLogger();
+
+builder.Host.UseSerilog();
 
 var app = builder
     .Build();
 
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
+//Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-//app.UseSerilogRequestLogging();
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 

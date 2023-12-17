@@ -4,9 +4,9 @@ using JobOffersService.Entities;
 using JobOffersService.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace JobOffersService.Services
+namespace JobOffersService.Repositories
 {
-    public class JobOfferRepository : BaseRepository<JobOffersContext , JobOffer> , IJobOfferRepository
+    public class JobOfferRepository : BaseRepository<JobOffersContext, JobOffer>, IJobOfferRepository
     {
         public JobOfferRepository(JobOffersContext context) : base(context) { }
 
