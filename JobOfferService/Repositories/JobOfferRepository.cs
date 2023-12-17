@@ -18,8 +18,21 @@ namespace JobOffersService.Repositories
 
         public async Task<IEnumerable<JobOffer>> GetJobOffersAsync(ResourceParamethers resourceParamethers)
         {
+            var query = Query();
+
+            if(!string.IsNullOrEmpty(resourceParamethers.SearchQuery))
+            {
+                query = query.Where(x =>
+                x.OfferTitle.Contains(resourceParamethers.SearchQuery)
+                || x.OfferLink.Contains(resourceParamethers.SearchQuery)
+                || x.OfferCompany.Contains(resourceParamethers.SearchQuery)
+                || x.Localization.Contains(resourceParamethers.SearchQuery)
+                || x.Technologies.Any(t => t.TechnologyName.Contains(resourceParamethers.SearchQuery))
+                );
+            }
+
             return await PagedList<JobOffer>
-                .CreateAsync(Query(), resourceParamethers.PageSize, resourceParamethers.PageNumber);
+                .CreateAsync(query, resourceParamethers.PageSize, resourceParamethers.PageNumber);
         }
     }
 }

@@ -12,5 +12,6 @@ namespace JobOffersApiCore.Common
 
         public int PageNumber {  get; set; }  = 1;  
 
+        public string? SearchQuery {  get; set; }   
     }
 }
