@@ -11,6 +11,7 @@ namespace JobOffersService.Profiles
         {
             CreateMap<JobOfferProcessed, JobOffer>();
             CreateMap<JobOffer, JobOfferDetailResponse>();
+            CreateMap<JobOffer , JobOfferBasicResponse>();
         }
     }
 }
