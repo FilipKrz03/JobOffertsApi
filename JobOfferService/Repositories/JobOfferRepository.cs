@@ -4,6 +4,7 @@ using JobOffersService.DbContexts;
 using JobOffersService.Entities;
 using JobOffersService.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace JobOffersService.Repositories
 {
@@ -16,7 +17,8 @@ namespace JobOffersService.Repositories
             return await Query().AnyAsync();
         }
 
-        public async Task<IEnumerable<JobOffer>> GetJobOffersAsync(ResourceParamethers resourceParamethers)
+        public async Task<IEnumerable<JobOffer>> GetJobOffersAsync(ResourceParamethers resourceParamethers , 
+            Expression<Func<JobOffer , object>> keySelector)
         {
             var query = Query();
 
@@ -31,6 +33,15 @@ namespace JobOffersService.Repositories
                 );
             }
 
+            if(resourceParamethers.SortOrder.ToLower() == "desc")
+            {
+                query = query.OrderByDescending(keySelector);
+            }
+            else
+            {
+                query = query.OrderBy(keySelector);
+            }
+              
             return await PagedList<JobOffer>
                 .CreateAsync(query, resourceParamethers.PageSize, resourceParamethers.PageNumber);
         }

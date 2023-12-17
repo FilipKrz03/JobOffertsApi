@@ -5,6 +5,7 @@ using JobOffersService.Dto;
 using JobOffersService.Entities;
 using JobOffersService.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace JobOffersService.Services
 {
@@ -42,7 +43,16 @@ namespace JobOffersService.Services
         {
             Response<IEnumerable<JobOfferBasicResponse>> response = new();
 
-            var jobOffers = await _jobOfferRepository.GetJobOffersAsync(resourceParamethers);
+            Expression<Func<JobOffer, object>> keySelector = resourceParamethers.SortColumn?.ToLower() switch
+            {
+                "title" => jobOffer => jobOffer.OfferTitle,
+                "link" => jobOffer => jobOffer.OfferLink,
+                "company" => jobOffer => jobOffer.OfferCompany,
+                "localization" => jobOffer => jobOffer.Localization,
+                _ => jobOffer => jobOffer.Id
+            };
+
+            var jobOffers = await _jobOfferRepository.GetJobOffersAsync(resourceParamethers , keySelector);
 
             return response.ReturnValue(_mapper.Map<IEnumerable<JobOfferBasicResponse>>(jobOffers));
         }
