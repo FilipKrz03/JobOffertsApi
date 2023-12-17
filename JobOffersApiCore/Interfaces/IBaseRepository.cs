@@ -13,5 +13,7 @@ namespace JobOffersApiCore.Interfaces
         Task SaveChangesAsync();
         void AddRange(IEnumerable<TEntity> entities);
         IQueryable<TEntity> Query();
+        Task<TEntity> GetById(Guid id);
+        IQueryable<TEntity> GetByIdQuery(Guid id);
     }
 }
