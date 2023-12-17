@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JobOffersService.Dto;
 using JobOffersService.Entities;
 
 namespace JobOffersService.Profiles
@@ -10,6 +11,8 @@ namespace JobOffersService.Profiles
             CreateMap<string, Technology>()
                 .ForMember(dest => dest.TechnologyName, opt => opt.MapFrom(
                     src => src));
+
+            CreateMap<Technology, TechnologyBasicResponse>();
         }
     }
 }

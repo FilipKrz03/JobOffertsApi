@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JobOffersApiCore.Dto;
+using JobOffersService.Dto;
 using JobOffersService.Entities;
 
 namespace JobOffersService.Profiles
@@ -9,6 +10,7 @@ namespace JobOffersService.Profiles
         public JobOfferProfile()
         {
             CreateMap<JobOfferProcessed, JobOffer>();
+            CreateMap<JobOffer, JobOfferDetailResponse>();
         }
     }
 }
