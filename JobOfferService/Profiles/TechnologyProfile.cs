@@ -11,8 +11,8 @@ namespace JobOffersService.Profiles
             CreateMap<string, Technology>()
                 .ForMember(dest => dest.TechnologyName, opt => opt.MapFrom(
                     src => src));
-
             CreateMap<Technology, TechnologyBasicResponse>();
+            CreateMap<Technology, TechnologyDetailResponse>();
         }
     }
 }

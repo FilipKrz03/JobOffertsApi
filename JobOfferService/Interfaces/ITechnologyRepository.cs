@@ -12,5 +12,8 @@ namespace JobOffersService.Interfaces
 
         Task<IEnumerable<Technology>> GetTechnologiesAsync
             (ResourceParamethers resourceParamethers, Expression<Func<Technology, object>> keySelector);
+
+        Task<Technology>
+            GetTechnologyWithJobOffersAsync(Guid id, ResourceParamethers resourceParamethers);
     }
 }

@@ -45,5 +45,17 @@ namespace JobOffersService.Repositories
             return await PagedList<Technology>
                 .CreateAsync(query, resourceParamethers.PageSize, resourceParamethers.PageNumber);
         }
+
+        public async Task<Technology>
+            GetTechnologyWithJobOffersAsync(Guid id , ResourceParamethers resourceParamethers)
+        {
+            return await GetByIdQuery(id)
+                .Include(
+                t => t.JobOffers
+                .Skip((resourceParamethers.PageSize - 1) * resourceParamethers.PageNumber)
+                .Take(resourceParamethers.PageSize)
+                )
+                .SingleAsync();
+        }
     }
 }
