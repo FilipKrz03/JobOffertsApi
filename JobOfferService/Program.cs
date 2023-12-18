@@ -24,6 +24,7 @@ builder.Services.AddScoped<ITechnologyRepository, TechnologyRepository>();
 builder.Services.AddScoped<IProcessedOfferService, ProcessedOfferService>();
 builder.Services.AddScoped<IJobOfferRepository, JobOfferRepository>();
 builder.Services.AddScoped<IJobOfferService, JobOffersService.Services.JobOfferService>();
+builder.Services.AddScoped<ITechnologyService, TechnologyService>();
 
 builder.Services.AddHostedService<ScrapperEventManagerService>();
 builder.Services.AddHostedService<OffersToCreateConsumer>();
