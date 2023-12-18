@@ -30,7 +30,7 @@ namespace JobOffersService.Repositories
 
             if(!string.IsNullOrEmpty(resourceParamethers.SearchQuery))
             {
-                query = query.Where(t => t.TechnologyName == resourceParamethers.SearchQuery);
+                query = query.Where(t => t.TechnologyName.Contains(resourceParamethers.SearchQuery));
             }
 
             if(resourceParamethers.SortOrder == "desc")
