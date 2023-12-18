@@ -1,5 +1,7 @@
-﻿using JobOffersApiCore.Interfaces;
+﻿using JobOffersApiCore.Common;
+using JobOffersApiCore.Interfaces;
 using JobOffersService.Entities;
+using System.Linq.Expressions;
 
 namespace JobOffersService.Interfaces
 {
@@ -7,5 +9,8 @@ namespace JobOffersService.Interfaces
     {
         Task<IEnumerable<Technology>> GetTechnologies();
         Task<List<Technology>> GetEntitiesFromTechnologiesNames(IEnumerable<string> technologyNames);
+
+        Task<IEnumerable<Technology>> GetTechnologiesAsync
+            (ResourceParamethers resourceParamethers, Expression<Func<Technology, object>> keySelector);
     }
 }

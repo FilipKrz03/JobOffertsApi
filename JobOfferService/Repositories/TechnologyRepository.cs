@@ -1,8 +1,10 @@
 ﻿using JobOffersApiCore.BaseObjects;
+using JobOffersApiCore.Common;
 using JobOffersService.DbContexts;
 using JobOffersService.Entities;
 using JobOffersService.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace JobOffersService.Repositories
 {
@@ -19,6 +21,29 @@ namespace JobOffersService.Repositories
         {
             return await Query().Where
                 (t => technologyNames.Any(tn => t.TechnologyName.ToLower() == tn.ToLower())).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Technology>> GetTechnologiesAsync
+            (ResourceParamethers resourceParamethers ,Expression<Func<Technology , object>> keySelector)
+        {
+            var query = Query();
+
+            if(!string.IsNullOrEmpty(resourceParamethers.SearchQuery))
+            {
+                query = query.Where(t => t.TechnologyName == resourceParamethers.SearchQuery);
+            }
+
+            if(resourceParamethers.SortOrder == "desc")
+            {
+                query = query.OrderByDescending(keySelector);
+            }
+            else
+            {
+                query = query.OrderBy(keySelector);
+            }
+
+            return await PagedList<Technology>
+                .CreateAsync(query, resourceParamethers.PageSize, resourceParamethers.PageNumber);
         }
     }
 }
