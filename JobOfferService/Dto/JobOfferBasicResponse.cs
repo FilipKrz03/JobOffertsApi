@@ -2,6 +2,6 @@
 
 namespace JobOffersService.Dto
 {
-    public record JobOfferBasicResponse(string OfferTitle, string OfferCompany,
+    public record JobOfferBasicResponse(Guid Id , string OfferTitle, string OfferCompany,
         string Localization, string WorkMode, string OfferLink, Seniority Seniority) { }
 }

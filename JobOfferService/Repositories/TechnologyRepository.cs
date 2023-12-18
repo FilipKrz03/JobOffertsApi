@@ -12,12 +12,12 @@ namespace JobOffersService.Repositories
     {
         public TechnologyRepository(JobOffersContext context) : base(context) { }
 
-        public async Task<IEnumerable<Technology>> GetTechnologies()
+        public async Task<IEnumerable<Technology>> GetAllTechnologiesAsync()
         {
             return await Query().ToListAsync();
         }
 
-        public async Task<List<Technology>> GetEntitiesFromTechnologiesNames(IEnumerable<string> technologyNames)
+        public async Task<List<Technology>> GetEntitiesFromTechnologiesNamesAsync(IEnumerable<string> technologyNames)
         {
             return await Query().Where
                 (t => technologyNames.Any(tn => t.TechnologyName.ToLower() == tn.ToLower())).ToListAsync();
@@ -54,6 +54,7 @@ namespace JobOffersService.Repositories
                 t => t.JobOffers
                 .Skip((resourceParamethers.PageNumber - 1) * resourceParamethers.PageSize)
                 .Take(resourceParamethers.PageSize)
+                .OrderBy(o => o.Id)
                 )
                 .SingleAsync();
         }

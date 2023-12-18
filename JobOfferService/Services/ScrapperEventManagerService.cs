@@ -27,7 +27,7 @@ namespace JobOfferService.Services
                     IJobOfferRepository jobOfferRepository = 
                         scope.ServiceProvider.GetService<IJobOfferRepository>()!;
 
-                    bool isDatabaseInitialized = await jobOfferRepository.IsDatabaseInitalized();
+                    bool isDatabaseInitialized = await jobOfferRepository.IsDatabaseInitalizedAsync();
 
                     string routingKey = isDatabaseInitialized switch
                     {

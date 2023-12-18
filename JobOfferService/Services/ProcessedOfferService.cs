@@ -35,7 +35,7 @@ namespace JobOffersService.Services
 
                 if (processedJobOffer == null) return;
 
-                var technologies = await _technologyRepository.GetTechnologies();
+                var technologies = await _technologyRepository.GetAllTechnologiesAsync();
 
                 var newTechnologies = processedJobOffer.RequiredTechnologies.Where
                     (t => technologies.All(t2 => t2.TechnologyName.ToLower() != t.ToLower()));
@@ -49,7 +49,7 @@ namespace JobOffersService.Services
                 var jobOfferEntitie = _mapper.Map<JobOffer>(processedJobOffer);
 
                 jobOfferEntitie.Technologies = 
-                    await _technologyRepository.GetEntitiesFromTechnologiesNames(newTechnologies);
+                    await _technologyRepository.GetEntitiesFromTechnologiesNamesAsync(newTechnologies);
 
                 _jobOfferRepository.Insert(jobOfferEntitie);
 

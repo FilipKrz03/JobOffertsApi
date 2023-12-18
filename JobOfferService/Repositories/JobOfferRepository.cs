@@ -12,7 +12,7 @@ namespace JobOffersService.Repositories
     {
         public JobOfferRepository(JobOffersContext context) : base(context) { }
 
-        public async Task<bool> IsDatabaseInitalized()
+        public async Task<bool> IsDatabaseInitalizedAsync()
         {
             return await Query().AnyAsync();
         }

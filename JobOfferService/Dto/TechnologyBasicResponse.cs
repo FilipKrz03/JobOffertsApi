@@ -1,6 +1,6 @@
 ﻿namespace JobOffersService.Dto
 {
-    public record TechnologyBasicResponse(string TechnologyName)
+    public record TechnologyBasicResponse(Guid Id , string TechnologyName)
     {
     }
 }
