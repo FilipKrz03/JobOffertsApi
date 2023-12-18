@@ -52,7 +52,7 @@ namespace JobOffersService.Repositories
             return await GetByIdQuery(id)
                 .Include(
                 t => t.JobOffers
-                .Skip((resourceParamethers.PageSize - 1) * resourceParamethers.PageNumber)
+                .Skip((resourceParamethers.PageNumber - 1) * resourceParamethers.PageSize)
                 .Take(resourceParamethers.PageSize)
                 )
                 .SingleAsync();

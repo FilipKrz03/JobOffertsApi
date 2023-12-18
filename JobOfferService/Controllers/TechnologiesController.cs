@@ -18,6 +18,16 @@ namespace JobOffersService.Controllers
             _technologyService = technologyService;
         }
 
+        [HttpGet("{technologyId}")]
+        public async Task<ActionResult<TechnologyDetailResponse>>GetTechnologyWithJobOffersList
+            (Guid technologyId , [FromQuery]ResourceParamethers resourceParamethers)
+        {
+            var result = await _technologyService.GetTechnologyWithJobOffers(technologyId, resourceParamethers);
+
+            return result.ErrorInfo.IsError ? StatusCode(result.ErrorInfo.StatusCode, result.ErrorInfo.ErrorMessage)
+                : Ok(result.Value);
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TechnologyBasicResponse>>>
             GetTechnologies([FromQuery] ResourceParamethers resourceParamethers)

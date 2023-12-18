@@ -37,5 +37,21 @@ namespace JobOffersService.Services
 
             return response.ReturnValue(_mapper.Map<IEnumerable<TechnologyBasicResponse>>(technologieEntities));
         }
+
+        public async Task<Response<TechnologyDetailResponse>> GetTechnologyWithJobOffers
+            (Guid id , ResourceParamethers resourceParamethers)
+        {
+            Response<TechnologyDetailResponse> response = new();
+
+            var technologyEntityWithJobOffers = await _technologyRepository.
+                GetTechnologyWithJobOffersAsync(id , resourceParamethers);
+
+            if(technologyEntityWithJobOffers == null)
+            {
+                return response.ReturnError(404, $"Technology with id {id} not found");
+            }
+
+            return response.ReturnValue(_mapper.Map<TechnologyDetailResponse>(technologyEntityWithJobOffers));
+        }
     }
 }

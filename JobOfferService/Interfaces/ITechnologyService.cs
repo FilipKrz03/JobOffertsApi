@@ -8,5 +8,8 @@ namespace JobOffersService.Interfaces
     {
         Task<Response<IEnumerable<TechnologyBasicResponse>>>
             GetTechnologies(ResourceParamethers resourceParamethers);
+
+        Task<Response<TechnologyDetailResponse>> GetTechnologyWithJobOffers
+            (Guid id, ResourceParamethers resourceParamethers);
     }
 }
