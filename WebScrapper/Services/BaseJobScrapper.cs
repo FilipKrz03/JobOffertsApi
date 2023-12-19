@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Remote;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace WebScrapperService.Services
     {
         protected int PageNumber { get; set; } = 1;
 
-        protected readonly ChromeDriver _driver;
+        protected readonly IWebDriver _driver;
         protected readonly ILogger<BaseJobScrapper> _logger;
         protected readonly IRabbitMessageProducer _jobOfferMessageProducer;
 
@@ -44,7 +45,23 @@ namespace WebScrapperService.Services
         {
             _logger = log;
             _jobOfferMessageProducer = jobOfferMessageProducer;
-            _driver = new();
+
+            string isSeleniumOnDocker = Environment.GetEnvironmentVariable("IsSeleniumOnDocker")!; 
+
+            if(isSeleniumOnDocker == "true")
+            {
+                string remoteDriverUri = Environment.GetEnvironmentVariable("RemoteDriverUri")!;
+
+                var options = new ChromeOptions();
+                options.AddArgument("--ignore-ssl-errors=yes");
+                options.AddArgument("-ignore-certificate-errors");
+                _driver = new RemoteWebDriver(new Uri(remoteDriverUri), options);
+            }
+            else
+            {
+                _driver = new ChromeDriver();
+            }
+
             BaseUrl = baseUrl;
             JobElementOnPageSelector = jobElementOnPageSelector;
             JobTitleSelector = jobTitleSelector;
@@ -58,36 +75,46 @@ namespace WebScrapperService.Services
 
         public virtual void ScrapOfferts(bool isInit)
         {
-            while (true)
+            try
             {
-                if (!isInit && PageNumber == 10) break;
-
-                NavigateToOffersPage(FullUrl);
-
-                var jobElements = GetJobElementsFromPage();
-
-                if (jobElements.Count == 0)
+                while (true)
                 {
-                    _jobOfferMessageProducer.CloseConnection();
-                    break;
-                }
+                    if (!isInit && PageNumber == 10) break;
 
-                IEnumerable<string> jobLinks = GetJobLinks(jobElements);
+                    NavigateToOffersPage(FullUrl);
 
-                foreach (string jobLink in jobLinks)
-                {
-                    NavigateToJobDetailPage(jobLink);
+                    var jobElements = GetJobElementsFromPage();
 
-                    JobOfferRaw? offer = GetJobDetail();
-
-                    if (offer != null)
+                    if (jobElements.Count == 0)
                     {
-                        _jobOfferMessageProducer.SendMessage
-                            (RabbitMQJobProps.JOB_OFFER_EXCHANGE, RabbitMQJobProps.JOB_CREATE_ROUTING_KEY, offer);
+                        _jobOfferMessageProducer.CloseConnection();
+                        break;
                     }
+
+                    IEnumerable<string> jobLinks = GetJobLinks(jobElements);
+
+                    foreach (string jobLink in jobLinks)
+                    {
+                        NavigateToJobDetailPage(jobLink);
+
+                        JobOfferRaw? offer = GetJobDetail();
+
+                        if (offer != null)
+                        {
+                            _jobOfferMessageProducer.SendMessage
+                                (RabbitMQJobProps.JOB_OFFER_EXCHANGE, RabbitMQJobProps.JOB_CREATE_ROUTING_KEY, offer);
+
+                            _logger.LogInformation("WebScrapperService - offer.handle event sended");
+                        }
+                    }
+                    PageNumber++;
                 }
-                PageNumber++;
             }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error occured {ex}", ex);
+            }
+            _driver.Close();
         }
 
         protected virtual void NavigateToOffersPage(string offersPageLink)
@@ -104,8 +131,6 @@ namespace WebScrapperService.Services
 
         protected virtual JobOfferRaw? GetJobDetail()
         {
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
-
             try
             {
                 var jobTitle = _driver.FindElement(By.CssSelector(JobTitleSelector)).Text;
@@ -127,7 +152,7 @@ namespace WebScrapperService.Services
 
         protected virtual ICollection<IWebElement> GetJobElementsFromPage()
         {
-            _logger.LogInformation("Offerts from page number {PageNumber} are utiling", PageNumber);
+            _logger.LogInformation("Offerts from page number {PageNumber} are utilizng", PageNumber);
 
             return _driver.FindElements(By.CssSelector(JobElementOnPageSelector)).ToList();
         }

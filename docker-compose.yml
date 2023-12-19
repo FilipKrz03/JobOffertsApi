@@ -27,5 +27,28 @@ services:
     environment:
      - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
 
+  selenium:
+    container_name: "selenium"
+    image: selenium/standalone-chrome
+    ports:
+      - "4444:4444"
+    environment:
+      - SE_NODE_SESSION_TIMEOUT=10
+    volumes:
+      - /dev/shm:/dev/shm
 
-     
+  webscrapperservice:
+    container_name: "webscrapperservice"
+    image: ${DOCKER_REGISTRY-}webscrapperservice
+    restart: on-failure:always
+    build:
+        context: .
+        dockerfile: WebScrapper/Dockerfile
+    depends_on:
+      - rabbitmq
+      - selenium
+    environment:
+      - IsSeleniumOnDocker=true
+      - RemoteDriverUri=http://host.docker.internal:4444/wd/hub
+      - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
+
