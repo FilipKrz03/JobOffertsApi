@@ -1,0 +1,31 @@
+version: '3.4'
+
+services:
+
+  rabbitmq:
+    container_name: "rabbitmq"
+    image: rabbitmq:3-management
+    restart: on-failure:3
+    ports:
+     - 5672:5672
+     - 15672:15672
+    environment:
+     - RABBITMQ_DEFAULT_USER=RabbitUser
+     - RABBITMQ_DEFAULT_PASS=RabbitPassword
+
+  joboffersservice:
+    container_name: "joboffersservice"
+    image: ${DOCKER_REGISTRY-}joboffersservice
+    restart: on-failure:always
+    build:
+      context: .
+      dockerfile: JobOfferService/Dockerfile 
+    ports:
+     - 7206:80 
+    depends_on:
+     - rabbitmq
+    environment:
+     - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
+
+
+     

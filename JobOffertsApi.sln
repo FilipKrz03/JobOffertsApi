@@ -9,13 +9,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobOffersService", "JobOffe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobOffersService", "JobOfferService\JobOffersService.csproj", "{3CC4460A-E340-43F9-B179-096823CD0961}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobOffersApiCore", "JobOffersApiCore\JobOffersApiCore.csproj", "{94ECC405-984E-4112-BBB0-35599D5E7716}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobOffersApiCore", "JobOffersApiCore\JobOffersApiCore.csproj", "{94ECC405-984E-4112-BBB0-35599D5E7716}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebScrapperService", "WebScrapperService", "{EF54BF5E-5BD0-4439-9C9E-798AE62677D7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobOffersMapperService", "JobOffersMapperService", "{F2E5F6B5-3841-4732-AAD8-6F237159A148}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobOffersMapperService", "JobOffersMapperService\JobOffersMapperService.csproj", "{36F8628F-3E75-4DBA-908B-E9A160C5FBB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobOffersMapperService", "JobOffersMapperService\JobOffersMapperService.csproj", "{36F8628F-3E75-4DBA-908B-E9A160C5FBB3}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{BA417AE7-C9A4-431B-8C29-4DA983F2AFAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{36F8628F-3E75-4DBA-908B-E9A160C5FBB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36F8628F-3E75-4DBA-908B-E9A160C5FBB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36F8628F-3E75-4DBA-908B-E9A160C5FBB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA417AE7-C9A4-431B-8C29-4DA983F2AFAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA417AE7-C9A4-431B-8C29-4DA983F2AFAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA417AE7-C9A4-431B-8C29-4DA983F2AFAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA417AE7-C9A4-431B-8C29-4DA983F2AFAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
