@@ -31,7 +31,7 @@ builder.Services.AddHostedService<OffersToCreateConsumer>();
 
 builder.Services.AddDbContext<JobOffersContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DockerConnection")!);
 });
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -55,8 +55,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseSerilogRequestLogging();
-
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
