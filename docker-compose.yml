@@ -13,6 +13,24 @@ services:
      - RABBITMQ_DEFAULT_USER=RabbitUser
      - RABBITMQ_DEFAULT_PASS=RabbitPassword
 
+  offersdb:
+     container_name: "offersdb"
+     image: mcr.microsoft.com/mssql/server:2019-latest
+     ports:
+      - 1432:1433
+     environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=offersdbpwd123@
+
+  offersbasedb:
+     container_name: "offersbasedb"
+     image: mcr.microsoft.com/mssql/server:2019-latest
+     ports:
+      - 1431:1433
+     environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=offersbasedbpwd123@
+
   joboffersservice:
     container_name: "joboffersservice"
     image: ${DOCKER_REGISTRY-}joboffersservice
@@ -24,8 +42,10 @@ services:
      - 7206:80 
     depends_on:
      - rabbitmq
+     - offersdb
     environment:
      - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
+     - ConnectionString=Server=offersdb,1433;Initial Catalog=Offers;User ID = sa;Password=offersdbpwd123@;TrustServerCertificate=true
 
   selenium:
     container_name: "selenium"
@@ -34,6 +54,7 @@ services:
       - "4444:4444"
     environment:
       - SE_NODE_SESSION_TIMEOUT=10
+      - SE_SESSION_REQUEST_TIMEOUT=5000
     volumes:
       - /dev/shm:/dev/shm
 
@@ -61,5 +82,6 @@ services:
         dockerfile: JobOffersMapperService/Dockerfile
     depends_on:
      - rabbitmq
+     - offersbasedb
     environment:
     - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
