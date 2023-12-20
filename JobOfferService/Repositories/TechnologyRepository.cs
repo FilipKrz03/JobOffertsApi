@@ -20,7 +20,7 @@ namespace JobOffersService.Repositories
         public async Task<List<Technology>> GetEntitiesFromTechnologiesNamesAsync(IEnumerable<string> technologyNames)
         {
             return await Query().Where
-                (t => technologyNames.Any(tn => t.TechnologyName.ToLower() == tn.ToLower())).ToListAsync();
+                (t => technologyNames.Any(tn => t.TechnologyName == tn)).ToListAsync();
         }
 
         public async Task<IEnumerable<Technology>> GetTechnologiesAsync

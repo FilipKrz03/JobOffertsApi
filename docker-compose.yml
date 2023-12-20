@@ -52,3 +52,14 @@ services:
       - RemoteDriverUri=http://host.docker.internal:4444/wd/hub
       - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
 
+  joboffersmapperserivce:
+    container_name: "joboffersmapperservice"
+    image: ${DOCKER_REGISTRY}joboffersmapperservice
+    restart: on-failure:always
+    build:
+        context: .
+        dockerfile: JobOffersMapperService/Dockerfile
+    depends_on:
+     - rabbitmq
+    environment:
+    - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
