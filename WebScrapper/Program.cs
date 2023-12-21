@@ -26,15 +26,15 @@ IHost _host = Host.CreateDefaultBuilder()
     {
         services.AddScoped<IOffersService, OffersService>();
         services.AddHostedService<OffersEventConsumer>();
-        //services.AddSingleton<IScrapperService, TheProtocolScrapper>();
-        services.AddSingleton<IScrapperService, PracujPlScrapper>();
+        services.AddScoped<IScrapperService, PracujPlScrapper>();
+        services.AddScoped<IScrapperService, TheProtocolScrapper>();
         services.AddScoped<IRabbitMessageProducer, JobHandleMessageProducer>();
     })
     .UseSerilog()
     .Build();
 
-//_host.RunAsync().Wait();
+_host.RunAsync().Wait();
 
-var app = _host.Services.GetRequiredService<IScrapperService>();
+//var app = _host.Services.GetRequiredService<IScrapperService>();
 
-app.ScrapOfferts(false);
+//app.ScrapOfferts(false);

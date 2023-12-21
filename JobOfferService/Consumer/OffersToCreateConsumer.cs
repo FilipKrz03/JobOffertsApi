@@ -30,8 +30,6 @@ namespace JobOffersService.Consumer
 
             consumer.Received += async (model, ea) =>
             {
-                _logger.LogInformation("Offers to create consumer recived event");
-
                 string body = Encoding.UTF8.GetString(ea.Body.ToArray());
 
                 using (IServiceScope scope = _serviceProvider.CreateScope())
@@ -47,7 +45,6 @@ namespace JobOffersService.Consumer
 
             _chanel.BasicConsume(RabbitMqJobCreateEventPros.JOB_CREATE_QUEUE , true , consumer);
         }
-
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Offert to create consumer start working");

@@ -12,6 +12,11 @@ services:
     environment:
      - RABBITMQ_DEFAULT_USER=RabbitUser
      - RABBITMQ_DEFAULT_PASS=RabbitPassword
+    healthcheck:
+     test: rabbitmq-diagnostics -q ping
+     interval: 30s
+     timeout: 30s
+     retries: 3
 
   offersdb:
      container_name: "offersdb"
@@ -31,6 +36,18 @@ services:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=offersbasedbpwd123@
 
+  selenium:
+    container_name: "selenium"
+    image: selenium/standalone-chrome
+    ports:
+      - "4444:4444"
+    environment:
+      - SE_NODE_SESSION_TIMEOUT=7200
+      - SE_SESSION_REQUEST_TIMEOUT=7200
+      - SE_NODE_MAX_SESSIONS=10
+    volumes:
+      - /dev/shm:/dev/shm
+
   joboffersservice:
     container_name: "joboffersservice"
     image: ${DOCKER_REGISTRY-}joboffersservice
@@ -41,22 +58,13 @@ services:
     ports:
      - 7206:80 
     depends_on:
-     - rabbitmq
-     - offersdb
+      rabbitmq:
+       condition: service_healthy
+      offersdb:
+       condition: service_started
     environment:
      - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
      - ConnectionString=Server=offersdb,1433;Initial Catalog=Offers;User ID = sa;Password=offersdbpwd123@;TrustServerCertificate=true
-
-  selenium:
-    container_name: "selenium"
-    image: selenium/standalone-chrome
-    ports:
-      - "4444:4444"
-    environment:
-      - SE_NODE_SESSION_TIMEOUT=10
-      - SE_SESSION_REQUEST_TIMEOUT=5000
-    volumes:
-      - /dev/shm:/dev/shm
 
   webscrapperservice:
     container_name: "webscrapperservice"
@@ -66,8 +74,10 @@ services:
         context: .
         dockerfile: WebScrapper/Dockerfile
     depends_on:
-      - rabbitmq
-      - selenium
+      rabbitmq:
+       condition: service_healthy
+      selenium:
+       condition: service_started
     environment:
       - IsSeleniumOnDocker=true
       - RemoteDriverUri=http://host.docker.internal:4444/wd/hub
@@ -81,7 +91,9 @@ services:
         context: .
         dockerfile: JobOffersMapperService/Dockerfile
     depends_on:
-     - rabbitmq
-     - offersbasedb
+     rabbitmq:
+      condition: service_healthy
+     offersbasedb:
+      condition: service_started
     environment:
     - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672

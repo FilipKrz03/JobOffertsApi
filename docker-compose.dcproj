@@ -4,8 +4,10 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>ba417ae7-c9a4-431b-8c29-4da983f2afad</ProjectGuid>
-    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceName>joboffersservice</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>

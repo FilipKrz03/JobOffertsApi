@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,6 @@ namespace WebScrapperService.Services
                 RabbitMQOffersEventProps.OFFERS_UPDATE_ROUTING_KEY => false,
                 _ => true,
             };
-
             foreach(var service in _scrapperServices)
             {
                 service.ScrapOfferts(isInit);
