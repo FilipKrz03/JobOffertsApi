@@ -21,7 +21,7 @@ namespace WebScrapperService.Services
             "[data-test='offersList'] [data-test='list-item-offer']", "[data-test='text-offerTitle']",
             "[data-test='text-offerEmployer']", "[data-test='text-workplaceAddress']",
             "[data-test='section-workModes'] .rootClass_rpqnjlt", "[data-test='section-positionLevels'] .rootClass_rpqnjlt",
-            "[data-test='chip-technology'] span", null)
+            "[data-test='chip-technology'] span", "[data-test='text-contractSalary']", null)
 
         {
             _jse = (IJavaScriptExecutor)_driver;

@@ -20,7 +20,7 @@ namespace WebScrapperService.Services
 {
     public abstract class BaseJobScrapper
     {
-        protected int PageNumber { get; set; } = 1;
+        protected int PageNumber { get; set; } = 3;
 
         protected readonly IWebDriver _driver;
         protected readonly ILogger<BaseJobScrapper> _logger;
@@ -34,6 +34,7 @@ namespace WebScrapperService.Services
         protected readonly string WorkModeSelector;
         protected readonly string SenioritySelector;
         protected readonly string TechnologiesSelector;
+        protected readonly string SalarySelector;
         protected readonly string? LinkSelector;
 
         protected string FullUrl => $"{BaseUrl}{PageNumber}";
@@ -41,7 +42,7 @@ namespace WebScrapperService.Services
         protected BaseJobScrapper(ILogger<BaseJobScrapper> log, IRabbitMessageProducer jobOfferMessageProducer,
             string baseUrl, string jobElementOnPageSelector, string jobTitleSelector,
             string companySelector, string localizationSelector, string workModeSelector,
-            string senioritySelector, string technologiesSelector, string? linkSelector)
+            string senioritySelector, string technologiesSelector,  string salarySelector , string? linkSelector)
         {
             _logger = log;
             _jobOfferMessageProducer = jobOfferMessageProducer;
@@ -70,6 +71,7 @@ namespace WebScrapperService.Services
             WorkModeSelector = workModeSelector;
             SenioritySelector = senioritySelector;
             TechnologiesSelector = technologiesSelector;
+            SalarySelector = salarySelector;
             LinkSelector = linkSelector;
         }
 
@@ -133,6 +135,7 @@ namespace WebScrapperService.Services
         {
             try
             {
+                var salaryString = _driver.FindElements(By.CssSelector(SalarySelector)).Select(e => e.Text).ToArray();
                 var jobTitle = _driver.FindElement(By.CssSelector(JobTitleSelector)).Text;
                 var company = _driver.FindElement(By.CssSelector(CompanySelector)).Text;
                 var localization = _driver.FindElement(By.CssSelector(LocalizationSelector)).Text;
@@ -140,7 +143,8 @@ namespace WebScrapperService.Services
                 var seniority = _driver.FindElement(By.CssSelector(SenioritySelector)).Text;
                 var techologies = _driver.FindElements(By.CssSelector(TechnologiesSelector)).Select(e => e.Text).ToList();
 
-                return new(jobTitle, company, localization, workMode, seniority, techologies, _driver.Url);
+                return new(jobTitle, company, localization, workMode,
+                    seniority, techologies, _driver.Url , salaryString?[0] ?? null);
             }
             catch (Exception ex)
             {
