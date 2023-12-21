@@ -10,5 +10,6 @@ using System.Threading.Tasks;
 namespace JobOffersApiCore.Dto
 {
     public record JobOfferProcessed(string OfferTitle , string OfferCompany ,string Localization ,
-        string WorkMode , IEnumerable<string> RequiredTechnologies , string OfferLink , Seniority Seniority) { }
+        string WorkMode , IEnumerable<string> RequiredTechnologies , string OfferLink ,
+        Seniority Seniority , int? EarningsFrom , int? EarningsTo ) { }
 }

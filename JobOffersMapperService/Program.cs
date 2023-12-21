@@ -34,7 +34,7 @@ IHost _host = Host.CreateDefaultBuilder()
       
         services.AddDbContext<OffersBaseContext>(options =>
         {
-            options.UseSqlServer(hostContext.Configuration.GetConnectionString("DockerConnection")!);
+            options.UseSqlServer(hostContext.Configuration.GetConnectionString("DefaultConnection")!);
         });
     })
     .UseSerilog()

@@ -144,7 +144,7 @@ namespace WebScrapperService.Services
                 var techologies = _driver.FindElements(By.CssSelector(TechnologiesSelector)).Select(e => e.Text).ToList();
 
                 return new(jobTitle, company, localization, workMode,
-                    seniority, techologies, _driver.Url , salaryString?[0] ?? null);
+                    seniority, techologies, _driver.Url , salaryString.Length > 0 ? salaryString[0] : null);
             }
             catch (Exception ex)
             {

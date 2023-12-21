@@ -20,8 +20,8 @@ namespace WebScrapperService.Services
             , "https://theprotocol.it/filtry/umowa-o-staz-praktyki,umowa-agencyjna,umowa-o-dzielo,umowa-na-zastepstwo,umowa-zlecenie,umowa-o-prace,kontrakt-b2b;c/praca/bi-developer-warszawa-chodna-51,oferta,af880000-408b-5232-da75-08dbfc7d526d?s=-21349304240&searchId=e17b80d0-9a76-11ee-b506-13b33335b357&sort=date&pageNumber=",
             "[data-test='offersList'] [data-test='list-item-offer']", "[data-test='text-offerTitle']",
             "[data-test='text-offerEmployer']", "[data-test='text-workplaceAddress']",
-            "[data-test='section-workModes'] .rootClass_rpqnjlt", "[data-test='section-positionLevels'] .rootClass_rpqnjlt",
-            "[data-test='chip-technology'] span", "[data-test='text-contractSalary']", null)
+            "[data-test='section-workModes']", "[data-test='section-positionLevels']",
+            "[data-test='chip-technology']", "[data-test='text-contractSalary']", null)
 
         {
             _jse = (IJavaScriptExecutor)_driver;
