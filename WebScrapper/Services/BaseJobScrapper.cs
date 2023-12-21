@@ -143,6 +143,8 @@ namespace WebScrapperService.Services
                 var seniority = _driver.FindElement(By.CssSelector(SenioritySelector)).Text;
                 var techologies = _driver.FindElements(By.CssSelector(TechnologiesSelector)).Select(e => e.Text).ToList();
 
+                company = company.Replace("About the company", "").Replace("O firmie", "");
+
                 return new(jobTitle, company, localization, workMode,
                     seniority, techologies, _driver.Url , salaryString.Length > 0 ? salaryString[0] : null);
             }
