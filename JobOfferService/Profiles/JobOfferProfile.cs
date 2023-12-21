@@ -10,8 +10,19 @@ namespace JobOffersService.Profiles
         public JobOfferProfile()
         {
             CreateMap<JobOfferProcessed, JobOffer>();
-            CreateMap<JobOffer, JobOfferDetailResponse>();
-            CreateMap<JobOffer , JobOfferBasicResponse>();
+            CreateMap<JobOffer, JobOfferDetailResponse>()
+                .ForMember(dest => dest.PaymentRange, opt =>
+                opt.MapFrom(src => PaymentRangeStringConverter(src.EarningsFrom , src.EarningsTo)));
+            CreateMap<JobOffer , JobOfferBasicResponse>()
+                .ForMember(dest => dest.PaymentRange, opt =>
+                opt.MapFrom(src => PaymentRangeStringConverter(src.EarningsFrom, src.EarningsTo)));
+        }
+
+        private string? PaymentRangeStringConverter(int? earningsFrom, int? earningsTo)
+        {
+            if (earningsFrom == null && earningsTo == null) return null;
+
+            return $"{earningsFrom}-{earningsTo} zł";
         }
     }
 }

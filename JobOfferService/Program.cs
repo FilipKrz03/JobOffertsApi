@@ -31,7 +31,7 @@ builder.Services.AddHostedService<OffersToCreateConsumer>();
 
 builder.Services.AddDbContext<JobOffersContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DockerConnection")!);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
 });
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

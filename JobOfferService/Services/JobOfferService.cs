@@ -9,7 +9,6 @@ using System.Linq.Expressions;
 
 namespace JobOffersService.Services
 {
-
     public class JobOfferService : IJobOfferService
     {
 
@@ -49,6 +48,7 @@ namespace JobOffersService.Services
                 "link" => jobOffer => jobOffer.OfferLink,
                 "company" => jobOffer => jobOffer.OfferCompany,
                 "localization" => jobOffer => jobOffer.Localization,
+                "earnings" => jobOffer => jobOffer.EarningsFrom ?? 0 , 
                 _ => jobOffer => jobOffer.Id
             };
 
