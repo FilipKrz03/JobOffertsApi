@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using JobOffersApiCore.Dto;
-using JobOffersApiCore.Enum;
+using JobOffersMapperService.Entites;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +9,14 @@ using System.Threading.Tasks;
 
 namespace JobOffersMapperService.Profiles
 {
-    public class JobOfferProcessedProfile : Profile
+    public class JobOfferProfile : Profile
     {
-        public JobOfferProcessedProfile()
+        public JobOfferProfile()
         {
+            CreateMap<JobOfferRaw, JobOfferBase>()
+                .ForMember(x => x.Id, opt => opt.Ignore());
             CreateMap<JobOfferRaw, JobOfferProcessed>()
-                .ConvertUsing<JobOfferRawConverter>();
+              .ConvertUsing<JobOfferRawConverter>();
         }
     }
 }
