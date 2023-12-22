@@ -10,5 +10,6 @@ namespace JobOffersService.Interfaces
         Task<bool> IsDatabaseInitalizedAsync();
         Task<IEnumerable<JobOffer>> GetJobOffersAsync(ResourceParamethers resourceParamethers ,
             Expression<Func<JobOffer, object>> keySelector);
+        Task<JobOffer> GetJobOfferWithTechnologies(Guid id);
     }
 }

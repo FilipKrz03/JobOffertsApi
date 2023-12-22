@@ -45,5 +45,11 @@ namespace JobOffersService.Repositories
             return await PagedList<JobOffer>
                 .CreateAsync(query, resourceParamethers.PageSize, resourceParamethers.PageNumber);
         }
+
+        public async Task<JobOffer> GetJobOfferWithTechnologies(Guid id)
+        {
+            return await GetByIdQuery(id).Include(t => t.Technologies)
+                .SingleAsync();
+        }
     }
 }

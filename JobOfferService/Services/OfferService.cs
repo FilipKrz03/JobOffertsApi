@@ -26,8 +26,7 @@ namespace JobOffersService.Services
         {
             Response<JobOfferDetailResponse> response = new();
 
-            var jobOffer = await _jobOfferRepository.GetByIdQuery(jobId)
-                .Include(e => e.Technologies).SingleAsync();
+            var jobOffer = await _jobOfferRepository.GetJobOfferWithTechnologies(jobId);
 
             if (jobOffer == null)
             {
