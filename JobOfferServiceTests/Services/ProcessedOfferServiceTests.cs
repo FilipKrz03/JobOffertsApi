@@ -16,16 +16,16 @@ using System.Threading.Tasks;
 
 namespace JobOfferServiceTests.Services
 {
-    public class ProcessedJobOfferServiceTests
+    public class ProcessedOfferServiceTests
     {
         private readonly Mock<ITechnologyRepository> _technologyRepositoryMock;
-        private readonly Mock<IJobOfferRepository> _jobOfferRepositoryMock;
+        private readonly Mock<IOfferRepository> _jobOfferRepositoryMock;
         private readonly Mock<ILogger<ProcessedOfferService>> _loggerMock;
         private readonly Mock<IMapper> _mapperMock;
         private readonly ProcessedOfferService _processedJobOfferService;
         private readonly JobOfferProcessed _procesedJobOfferSimple;
 
-        public ProcessedJobOfferServiceTests()
+        public ProcessedOfferServiceTests()
         {
             _technologyRepositoryMock = new();
             _jobOfferRepositoryMock = new();

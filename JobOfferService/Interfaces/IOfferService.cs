@@ -4,7 +4,7 @@ using JobOffersService.Dto;
 
 namespace JobOffersService.Interfaces
 {
-    public interface IJobOfferService
+    public interface IOfferService
     {
         Task<Response<JobOfferDetailResponse>> GetJobOfferDetail(Guid jobId);
 

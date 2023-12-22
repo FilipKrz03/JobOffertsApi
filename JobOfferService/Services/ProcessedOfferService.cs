@@ -13,13 +13,13 @@ namespace JobOffersService.Services
     {
 
         private readonly ITechnologyRepository _technologyRepository;
-        private readonly IJobOfferRepository _jobOfferRepository;
+        private readonly IOfferRepository _jobOfferRepository;
         private readonly ILogger<ProcessedOfferService> _logger;
         private readonly IMapper _mapper;
 
         public ProcessedOfferService(ITechnologyRepository technologyRepository , 
             ILogger<ProcessedOfferService> logger , IMapper mapper , 
-            IJobOfferRepository jobOfferRepository)
+            IOfferRepository jobOfferRepository)
         {
             _jobOfferRepository = jobOfferRepository;
             _technologyRepository = technologyRepository;

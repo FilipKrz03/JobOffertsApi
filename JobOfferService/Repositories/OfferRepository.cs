@@ -8,9 +8,9 @@ using System.Linq.Expressions;
 
 namespace JobOffersService.Repositories
 {
-    public class JobOfferRepository : BaseRepository<JobOffersContext, JobOffer>, IJobOfferRepository
+    public class OfferRepository : BaseRepository<JobOffersContext, JobOffer>, IOfferRepository
     {
-        public JobOfferRepository(JobOffersContext context) : base(context) { }
+        public OfferRepository(JobOffersContext context) : base(context) { }
 
         public async Task<bool> IsDatabaseInitalizedAsync()
         {

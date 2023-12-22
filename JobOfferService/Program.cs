@@ -22,8 +22,8 @@ builder.Services.AddSingleton<IRabbitMessageProducer, ScrapperMessageProducer>()
 
 builder.Services.AddScoped<ITechnologyRepository, TechnologyRepository>();
 builder.Services.AddScoped<IProcessedOfferService, ProcessedOfferService>();
-builder.Services.AddScoped<IJobOfferRepository, JobOfferRepository>();
-builder.Services.AddScoped<IJobOfferService, JobOffersService.Services.JobOfferService>();
+builder.Services.AddScoped<IOfferRepository, OfferRepository>();
+builder.Services.AddScoped<IOfferService, JobOffersService.Services.OfferService>();
 builder.Services.AddScoped<ITechnologyService, TechnologyService>();
 
 builder.Services.AddHostedService<ScrapperEventManagerService>();

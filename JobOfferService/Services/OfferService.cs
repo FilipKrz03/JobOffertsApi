@@ -9,13 +9,13 @@ using System.Linq.Expressions;
 
 namespace JobOffersService.Services
 {
-    public class JobOfferService : IJobOfferService
+    public class OfferService : IOfferService
     {
 
-        private readonly IJobOfferRepository _jobOfferRepository;
+        private readonly IOfferRepository _jobOfferRepository;
         private readonly IMapper _mapper;
 
-        public JobOfferService(IJobOfferRepository jobOfferRepository , 
+        public OfferService(IOfferRepository jobOfferRepository , 
             IMapper mapper)
         {
             _jobOfferRepository = jobOfferRepository;

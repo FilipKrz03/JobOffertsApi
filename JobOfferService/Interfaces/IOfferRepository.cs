@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace JobOffersService.Interfaces
 {
-    public interface IJobOfferRepository : IBaseRepository<JobOffer>
+    public interface IOfferRepository : IBaseRepository<JobOffer>
     {
         Task<bool> IsDatabaseInitalizedAsync();
         Task<IEnumerable<JobOffer>> GetJobOffersAsync(ResourceParamethers resourceParamethers ,
