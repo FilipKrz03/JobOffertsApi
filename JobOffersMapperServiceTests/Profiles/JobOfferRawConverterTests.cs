@@ -13,6 +13,7 @@ namespace JobOffersMapperServiceTests.Profiles
     public class JobOfferRawConverterTests
     {
         private readonly JobOfferRawConverter _converter;
+
         public JobOfferRawConverterTests()
         {
             _converter = new JobOfferRawConverter();    
@@ -40,44 +41,22 @@ namespace JobOffersMapperServiceTests.Profiles
             Assert.True(processed.EarningsTo == null);
         }
 
-        [Fact]
-        public void Converter_Should_ReturnProperSeniorityEnumValue_WhenSeniorityStringEqualsJunior()
+        [Theory]
+        [InlineData("junior" , Seniority.Junior)]
+        [InlineData("mid" , Seniority.Mid)]
+        [InlineData("senior" , Seniority.Senior)]
+        [InlineData("Junior  ", Seniority.Junior)]
+        [InlineData("mId  ", Seniority.Mid)]
+        [InlineData(" Senior", Seniority.Senior)]
+        [InlineData("Not recognaizable seniority" , Seniority.Unknown)]
+        public void Converter_Should_ReturnProperSeniorityValue_WhenMappingFromStringSeniorityToEnumSeniority
+            (string stringSeniority , Seniority expectedSeniority)
         {
-            JobOfferRaw offerRaw = new("", "", "", "", "Junior", Enumerable.Empty<string>(), "", "Inavlid salary string");
+            JobOfferRaw offerRaw = new("", "", "", "", stringSeniority , Enumerable.Empty<string>(), "", "Inavlid salary string");
 
             JobOfferProcessed processed = _converter.Convert(offerRaw, default!, default!);
 
-            Assert.Equal(Seniority.Junior, processed.Seniority);
-        }
-
-        [Fact]
-        public void Converter_Should_ReturnProperSeniorityEnumValue_WhenSeniorityStringEqualsMid()
-        {
-            JobOfferRaw offerRaw = new("", "", "", "", "Mid", Enumerable.Empty<string>(), "", "Inavlid salary string");
-
-            JobOfferProcessed processed = _converter.Convert(offerRaw, default!, default!);
-
-            Assert.Equal(Seniority.Mid, processed.Seniority);
-        }
-
-        [Fact]
-        public void Converter_Should_ReturnProperSeniorityEnumValue_WhenSeniorityStringEqualsSenior()
-        {
-            JobOfferRaw offerRaw = new("", "", "", "", "Senior", Enumerable.Empty<string>(), "", "Inavlid salary string");
-
-            JobOfferProcessed processed = _converter.Convert(offerRaw, default!, default!);
-
-            Assert.Equal(Seniority.Senior, processed.Seniority);
-        }
-
-        [Fact]
-        public void Converter_Should_ReturnUnkownSeniorityValue_WhenSeniorityStringIsNotRecognized()
-        {
-            JobOfferRaw offerRaw = new("", "", "", "", "unkown seniority", Enumerable.Empty<string>(), "", "Inavlid salary string");
-
-            JobOfferProcessed processed = _converter.Convert(offerRaw, default!, default!);
-
-            Assert.Equal(Seniority.Unknown, processed.Seniority);
+            Assert.Equal(expectedSeniority, processed.Seniority);
         }
     }
 }

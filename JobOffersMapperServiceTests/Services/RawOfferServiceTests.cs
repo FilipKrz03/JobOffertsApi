@@ -21,6 +21,7 @@ namespace JobOffersMapperServiceTests.Services
         private readonly Mock<ILogger<RawOfferService>> _loggerMock;
         private readonly Mock<IRabbitMessageProducer> _rabbitMessageProducerMock;
         private readonly JobOfferRaw _simpleJobOfferRaw;
+        private readonly RawOfferService _rawOfferService;
 
         public RawOfferServiceTests()
         {
@@ -29,15 +30,14 @@ namespace JobOffersMapperServiceTests.Services
             _loggerMock = new();
             _rabbitMessageProducerMock = new();
             _simpleJobOfferRaw = new("", "", "", "", "", Enumerable.Empty<string>(), "", "");
+            _rawOfferService = new RawOfferService(_offersBaseRepositoryMock.Object,
+           _mapperMock.Object, _loggerMock.Object, _rabbitMessageProducerMock.Object);
         }
 
         [Fact]
         public async Task Service_ShouldNot_CheckIfOfferExist_WhenDeserializationFailed()
         {
-            var rawOfferService = new RawOfferService(_offersBaseRepositoryMock.Object,
-                _mapperMock.Object, _loggerMock.Object, _rabbitMessageProducerMock.Object);
-
-            await rawOfferService.HandleRawOffer("bad object");
+            await _rawOfferService.HandleRawOffer("bad object");
 
             _offersBaseRepositoryMock.Verify(r => r.OfferExistAsync(It.IsAny<JobOfferRaw>()), Times.Never);
         }
@@ -45,10 +45,7 @@ namespace JobOffersMapperServiceTests.Services
         [Fact]
         public async Task Service_Should_CheckIfOfferExist_WhenDeserializationSucceded()
         {
-            var rawOfferService = new RawOfferService(_offersBaseRepositoryMock.Object,
-                _mapperMock.Object, _loggerMock.Object, _rabbitMessageProducerMock.Object);
-
-            await rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _offersBaseRepositoryMock.Verify(r => r.OfferExistAsync(It.IsAny<JobOfferRaw>()), Times.Once);
         }
@@ -56,13 +53,9 @@ namespace JobOffersMapperServiceTests.Services
         [Fact]
         public async Task Service_ShouldNot_MapJobOffer_WhenJobOfferAlreadyExist()
         {
-            var rawOfferService = new RawOfferService(_offersBaseRepositoryMock.Object,
-               _mapperMock.Object, _loggerMock.Object, _rabbitMessageProducerMock.Object);
+            SetupOfferBaseRepositoryMockOfferExistAsyncMethod(true);
 
-            _offersBaseRepositoryMock.Setup(x => x.OfferExistAsync(It.IsAny<JobOfferRaw>()))
-                .ReturnsAsync(true);
-
-            await rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _mapperMock.Verify(m => m.Map<JobOfferRaw , JobOfferBase>(It.IsAny<JobOfferRaw>()), Times.Never);
         }
@@ -70,13 +63,9 @@ namespace JobOffersMapperServiceTests.Services
         [Fact]
         public async Task Service_Should_MapToJobOfferBase_WhenJobOfferDoesNotExistInDatabase()
         {
-            var rawOfferService = new RawOfferService(_offersBaseRepositoryMock.Object,
-               _mapperMock.Object, _loggerMock.Object, _rabbitMessageProducerMock.Object);
+            SetupOfferBaseRepositoryMockOfferExistAsyncMethod(false);
 
-            _offersBaseRepositoryMock.Setup(x => x.OfferExistAsync(It.IsAny<JobOfferRaw>()))
-                .ReturnsAsync(false);
-
-            await rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _mapperMock.Verify(m => m.Map<JobOfferRaw, JobOfferBase>(It.IsAny<JobOfferRaw>()), Times.Once);
         }
@@ -84,13 +73,9 @@ namespace JobOffersMapperServiceTests.Services
         [Fact]
         public async Task Service_Should_CallInsertJobOfferBaseToRepository_WhenJobOfferDoesNotExistInDatabase()
         {
-            var rawOfferService = new RawOfferService(_offersBaseRepositoryMock.Object,
-               _mapperMock.Object, _loggerMock.Object, _rabbitMessageProducerMock.Object);
+            SetupOfferBaseRepositoryMockOfferExistAsyncMethod(false);
 
-            _offersBaseRepositoryMock.Setup(x => x.OfferExistAsync(It.IsAny<JobOfferRaw>()))
-                .ReturnsAsync(false);
-
-            await rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _offersBaseRepositoryMock.Verify(x => x.Insert(It.IsAny<JobOfferBase>()), Times.Once);
             _offersBaseRepositoryMock.Verify(x => x.SaveChangesAsync(), Times.Once);
@@ -99,13 +84,9 @@ namespace JobOffersMapperServiceTests.Services
         [Fact]
         public async Task Service_ShouldNot_CallInsertJobOfferBaseToRepository_WhenJobOfferExistInDatabase()
         {
-            var rawOfferService = new RawOfferService(_offersBaseRepositoryMock.Object,
-               _mapperMock.Object, _loggerMock.Object, _rabbitMessageProducerMock.Object);
-
-            _offersBaseRepositoryMock.Setup(x => x.OfferExistAsync(It.IsAny<JobOfferRaw>()))
-                .ReturnsAsync(true);
-
-            await rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            SetupOfferBaseRepositoryMockOfferExistAsyncMethod(true);
+            
+            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _offersBaseRepositoryMock.Verify(x => x.Insert(It.IsAny<JobOfferBase>()), Times.Never);
             _offersBaseRepositoryMock.Verify(x => x.SaveChangesAsync(), Times.Never);
@@ -114,13 +95,9 @@ namespace JobOffersMapperServiceTests.Services
         [Fact]
         public async Task Service_Should_MapToJobOfferProcessed_WhenJobOfferDoesNotExistInDatabase()
         {
-            var rawOfferService = new RawOfferService(_offersBaseRepositoryMock.Object,
-            _mapperMock.Object, _loggerMock.Object, _rabbitMessageProducerMock.Object);
+            SetupOfferBaseRepositoryMockOfferExistAsyncMethod(false);
 
-            _offersBaseRepositoryMock.Setup(x => x.OfferExistAsync(It.IsAny<JobOfferRaw>()))
-                .ReturnsAsync(false);
-
-            await rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _mapperMock.Verify(m => m.Map<JobOfferRaw, JobOfferProcessed>(It.IsAny<JobOfferRaw>()), Times.Once);
         }
@@ -128,13 +105,9 @@ namespace JobOffersMapperServiceTests.Services
         [Fact]
         public async Task Service_Should_SendRabbitEventWithJobOfferProcessed_WhenJobOfferDoesNotExistInDatabase()
         {
-            var rawOfferService = new RawOfferService(_offersBaseRepositoryMock.Object,
-            _mapperMock.Object, _loggerMock.Object, _rabbitMessageProducerMock.Object);
+            SetupOfferBaseRepositoryMockOfferExistAsyncMethod(false);
 
-            _offersBaseRepositoryMock.Setup(x => x.OfferExistAsync(It.IsAny<JobOfferRaw>()))
-                .ReturnsAsync(false);
-
-            await rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _rabbitMessageProducerMock.Verify(x => x.SendMessage
             (It.IsAny<string>(), It.IsAny<string>(), It.IsAny<JobOfferProcessed>()), Times.Once);
@@ -143,16 +116,18 @@ namespace JobOffersMapperServiceTests.Services
         [Fact]
         public async Task Service_ShouldNot_SendRabbitEvent_WhenJobOfferExistInDatabase()
         {
-            var rawOfferService = new RawOfferService(_offersBaseRepositoryMock.Object,
-            _mapperMock.Object, _loggerMock.Object, _rabbitMessageProducerMock.Object);
+            SetupOfferBaseRepositoryMockOfferExistAsyncMethod(true);
 
-            _offersBaseRepositoryMock.Setup(x => x.OfferExistAsync(It.IsAny<JobOfferRaw>()))
-                .ReturnsAsync(true);
-
-            await rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _rabbitMessageProducerMock.Verify(x => x.SendMessage
             (It.IsAny<string>(), It.IsAny<string>(), It.IsAny<JobOfferProcessed>()), Times.Never);
+        }
+
+        private void SetupOfferBaseRepositoryMockOfferExistAsyncMethod(bool exist)
+        {
+            _offersBaseRepositoryMock.Setup(x => x.OfferExistAsync(It.IsAny<JobOfferRaw>()))
+             .ReturnsAsync(exist);
         }
     }
 }
