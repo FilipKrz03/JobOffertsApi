@@ -49,7 +49,7 @@ namespace JobOffersService.Services
                 var jobOfferEntitie = _mapper.Map<JobOffer>(processedJobOffer);
 
                 jobOfferEntitie.Technologies = 
-                    await _technologyRepository.GetEntitiesFromTechnologiesNamesAsync(newTechnologies);
+                    await _technologyRepository.GetEntitiesFromTechnologiesNamesAsync(processedJobOffer.RequiredTechnologies);
 
                 _jobOfferRepository.Insert(jobOfferEntitie);
 
