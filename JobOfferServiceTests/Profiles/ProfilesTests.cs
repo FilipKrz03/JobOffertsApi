@@ -8,12 +8,18 @@ using System.Threading.Tasks;
 
 namespace JobOfferServiceTests.Profiles
 {
-    public class TechnologProfileTests
+    public class ProfilesTests
     {
         [Fact]
         public void MapperConfiguration_Should_BeValid()
-        {
-            var config = new MapperConfiguration(cfg => cfg.AddProfile<TechnologyProfile>());
+        {       
+            // Profiles need to be tested together because they are depending on each other
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<TechnologyProfile>();
+                cfg.AddProfile<JobOfferProfile>();
+            });
 
             config.AssertConfigurationIsValid();
         }

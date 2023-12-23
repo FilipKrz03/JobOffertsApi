@@ -9,6 +9,8 @@ namespace JobOffersService.Profiles
         public TechnologyProfile()
         {
             CreateMap<string, Technology>()
+                .ForMember(dest => dest.JobOffers, opt => opt.Ignore())
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.TechnologyName, opt => opt.MapFrom(
                     src => src));
             CreateMap<Technology, TechnologyBasicResponse>();

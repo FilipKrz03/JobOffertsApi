@@ -9,11 +9,13 @@ namespace JobOffersService.Profiles
     {
         public JobOfferProfile()
         {
-            CreateMap<JobOfferProcessed, JobOffer>();
+            CreateMap<JobOfferProcessed, JobOffer>()
+               .ForMember(dest => dest.Id, opt => opt.Ignore())
+               .ForMember(dest => dest.Technologies, opt => opt.Ignore());
             CreateMap<JobOffer, JobOfferDetailResponse>()
                 .ForMember(dest => dest.PaymentRange, opt =>
-                opt.MapFrom(src => PaymentRangeStringConverter(src.EarningsFrom , src.EarningsTo)));
-            CreateMap<JobOffer , JobOfferBasicResponse>()
+                opt.MapFrom(src => PaymentRangeStringConverter(src.EarningsFrom, src.EarningsTo)));
+            CreateMap<JobOffer, JobOfferBasicResponse>()
                 .ForMember(dest => dest.PaymentRange, opt =>
                 opt.MapFrom(src => PaymentRangeStringConverter(src.EarningsFrom, src.EarningsTo)));
         }

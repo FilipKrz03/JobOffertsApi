@@ -36,13 +36,13 @@ builder.Services.AddDbContext<JobOffersContext>(options =>
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-Log.Logger = new LoggerConfiguration()
-      .ReadFrom.Configuration(builder.Configuration)
-      .Enrich.FromLogContext()
-      .WriteTo.Console()
-      .CreateLogger();
+//Log.Logger = new LoggerConfiguration()
+//      .ReadFrom.Configuration(builder.Configuration)
+//      .Enrich.FromLogContext()
+//      .WriteTo.Console()
+//      .CreateLogger();
 
-builder.Host.UseSerilog();
+//builder.Host.UseSerilog();
 
 var app = builder
     .Build();
@@ -54,7 +54,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseSerilogRequestLogging();
+//app.UseSerilogRequestLogging();
 
 app.UseAuthorization();
 
