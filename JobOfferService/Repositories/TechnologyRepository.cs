@@ -46,7 +46,7 @@ namespace JobOffersService.Repositories
                 .CreateAsync(query, resourceParamethers.PageSize, resourceParamethers.PageNumber);
         }
 
-        public async Task<Technology>
+        public async Task<Technology?>
             GetTechnologyWithJobOffersAsync(Guid id , ResourceParamethers resourceParamethers)
         {
             return await GetByIdQuery(id)
