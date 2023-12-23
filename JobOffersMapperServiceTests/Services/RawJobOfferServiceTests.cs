@@ -14,23 +14,23 @@ using System.Threading.Tasks;
 
 namespace JobOffersMapperServiceTests.Services
 {
-    public class RawOfferServiceTests
+    public class RawJobOfferServiceTests
     {
-        private readonly Mock<IOffersBaseRepository> _offersBaseRepositoryMock;
+        private readonly Mock<IJobOffersBaseRepository> _offersBaseRepositoryMock;
         private readonly Mock<IMapper> _mapperMock;
-        private readonly Mock<ILogger<RawOfferService>> _loggerMock;
+        private readonly Mock<ILogger<RawJobOfferService>> _loggerMock;
         private readonly Mock<IRabbitMessageProducer> _rabbitMessageProducerMock;
         private readonly JobOfferRaw _simpleJobOfferRaw;
-        private readonly RawOfferService _rawOfferService;
+        private readonly RawJobOfferService _rawOfferService;
 
-        public RawOfferServiceTests()
+        public RawJobOfferServiceTests()
         {
             _offersBaseRepositoryMock = new();
             _mapperMock = new();
             _loggerMock = new();
             _rabbitMessageProducerMock = new();
             _simpleJobOfferRaw = new("", "", "", "", "", Enumerable.Empty<string>(), "", "");
-            _rawOfferService = new RawOfferService(_offersBaseRepositoryMock.Object,
+            _rawOfferService = new RawJobOfferService(_offersBaseRepositoryMock.Object,
            _mapperMock.Object, _loggerMock.Object, _rabbitMessageProducerMock.Object);
         }
 

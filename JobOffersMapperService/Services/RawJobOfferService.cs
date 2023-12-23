@@ -17,16 +17,16 @@ using System.Threading.Tasks;
 
 namespace JobOffersMapperService.Services
 {
-    public class RawOfferService : IRawOfferService
+    public class RawJobOfferService : IRawJobOfferService
     {
 
-        private readonly IOffersBaseRepository _offersBaseRepository;
+        private readonly IJobOffersBaseRepository _offersBaseRepository;
         private readonly IMapper _mapper;
-        private readonly ILogger<RawOfferService> _logger;
+        private readonly ILogger<RawJobOfferService> _logger;
         private readonly IRabbitMessageProducer _jobCreateMessageProducer;
 
-        public RawOfferService(IOffersBaseRepository offersBaseRepository , IMapper mapper , 
-            ILogger<RawOfferService> logger , IRabbitMessageProducer jobCreateMessageProducer)
+        public RawJobOfferService(IJobOffersBaseRepository offersBaseRepository , IMapper mapper , 
+            ILogger<RawJobOfferService> logger , IRabbitMessageProducer jobCreateMessageProducer)
         {
             _offersBaseRepository = offersBaseRepository;
             _mapper = mapper;

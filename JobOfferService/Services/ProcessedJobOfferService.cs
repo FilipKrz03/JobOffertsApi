@@ -9,17 +9,17 @@ using System.Security.Cryptography;
 
 namespace JobOffersService.Services
 {
-    public class ProcessedOfferService : IProcessedOfferService
+    public class ProcessedJobOfferService : IProcessedOfferService
     {
 
         private readonly ITechnologyRepository _technologyRepository;
-        private readonly IOfferRepository _jobOfferRepository;
-        private readonly ILogger<ProcessedOfferService> _logger;
+        private readonly IJobOfferRepository _jobOfferRepository;
+        private readonly ILogger<ProcessedJobOfferService> _logger;
         private readonly IMapper _mapper;
 
-        public ProcessedOfferService(ITechnologyRepository technologyRepository , 
-            ILogger<ProcessedOfferService> logger , IMapper mapper , 
-            IOfferRepository jobOfferRepository)
+        public ProcessedJobOfferService(ITechnologyRepository technologyRepository , 
+            ILogger<ProcessedJobOfferService> logger , IMapper mapper , 
+            IJobOfferRepository jobOfferRepository)
         {
             _jobOfferRepository = jobOfferRepository;
             _technologyRepository = technologyRepository;

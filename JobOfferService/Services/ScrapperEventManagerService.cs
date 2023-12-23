@@ -24,8 +24,8 @@ namespace JobOfferService.Services
             {
                 using (IServiceScope scope = _serviceProvider.CreateScope())
                 {
-                    IOfferRepository jobOfferRepository = 
-                        scope.ServiceProvider.GetService<IOfferRepository>()!;
+                    IJobOfferRepository jobOfferRepository = 
+                        scope.ServiceProvider.GetService<IJobOfferRepository>()!;
 
                     bool isDatabaseInitialized = await jobOfferRepository.IsDatabaseInitalizedAsync();
 

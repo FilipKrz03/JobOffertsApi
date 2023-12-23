@@ -26,8 +26,8 @@ IHost _host = Host.CreateDefaultBuilder()
     })
     .ConfigureServices((hostContext, services) =>
     {
-        services.AddScoped<IRawOfferService, RawOfferService>();
-        services.AddScoped<IOffersBaseRepository, OffersBaseRepository>();
+        services.AddScoped<IRawJobOfferService, RawJobOfferService>();
+        services.AddScoped<IJobOffersBaseRepository, JobOffersBaseRepository>();
         services.AddScoped<IRabbitMessageProducer, JobCreateMessageProducer>();
         services.AddHostedService<RawOffersConsumer>();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

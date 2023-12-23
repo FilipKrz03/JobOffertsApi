@@ -17,10 +17,10 @@ namespace JobOffersMapperService.Consumer
     public class RawOffersConsumer : RabbitBaseConfig , IHostedService
     {
 
-        private readonly IRawOfferService _rawOffersService;
+        private readonly IRawJobOfferService _rawOffersService;
         private readonly ILogger<RawOffersConsumer> _logger;    
 
-        public RawOffersConsumer(IRawOfferService rawOfferService , ILogger<RawOffersConsumer> logger)
+        public RawOffersConsumer(IRawJobOfferService rawOfferService , ILogger<RawOffersConsumer> logger)
             :base(Environment.GetEnvironmentVariable("RabbitConnectionUri")! , RabbitMqJobHandleEventProps.JOB_HANDLE_CLIENT_PROVIDED_NAME , true)
         {
             _rawOffersService = rawOfferService;

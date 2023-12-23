@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace JobOffersMapperService.Interfaces
 {
-    public interface IOffersBaseRepository : IBaseRepository<JobOfferBase>
+    public interface IJobOffersBaseRepository : IBaseRepository<JobOfferBase>
     {
         Task<bool> OfferExistAsync(JobOfferRaw offer);
     }

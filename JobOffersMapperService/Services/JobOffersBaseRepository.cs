@@ -13,10 +13,10 @@ using System.Threading.Tasks;
 
 namespace JobOffersMapperService.Services
 {
-    public class OffersBaseRepository : BaseRepository<OffersBaseContext , JobOfferBase> , IOffersBaseRepository
+    public class JobOffersBaseRepository : BaseRepository<OffersBaseContext , JobOfferBase> , IJobOffersBaseRepository
     {
 
-        public OffersBaseRepository(OffersBaseContext context):base(context) { }
+        public JobOffersBaseRepository(OffersBaseContext context):base(context) { }
        
         public async Task<bool> OfferExistAsync(JobOfferRaw offer)
         {

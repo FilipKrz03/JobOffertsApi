@@ -8,9 +8,9 @@ using System.Linq.Expressions;
 
 namespace JobOffersService.Repositories
 {
-    public class OfferRepository : BaseRepository<JobOffersContext, JobOffer>, IOfferRepository
+    public class JobOffersRepository : BaseRepository<JobOffersContext, JobOffer>, IJobOfferRepository
     {
-        public OfferRepository(JobOffersContext context) : base(context) { }
+        public JobOffersRepository(JobOffersContext context) : base(context) { }
 
         public async Task<bool> IsDatabaseInitalizedAsync()
         {
@@ -46,7 +46,7 @@ namespace JobOffersService.Repositories
                 .CreateAsync(query, resourceParamethers.PageSize, resourceParamethers.PageNumber);
         }
 
-        public async Task<JobOffer> GetJobOfferWithTechnologies(Guid id)
+        public async Task<JobOffer?> GetJobOfferWithTechnologies(Guid id)
         {
             return await GetByIdQuery(id).Include(t => t.Technologies)
                 .SingleAsync();

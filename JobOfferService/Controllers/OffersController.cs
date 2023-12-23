@@ -12,9 +12,9 @@ namespace JobOffersService.Controllers
     public class OffersController : ControllerBase
     {
 
-        private readonly IOfferService _jobOffersService;
+        private readonly IJobOfferService _jobOffersService;
 
-        public OffersController(IOfferService jobOffersService)
+        public OffersController(IJobOfferService jobOffersService)
         {
             _jobOffersService = jobOffersService;
         }

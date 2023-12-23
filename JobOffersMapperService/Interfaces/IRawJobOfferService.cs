@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JobOffersMapperService.Interfaces
 {
-    public interface IRawOfferService
+    public interface IRawJobOfferService
     {
         Task HandleRawOffer(string body);
     }

@@ -9,13 +9,13 @@ using System.Linq.Expressions;
 
 namespace JobOffersService.Services
 {
-    public class OfferService : IOfferService
+    public class JobOfferService : IJobOfferService
     {
 
-        private readonly IOfferRepository _jobOfferRepository;
+        private readonly IJobOfferRepository _jobOfferRepository;
         private readonly IMapper _mapper;
 
-        public OfferService(IOfferRepository jobOfferRepository , 
+        public JobOfferService(IJobOfferRepository jobOfferRepository , 
             IMapper mapper)
         {
             _jobOfferRepository = jobOfferRepository;
@@ -50,7 +50,7 @@ namespace JobOffersService.Services
                 "earnings" => jobOffer => jobOffer.EarningsFrom ?? 0 , 
                 _ => jobOffer => jobOffer.Id
             };
-
+            
             var jobOffers = await _jobOfferRepository.GetJobOffersAsync(resourceParamethers , keySelector);
 
             return response.ReturnValue(_mapper.Map<IEnumerable<JobOfferBasicResponse>>(jobOffers));
