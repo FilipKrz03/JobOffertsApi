@@ -29,7 +29,7 @@ namespace JobOffersService.Services
             Expression<Func<Technology, object>> keySelector = resourceParamethers.SortColumn?.ToLower() switch
             {
                 "name" => technology => technology.TechnologyName,
-                _ => technology => technology.Id
+                _ => technology => technology.CreatedAt!
             };
 
             var technologieEntities = 

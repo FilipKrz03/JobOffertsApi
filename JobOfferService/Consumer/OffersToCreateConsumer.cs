@@ -4,6 +4,7 @@ using JobOffersService.Props;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
+using System.Threading.Channels;
 
 namespace JobOffersService.Consumer
 {
@@ -54,8 +55,15 @@ namespace JobOffersService.Consumer
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _chanel.Close();
-            _connection.Close();
+            try
+            {
+                _chanel.Close();
+                _connection.Close();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogWarning("Chanel failed to stop, probably already stopper {ex}", ex);
+            }
 
             _logger.LogWarning("Offer to crate consumer end working");
 

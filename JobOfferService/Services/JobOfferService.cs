@@ -48,7 +48,7 @@ namespace JobOffersService.Services
                 "company" => jobOffer => jobOffer.OfferCompany,
                 "localization" => jobOffer => jobOffer.Localization,
                 "earnings" => jobOffer => jobOffer.EarningsFrom ?? 0 , 
-                _ => jobOffer => jobOffer.Id
+                _ => jobOffer => jobOffer.CreatedAt!
             };
             
             var jobOffers = await _jobOfferRepository.GetJobOffersAsync(resourceParamethers , keySelector);

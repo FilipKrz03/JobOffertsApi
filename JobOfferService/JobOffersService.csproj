@@ -30,4 +30,8 @@
     <ProjectReference Include="..\JobOffersApiCore\JobOffersApiCore.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="JobOfferServiceTests"/>
+	</ItemGroup>
+
 </Project>

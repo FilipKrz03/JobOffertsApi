@@ -49,7 +49,7 @@ namespace JobOffersService.Repositories
         public async Task<JobOffer?> GetJobOfferWithTechnologies(Guid id)
         {
             return await GetByIdQuery(id).Include(t => t.Technologies)
-                .SingleAsync();
+                .FirstOrDefaultAsync();
         }
     }
 }

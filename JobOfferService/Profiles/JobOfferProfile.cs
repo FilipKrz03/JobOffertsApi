@@ -11,7 +11,9 @@ namespace JobOffersService.Profiles
         {
             CreateMap<JobOfferProcessed, JobOffer>()
                .ForMember(dest => dest.Id, opt => opt.Ignore())
-               .ForMember(dest => dest.Technologies, opt => opt.Ignore());
+               .ForMember(dest => dest.Technologies, opt => opt.Ignore())
+               .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+               .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());
             CreateMap<JobOffer, JobOfferDetailResponse>()
                 .ForMember(dest => dest.PaymentRange, opt =>
                 opt.MapFrom(src => PaymentRangeStringConverter(src.EarningsFrom, src.EarningsTo)));

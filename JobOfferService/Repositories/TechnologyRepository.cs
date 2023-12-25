@@ -54,9 +54,9 @@ namespace JobOffersService.Repositories
                 t => t.JobOffers
                 .Skip((resourceParamethers.PageNumber - 1) * resourceParamethers.PageSize)
                 .Take(resourceParamethers.PageSize)
-                .OrderBy(o => o.Id)
+                .OrderBy(o => o.CreatedAt)
                 )
-                .SingleAsync();
+                .FirstOrDefaultAsync();
         }
     }
 }
