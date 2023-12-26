@@ -14,14 +14,8 @@ namespace JobOffersApiCore.BaseConfigurations
         public RabbitMessageProducer(string connectionUri, string clientProvidedName , bool asyncMode) : 
             base(connectionUri, clientProvidedName , asyncMode) { }
 
-        public void SendMessage<T>(string exchange, string routingKey, T? message)
+        public void SendMessage<T>(string exchange, string routingKey, T message)
         {
-            if(message == null)
-            {
-                _chanel.BasicPublish(exchange, routingKey, null , null);
-                return;
-            }
-
             var jsonString = JsonConvert.SerializeObject(message);
 
             byte[] messageBodyBytes = Encoding.UTF8.GetBytes(jsonString);

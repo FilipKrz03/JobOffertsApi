@@ -17,18 +17,22 @@ namespace JobOffersApiCore.Helpers
             ErrorInfo = new();
         }
 
-        public Response<T> ReturnError(int statusCode , string errorMessage)
+        public static Response<T> ReturnError(int statusCode, string errorMessage)
         {
-            ErrorInfo.SetError(statusCode, errorMessage);
+            var response = new Response<T>();
 
-            return this;
+            response.ErrorInfo.SetError(statusCode, errorMessage);
+
+            return response;
         }
 
-        public Response<T> ReturnValue(T value)
+        public static Response<T> ReturnValue(T value)
         {
-            Value = value;
+            var response = new Response<T>();
 
-            return this;
+            response.Value = value;
+
+            return response;
         }
     }
 }

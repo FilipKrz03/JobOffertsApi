@@ -17,7 +17,7 @@ namespace JobOffersApiCore.Common
         public int TotalPages { get; set; }
 
         public bool HasPrevious => PageNumber > 1;
-        public bool HasNext => PageSize < TotalCount;
+        public bool HasNext => PageNumber < TotalPages;
 
         public PagedList(List<T>items , int pageSize , int pageNumber ,  int totalCount)
         {

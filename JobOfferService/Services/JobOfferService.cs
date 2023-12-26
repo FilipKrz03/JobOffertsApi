@@ -24,23 +24,19 @@ namespace JobOffersService.Services
 
         public async Task<Response<JobOfferDetailResponse>> GetJobOfferDetail(Guid jobId)
         {
-            Response<JobOfferDetailResponse> response = new();
-
             var jobOffer = await _jobOfferRepository.GetJobOfferWithTechnologies(jobId);
 
             if (jobOffer == null)
             {
-               return response.ReturnError(404, "Job offer not found");
+               return Response<JobOfferDetailResponse>.ReturnError(404, "Job offer not found");
             }
 
-            return response.ReturnValue(_mapper.Map<JobOfferDetailResponse>(jobOffer));
+            return Response<JobOfferDetailResponse>.ReturnValue(_mapper.Map<JobOfferDetailResponse>(jobOffer));
         }
 
         public async Task<Response<IEnumerable<JobOfferBasicResponse>>>
             GetJobOffers(ResourceParamethers resourceParamethers)
         {
-            Response<IEnumerable<JobOfferBasicResponse>> response = new();
-
             Expression<Func<JobOffer, object>> keySelector = resourceParamethers.SortColumn?.ToLower() switch
             {
                 "title" => jobOffer => jobOffer.OfferTitle,
@@ -53,7 +49,8 @@ namespace JobOffersService.Services
             
             var jobOffers = await _jobOfferRepository.GetJobOffersAsync(resourceParamethers , keySelector);
 
-            return response.ReturnValue(_mapper.Map<IEnumerable<JobOfferBasicResponse>>(jobOffers));
+            return Response<IEnumerable<JobOfferBasicResponse>>
+                .ReturnValue(_mapper.Map<IEnumerable<JobOfferBasicResponse>>(jobOffers));
         }
     }
 }
