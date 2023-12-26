@@ -40,28 +40,14 @@ namespace WebScrapperService.Services
         protected string FullUrl => $"{BaseUrl}{PageNumber}";
 
         protected BaseJobScrapper(ILogger<BaseJobScrapper> log, IRabbitMessageProducer jobOfferMessageProducer,
-            string baseUrl, string jobElementOnPageSelector, string jobTitleSelector,
+            IWebDriverFactory webDriverFactory ,string baseUrl, string jobElementOnPageSelector, string jobTitleSelector,
             string companySelector, string localizationSelector, string workModeSelector,
             string senioritySelector, string technologiesSelector,  string salarySelector , string? linkSelector)
         {
             _logger = log;
             _jobOfferMessageProducer = jobOfferMessageProducer;
 
-            string isSeleniumOnDocker = Environment.GetEnvironmentVariable("IsSeleniumOnDocker")!; 
-
-            if(isSeleniumOnDocker == "true")
-            {
-                string remoteDriverUri = Environment.GetEnvironmentVariable("RemoteDriverUri")!;
-
-                var options = new ChromeOptions();
-                options.AddArgument("--ignore-ssl-errors=yes");
-                options.AddArgument("-ignore-certificate-errors");
-                _driver = new RemoteWebDriver(new Uri(remoteDriverUri), options);
-            }
-            else
-            {
-                _driver = new ChromeDriver();
-            }
+            _driver = webDriverFactory.GetWebDriver();
 
             BaseUrl = baseUrl;
             JobElementOnPageSelector = jobElementOnPageSelector;
