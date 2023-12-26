@@ -20,7 +20,7 @@ namespace WebScrapperService.Services
 {
     public abstract class BaseJobScrapper
     {
-        protected int PageNumber { get; set; } = 3;
+        protected int PageNumber { get; set; } = 1;
 
         protected readonly IWebDriver _driver;
         protected readonly ILogger<BaseJobScrapper> _logger;
@@ -67,18 +67,14 @@ namespace WebScrapperService.Services
             {
                 while (true)
                 {
-                    if (!isInit && PageNumber == 10) break;
+                    if (!isInit && PageNumber > 10) break;
 
                     NavigateToOffersPage(FullUrl);
 
                     var jobElements = GetJobElementsFromPage();
 
-                    if (jobElements.Count == 0)
-                    {
-                        _jobOfferMessageProducer.CloseConnection();
-                        break;
-                    }
-
+                    if (jobElements.Count == 0) break;
+                   
                     IEnumerable<string> jobLinks = GetJobLinks(jobElements);
 
                     foreach (string jobLink in jobLinks)
@@ -102,6 +98,7 @@ namespace WebScrapperService.Services
             {
                 _logger.LogError("Error occured {ex}", ex);
             }
+            _jobOfferMessageProducer.CloseConnection();
             _driver.Close();
         }
 
@@ -127,7 +124,7 @@ namespace WebScrapperService.Services
                 var localization = _driver.FindElement(By.CssSelector(LocalizationSelector)).Text;
                 var workMode = _driver.FindElement(By.CssSelector(WorkModeSelector)).Text;
                 var seniority = _driver.FindElement(By.CssSelector(SenioritySelector)).Text;
-                var techologies = _driver.FindElements(By.CssSelector(TechnologiesSelector)).Select(e => e.Text).ToList();
+                var techologies = _driver.FindElements(By.CssSelector(TechnologiesSelector)).Select(e => e.Text);
 
                 company = company.Replace("About the company", "").Replace("O firmie", "");
 
