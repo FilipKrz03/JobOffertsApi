@@ -12,23 +12,33 @@ namespace WebScrapperService.Services
     public class OffersService : IOffersService 
     {
         private readonly IEnumerable<IScrapperService> _scrapperServices;
+        private readonly ILogger<OffersService> _logger;
 
-        public OffersService(IEnumerable<IScrapperService> scrapperServices)
+        public OffersService(IEnumerable<IScrapperService> scrapperServices , ILogger<OffersService> logger)
         {
             _scrapperServices = scrapperServices;
+            _logger = logger;
         }
 
         public void HandleOffersCreateAndUpdate(string routingKey)
         {
-            bool isInit = routingKey switch
+            try
             {
-                RabbitMQOffersEventProps.OFFERS_CREATE_EVENT_ROUTRING_KEY => true,
-                RabbitMQOffersEventProps.OFFERS_UPDATE_ROUTING_KEY => false,
-                _ => true,
-            };
-            foreach(var service in _scrapperServices)
+                bool isInit = routingKey switch
+                {
+                    RabbitMQOffersEventProps.OFFERS_CREATE_EVENT_ROUTRING_KEY => true,
+                    RabbitMQOffersEventProps.OFFERS_UPDATE_ROUTING_KEY => false,
+                    _ => throw new ArgumentException("Not recognized routing key"),
+                };
+
+                foreach (var service in _scrapperServices)
+                {
+                    service.ScrapOfferts(isInit);
+                }
+            }
+            catch (ArgumentException ex)
             {
-                service.ScrapOfferts(isInit);
+                _logger.LogError("WebScrapper - Offers service error occured {ex}", ex);
             }
         }
     }
