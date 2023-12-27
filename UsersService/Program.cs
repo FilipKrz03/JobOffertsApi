@@ -1,6 +1,8 @@
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
+using UsersService.DbContexts;
 using UsersService.Interfaces;
 using UsersService.Services;
 
@@ -19,6 +21,12 @@ FirebaseApp.Create(new AppOptions
 });
 
 builder.Services.AddSingleton<UsersService.Interfaces.IAuthenticationService, UsersService.Services.AuthenticationService>();
+
+builder.Services.AddDbContext<UsersDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
+});
+
 
 var app = builder.Build();
 

@@ -8,7 +8,7 @@ using UsersService.Entities;
 namespace UsersService.Services
 {
   
-    public class UsersService 
+    public class UsersService : IUserService
     {
 
         private readonly Interfaces.IAuthenticationService _authenticationService;
@@ -20,7 +20,9 @@ namespace UsersService.Services
 
         public async Task RegisterUser(RegisterRequestDto request)
         {
-            var identityId = _authenticationService.RegisterAsync(request.Email, request.Password);
+            var identityId = await _authenticationService.RegisterAsync(request.Email, request.Password);
+
+
         }
     }
 }
