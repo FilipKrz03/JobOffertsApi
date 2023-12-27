@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobOfferServiceTests", "Job
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScrapperTests", "WebScrapperTests\WebScrapperTests.csproj", "{AC403568-DF86-4253-81B5-09873A022855}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobOfferApiCore", "JobOfferApiCore", "{186F575B-5F3D-4C7A-8EE5-DE7A2D437799}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JobOffersApiCore", "JobOffersApiCore", "{186F575B-5F3D-4C7A-8EE5-DE7A2D437799}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobOffersApiCoreTests", "JobOffersApiCoreTests\JobOffersApiCoreTests.csproj", "{1787E847-B668-4114-BECF-97FFA75C7A03}"
 EndProject
