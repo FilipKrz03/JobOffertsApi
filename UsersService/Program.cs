@@ -21,6 +21,7 @@ FirebaseApp.Create(new AppOptions
 });
 
 builder.Services.AddSingleton<UsersService.Interfaces.IAuthenticationService, UsersService.Services.AuthenticationService>();
+builder.Services.AddTransient<IUserService , UsersService.Services.UsersService>();
 
 builder.Services.AddDbContext<UsersDbContext>(options =>
 {
