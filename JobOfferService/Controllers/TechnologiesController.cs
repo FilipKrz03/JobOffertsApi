@@ -24,8 +24,7 @@ namespace JobOffersService.Controllers
         {
             var result = await _technologyService.GetTechnologyWithJobOffers(technologyId, resourceParamethers);
 
-            return result.ErrorInfo.IsError ? StatusCode(result.ErrorInfo.StatusCode, result.ErrorInfo.ErrorMessage)
-                : Ok(result.Value);
+            return Ok(result);
         }
 
         [HttpGet]
@@ -34,7 +33,7 @@ namespace JobOffersService.Controllers
         {
             var result = await _technologyService.GetTechnologies(resourceParamethers);
 
-            return Ok(result.Value);
+            return Ok(result);
         }
     }
 }

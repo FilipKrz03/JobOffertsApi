@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JobOffersApiCore.Common;
+using JobOffersApiCore.Exceptions;
 using JobOffersService.Dto;
 using JobOffersService.Entities;
 using JobOffersService.Interfaces;
@@ -26,23 +27,24 @@ namespace JobOfferServiceTests.Services
         {
             _mapperMock = new();
             _jobOfferRepositoryMock = new();
-            _offerService = new(_jobOfferRepositoryMock.Object , _mapperMock.Object);
+            _offerService = new(_jobOfferRepositoryMock.Object, _mapperMock.Object);
         }
 
         [Fact]
-        public async Task Service_GetJobDetail_Should_Return404ErrorResponseObject_WhenJobOfferNotFound()
+        public async Task Service_GetJobDetail_Should_ThrowResourceNotFoundException_WhenJobOfferNotFound()
         {
             _jobOfferRepositoryMock.Setup(x => x.GetJobOfferWithTechnologies(It.IsAny<Guid>()))
                 .ReturnsAsync((JobOffer)null!);
 
-           var response =  await _offerService.GetJobOfferDetail(It.IsAny<Guid>());
+            async Task testCode() => await _offerService.GetJobOfferDetail(It.IsAny<Guid>());
 
-           Assert.True(response.ErrorInfo.IsError);
-           Assert.Equal(404, response.ErrorInfo.StatusCode);
+            await Assert.ThrowsAsync<ResourceNotFoundException>(testCode);
+
+            Assert.True(true);
         }
 
         [Fact]
-        public async Task 
+        public async Task
             Service_GetJobDetail_Should_ReturnNonErrorResponseObjectWithValueOfTypeJobOfferDetail_WhenJobOfferFound()
         {
             _jobOfferRepositoryMock.Setup(x => x.GetJobOfferWithTechnologies(It.IsAny<Guid>()))
@@ -53,8 +55,7 @@ namespace JobOfferServiceTests.Services
 
             var response = await _offerService.GetJobOfferDetail(It.IsAny<Guid>());
 
-            Assert.False(response.ErrorInfo.IsError);
-            Assert.IsType<JobOfferDetailResponse>(response.Value);
+            Assert.IsType<JobOfferDetailResponse>(response);
         }
 
         [Fact]
@@ -62,18 +63,17 @@ namespace JobOfferServiceTests.Services
         {
             // Empty IEnumerable<JobOfferBasicResponse> is also proper return type
 
-            _jobOfferRepositoryMock.Setup(x => x.GetJobOffersAsync(It.IsAny<ResourceParamethers>() , 
-                It.IsAny<Expression<Func<JobOffer,object>>>()))
+            _jobOfferRepositoryMock.Setup(x => x.GetJobOffersAsync(It.IsAny<ResourceParamethers>(),
+                It.IsAny<Expression<Func<JobOffer, object>>>()))
                 .ReturnsAsync(Enumerable.Empty<JobOffer>());
 
             _mapperMock.Setup(x => x.Map<IEnumerable<JobOfferBasicResponse>>(It.IsAny<IEnumerable<JobOfferBasicResponse>>()));
 
             ResourceParamethers resourceParamethers = new();
-            
+
             var response = await _offerService.GetJobOffers(resourceParamethers);
 
-            Assert.False(response.ErrorInfo.IsError);
-            Assert.IsAssignableFrom<IEnumerable<JobOfferBasicResponse>>(response.Value);
+            Assert.IsAssignableFrom<IEnumerable<JobOfferBasicResponse>>(response);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using JobOffersApiCore.Common;
 using JobOffersApiCore.Enum;
-using JobOffersApiCore.Helpers;
 using JobOfferServiceTests.Common;
 using JobOffersService.DbContexts;
 using JobOffersService.Dto;

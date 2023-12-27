@@ -31,7 +31,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="JobOfferServiceTests"/>
+		<InternalsVisibleTo Include="JobOfferServiceTests" />
 	</ItemGroup>
 
 </Project>

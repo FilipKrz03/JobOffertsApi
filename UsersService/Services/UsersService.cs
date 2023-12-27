@@ -28,6 +28,7 @@ namespace UsersService.Services
         {
             var user = _mapper.Map<User>(request);  
 
+            // If user already exist firebase error will be thrown and properly served by exception handler middleware
             var identityId = await _authenticationService.RegisterAsync(request.Email, request.Password);
 
             user.IdentityId = identityId;

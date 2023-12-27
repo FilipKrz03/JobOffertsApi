@@ -1,5 +1,4 @@
 ﻿using JobOffersApiCore.Common;
-using JobOffersApiCore.Helpers;
 using JobOffersService.Dto;
 using JobOffersService.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -24,8 +23,7 @@ namespace JobOffersService.Controllers
         {
             var result = await _jobOffersService.GetJobOfferDetail(jobOfferId);
 
-            return result.ErrorInfo.IsError ? StatusCode(result.ErrorInfo.StatusCode, result.ErrorInfo.ErrorMessage) :
-                Ok(result.Value);
+            return Ok(result);
         }
 
         [HttpGet]
@@ -34,7 +32,7 @@ namespace JobOffersService.Controllers
         {
             var result = await _jobOffersService.GetJobOffers(resourceParamethers);
 
-            return Ok(result.Value);
+            return Ok(result);
         }
     }
 }

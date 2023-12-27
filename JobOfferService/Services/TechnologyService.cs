@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using JobOffersApiCore.Common;
-using JobOffersApiCore.Helpers;
+using JobOffersApiCore.Exceptions;
 using JobOffersService.Dto;
 using JobOffersService.Entities;
 using JobOffersService.Interfaces;
@@ -21,7 +21,7 @@ namespace JobOffersService.Services
             _mapper = mapper;
         }
 
-        public async Task<Response<IEnumerable<TechnologyBasicResponse>>>
+        public async Task<IEnumerable<TechnologyBasicResponse>>
             GetTechnologies(ResourceParamethers resourceParamethers)
         {
             Expression<Func<Technology, object>> keySelector = resourceParamethers.SortColumn?.ToLower() switch
@@ -33,11 +33,10 @@ namespace JobOffersService.Services
             var technologieEntities = 
                 await _technologyRepository.GetTechnologiesAsync(resourceParamethers, keySelector);
 
-            return Response<IEnumerable<TechnologyBasicResponse>>.
-                ReturnValue(_mapper.Map<IEnumerable<TechnologyBasicResponse>>(technologieEntities));
+            return _mapper.Map<IEnumerable<TechnologyBasicResponse>>(technologieEntities);
         }
 
-        public async Task<Response<TechnologyDetailResponse>> GetTechnologyWithJobOffers
+        public async Task<TechnologyDetailResponse> GetTechnologyWithJobOffers
             (Guid id , ResourceParamethers resourceParamethers)
         {
             var technologyEntityWithJobOffers = await _technologyRepository.
@@ -45,11 +44,10 @@ namespace JobOffersService.Services
 
             if(technologyEntityWithJobOffers == null)
             {
-                return Response<TechnologyDetailResponse>.ReturnError(404, $"Technology with id {id} not found");
+                throw new ResourceNotFoundException($"Technology with id {id} do not exist");
             }
 
-            return Response<TechnologyDetailResponse>.
-                ReturnValue(_mapper.Map<TechnologyDetailResponse>(technologyEntityWithJobOffers));
+            return _mapper.Map<TechnologyDetailResponse>(technologyEntityWithJobOffers);
         }
     }
 }

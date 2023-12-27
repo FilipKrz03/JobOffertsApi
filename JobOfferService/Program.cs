@@ -4,6 +4,7 @@ using JobOfferService.Services;
 using JobOffersService.Consumer;
 using JobOffersService.DbContexts;
 using JobOffersService.Interfaces;
+using JobOffersService.Middleware;
 using JobOffersService.Repositories;
 using JobOffersService.Services;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        builder.Services.AddTransient<ExceptionHandlerMiddleware>();
         builder.Services.AddSingleton<IRabbitMessageProducer, ScrapperMessageProducer>();
 
         builder.Services.AddScoped<ITechnologyRepository, TechnologyRepository>();
@@ -61,6 +63,8 @@ public class Program
         app.UseSerilogRequestLogging();
 
         app.UseAuthorization();
+
+        app.UseMiddleware<ExceptionHandlerMiddleware>();
 
         app.MapControllers();
 

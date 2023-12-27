@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JobOffersApiCore.Common;
+using JobOffersApiCore.Exceptions;
 using JobOffersService.Dto;
 using JobOffersService.Entities;
 using JobOffersService.Interfaces;
@@ -37,22 +38,20 @@ namespace JobOfferServiceTests.Services
 
             var response = await _technologyService.GetTechnologies(new ResourceParamethers());
 
-            Assert.False(response.ErrorInfo.IsError);
-            Assert.IsAssignableFrom<IEnumerable<TechnologyBasicResponse>>(response.Value);
+            Assert.IsAssignableFrom<IEnumerable<TechnologyBasicResponse>>(response);
         }
 
         [Fact]
-        public async Task Service_GetTechnologyWithJobOffers_Should_Return404ResponseObject_WhenTechnologyNotFound()
+        public async Task Service_GetTechnologyWithJobOffers_Should_ThrowResourceNotFoundException_WhenTechnologyNotFound()
         {
             _technologyRepositoryMock.Setup(x => x.GetTechnologyWithJobOffersAsync
             (It.IsAny<Guid>(), It.IsAny<ResourceParamethers>()))
                 .ReturnsAsync((Technology)null!);
 
-            var repsonse = await _technologyService.
+            async Task testCode() => await _technologyService.
                 GetTechnologyWithJobOffers(Guid.Empty, new ResourceParamethers());
 
-            Assert.True(repsonse.ErrorInfo.IsError);
-            Assert.Equal(404, repsonse.ErrorInfo.StatusCode);
+            await Assert.ThrowsAsync<ResourceNotFoundException>(testCode);
         }
 
         [Fact]
@@ -69,8 +68,7 @@ namespace JobOfferServiceTests.Services
             var repsonse = await _technologyService.
                 GetTechnologyWithJobOffers(Guid.Empty, new ResourceParamethers());
 
-            Assert.False(repsonse.ErrorInfo.IsError);
-            Assert.IsType<TechnologyDetailResponse>(repsonse.Value);
+            Assert.IsType<TechnologyDetailResponse>(repsonse);
         }
     }
 }

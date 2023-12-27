@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using JobOffersApiCore.Common;
-using JobOffersApiCore.Helpers;
+using JobOffersApiCore.Exceptions;
 using JobOffersService.Dto;
 using JobOffersService.Entities;
 using JobOffersService.Interfaces;
@@ -22,19 +22,19 @@ namespace JobOffersService.Services
             _mapper = mapper;
         }
 
-        public async Task<Response<JobOfferDetailResponse>> GetJobOfferDetail(Guid jobId)
+        public async Task<JobOfferDetailResponse> GetJobOfferDetail(Guid jobId)
         {
             var jobOffer = await _jobOfferRepository.GetJobOfferWithTechnologies(jobId);
 
             if (jobOffer == null)
             {
-               return Response<JobOfferDetailResponse>.ReturnError(404, "Job offer not found");
+                throw new ResourceNotFoundException($"Job offer with id {jobId} do not exist");
             }
 
-            return Response<JobOfferDetailResponse>.ReturnValue(_mapper.Map<JobOfferDetailResponse>(jobOffer));
+            return _mapper.Map<JobOfferDetailResponse>(jobOffer);
         }
 
-        public async Task<Response<IEnumerable<JobOfferBasicResponse>>>
+        public async Task<IEnumerable<JobOfferBasicResponse>>
             GetJobOffers(ResourceParamethers resourceParamethers)
         {
             Expression<Func<JobOffer, object>> keySelector = resourceParamethers.SortColumn?.ToLower() switch
@@ -49,8 +49,7 @@ namespace JobOffersService.Services
             
             var jobOffers = await _jobOfferRepository.GetJobOffersAsync(resourceParamethers , keySelector);
 
-            return Response<IEnumerable<JobOfferBasicResponse>>
-                .ReturnValue(_mapper.Map<IEnumerable<JobOfferBasicResponse>>(jobOffers));
+            return _mapper.Map<IEnumerable<JobOfferBasicResponse>>(jobOffers);
         }
     }
 }
