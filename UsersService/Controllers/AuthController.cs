@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UsersService.Dto;
 
 namespace UsersService.Controllers
 {
@@ -7,6 +8,10 @@ namespace UsersService.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        [HttpPost("login")]
+        [HttpPost("register")]
+        public async Task RegisterUser([FromBody] RegisterRequestDto request)
+        {
+
+        }
     }
 }
