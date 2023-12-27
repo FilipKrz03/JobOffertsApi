@@ -1,32 +1,39 @@
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using UsersService.DbContexts;
 using UsersService.Interfaces;
+using UsersService.Repository;
 using UsersService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+
+builder.Services.AddLogging();
+builder.Services.AddTransient<UsersService.Middleware.ExceptionHandlerMiddleware>();
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddSingleton<UsersService.Interfaces.IAuthenticationService, UsersService.Services.AuthenticationService>();
+builder.Services.AddTransient<IUserService, UsersService.Services.UsersService>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+
+builder.Services.AddDbContext<UsersDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
+});
 
 FirebaseApp.Create(new AppOptions
 {
     Credential = GoogleCredential.FromFile("firebase.json")
 });
 
-builder.Services.AddSingleton<UsersService.Interfaces.IAuthenticationService, UsersService.Services.AuthenticationService>();
-builder.Services.AddTransient<IUserService , UsersService.Services.UsersService>();
-
-builder.Services.AddDbContext<UsersDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
-});
 
 
 var app = builder.Build();
@@ -38,9 +45,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<UsersService.Middleware.ExceptionHandlerMiddleware>();
 
 app.MapControllers();
 
