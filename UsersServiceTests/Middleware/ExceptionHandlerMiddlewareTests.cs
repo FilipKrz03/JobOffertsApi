@@ -80,6 +80,31 @@ namespace UsersServiceTests.Middleware
         }
 
         [Fact]
+        public async Task Middleware_Should_CatchInvalidAccessTokenException_WhenThrown()
+        {
+            string exMessage = "Invalid Access Token";
+
+            var responseStream = new MemoryStream();
+            _context.Response.Body = responseStream;
+
+            var next = new RequestDelegate(_ => throw new InvalidAccesTokenException(exMessage));
+
+            await _middleware.InvokeAsync(_context, next);
+
+            responseStream.Position = 0;
+
+            _context.Response.StatusCode
+                .Should()
+                .Be(400);
+
+            var responseMessage = await new StreamReader(responseStream).ReadToEndAsync();
+
+            responseMessage
+            .Should()
+            .Be(exMessage);
+        }
+
+        [Fact]
         public async Task Middleware_Should_CatchAnyOtherExceptionAndMappItTo500ServerResponse_WhenThrown()
         {
             var next = new RequestDelegate(_ => throw new AggregateException(""));
