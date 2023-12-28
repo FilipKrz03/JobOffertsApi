@@ -43,5 +43,10 @@ namespace UsersService.Services
         {
             return await _jwtProvider.GetForCredentialsAsync(request.Email, request.Password);
         }
+
+        public async Task<TokenResponseDto> RefreshUserAccessToken(string refreshToken)
+        {
+            return await _jwtProvider.GetForRefreshTokenAsync(refreshToken);
+        }
     }
 }

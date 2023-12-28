@@ -5,5 +5,7 @@ namespace UsersService.Interfaces
     public interface IJwtProvider
     {
         Task<TokenResponseDto> GetForCredentialsAsync(string email, string password);
+
+        Task<TokenResponseDto> GetForRefreshTokenAsync(string refreshToken);    
     }
 }

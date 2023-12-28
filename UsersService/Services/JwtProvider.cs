@@ -38,5 +38,30 @@ namespace UsersService.Services
 
             return tokenResponse!;
         }
+
+        public async Task<TokenResponseDto> GetForRefreshTokenAsync(string refreshToken)
+        {
+            var request = new
+            {
+                grant_type = "refresh_token",
+                refresh_token = refreshToken
+            };
+
+            string path = Environment.GetEnvironmentVariable("RefreshUri")!;
+
+            var response = await _httpClient.PostAsJsonAsync(path, request);
+
+            if(!response.IsSuccessStatusCode)
+            {
+                throw new InvalidRefreshTokenException("Invalid refresh token provided");
+            }
+
+            // Token response from refresh action in firebase has diffrent format than from signIn action
+            var tokenResponse = await response.Content
+                .ReadFromJsonAsync<TokenResponseFromRefreshFirebaseActionDto>();
+
+            return new TokenResponseDto
+                (tokenResponse!.Id_token, tokenResponse.Expires_in, tokenResponse.Refresh_token);
+        }
     }
 }

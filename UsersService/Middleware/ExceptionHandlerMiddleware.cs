@@ -29,6 +29,11 @@ namespace UsersService.Middleware
                 context.Response.StatusCode = 401;
                 await context.Response.WriteAsync(ex.Message);
             }
+            catch(InvalidRefreshTokenException ex)
+            {
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsync(ex.Message);
+            }
             catch(Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
