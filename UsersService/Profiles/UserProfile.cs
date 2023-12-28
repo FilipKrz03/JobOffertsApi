@@ -12,7 +12,8 @@ namespace UsersService.Profiles
                 .ForMember(x => x.CreatedAt, opt => opt.Ignore())
                 .ForMember(x => x.UpdatedAt, opt => opt.Ignore())
                 .ForMember(x => x.Id, opt => opt.Ignore())
-                .ForMember(x => x.IdentityId, opt => opt.Ignore());
+                .ForMember(x => x.IdentityId, opt => opt.Ignore())
+                .ForMember(x => x.SavedOffers, opt => opt.Ignore());
         }
     }
 }
