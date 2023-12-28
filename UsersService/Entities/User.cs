@@ -8,7 +8,7 @@ namespace UsersService.Entities
 
         public string IdentityId { get; set; } = string.Empty;
 
-        public ICollection<UserSavedOffer> SavedOffers { get; set; }  = 
-            new List<UserSavedOffer>();
+        public ICollection<FavouriteOffer> FavouriteOffers { get; set; }  = 
+            new List<FavouriteOffer>();
     }
 }

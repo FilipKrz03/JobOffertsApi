@@ -27,6 +27,6 @@ namespace UsersService.DbContexts
         }
 
         public DbSet<User> Users { get; set; } = null!;
-        public DbSet<UserSavedOffer> UserSavedOffers { get; set; } = null!;
+        public DbSet<FavouriteOffer> FavouriteOffers { get; set; } = null!;
     }
 }

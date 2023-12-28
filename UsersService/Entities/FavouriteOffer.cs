@@ -2,7 +2,7 @@
 
 namespace UsersService.Entities
 {
-    public class UserSavedOffer : BaseEntity
+    public class FavouriteOffer : BaseEntity
     {
         public Guid OfferId {  get; set; }  
 

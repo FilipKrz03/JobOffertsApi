@@ -48,5 +48,17 @@ namespace UsersService.Services
         {
             return await _jwtProvider.GetForRefreshTokenAsync(refreshToken);
         }
+
+        public async Task CreateUserFavouriteOffer(string userId , Guid offerId)
+        {
+            // Check if offer exist in job offers db (? create separete service for that)
+
+            // No ? Throw error 
+
+            // Fetch user entitie
+            // Add job offer to user entite
+
+            //Save changes on db context
+        }
     }
 }
