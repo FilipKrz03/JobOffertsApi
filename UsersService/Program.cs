@@ -21,6 +21,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddSingleton<UsersService.Interfaces.IAuthenticationService, UsersService.Services.AuthenticationService>();
 builder.Services.AddTransient<IUserService, UsersService.Services.UsersService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IClaimService , ClaimService>();
 
 builder.Services.AddDbContext<UsersDbContext>(options =>
 {
