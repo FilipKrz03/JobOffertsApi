@@ -24,5 +24,28 @@ namespace UsersService.Controllers
 
             return StatusCode(201);
         }
+
+        [HttpPost("login")]
+        public async Task<ActionResult> LoginUser([FromBody]LoginRequestDto request)
+        {
+            var tokens = await _userService.LoginUser(request);
+
+            var cookieOptions = new CookieOptions
+            {
+                Expires = DateTime.Now.AddHours(24),
+                HttpOnly = true,
+                Secure = true,
+            };
+
+            Response.Cookies.Append("RefreshToken", tokens.RefreshToken , cookieOptions);
+
+            var responseObject = new
+            {
+                accessToken = tokens.Idtoken,
+                expiresIn = tokens.ExpiresIn
+            };
+
+            return Ok(responseObject);
+        }
     }
 }

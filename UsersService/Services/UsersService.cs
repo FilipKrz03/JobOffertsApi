@@ -1,5 +1,4 @@
 ﻿
-using JobOffersApiCore.Helpers;
 using Microsoft.AspNetCore.Authentication;
 using UsersService.Dto;
 using UsersService.Interfaces;
@@ -13,13 +12,15 @@ namespace UsersService.Services
     {
 
         private readonly Interfaces.IAuthenticationService _authenticationService;
+        private readonly IJwtProvider _jwtProvider;
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
         public UsersService(Interfaces.IAuthenticationService authenticationService , IUserRepository userRepository , 
-            IMapper mapper)
+            IMapper mapper , IJwtProvider jwtProvider)
         {
             _authenticationService = authenticationService;
+            _jwtProvider = jwtProvider;
             _userRepository = userRepository;   
             _mapper = mapper;
         }
@@ -36,6 +37,11 @@ namespace UsersService.Services
             _userRepository.Insert(user);
 
             await _userRepository.SaveChangesAsync();
+        }
+
+        public async Task<TokenResponseDto> LoginUser(LoginRequestDto request)
+        {
+            return await _jwtProvider.GetForCredentialsAsync(request.Email, request.Password);
         }
     }
 }

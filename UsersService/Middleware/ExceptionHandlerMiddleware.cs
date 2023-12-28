@@ -1,4 +1,6 @@
 ﻿using FirebaseAdmin.Auth;
+using System.Security.Authentication;
+using UsersService.Exceptions;
 
 namespace UsersService.Middleware
 {
@@ -20,6 +22,11 @@ namespace UsersService.Middleware
             catch(FirebaseAuthException ex)
             {
                 context.Response.StatusCode = 409;
+                await context.Response.WriteAsync(ex.Message);
+            }
+            catch(InvalidCredentialsException ex)
+            {
+                context.Response.StatusCode = 401;
                 await context.Response.WriteAsync(ex.Message);
             }
             catch(Exception ex)
