@@ -1,6 +1,7 @@
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using UsersService.DbContexts;
@@ -9,9 +10,6 @@ using UsersService.Repository;
 using UsersService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
 
 builder.Services.AddLogging();
 builder.Services.AddTransient<UsersService.Middleware.ExceptionHandlerMiddleware>();
@@ -31,15 +29,23 @@ builder.Services.AddDbContext<UsersDbContext>(options =>
 
 builder.Services.AddHttpClient<IJwtProvider, JwtProvider>();
 
+builder.Services.AddAuthorization();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(jwtOptions =>
+    {
+        jwtOptions.Authority = Environment.GetEnvironmentVariable("ValidIssuer");
+        jwtOptions.Audience = Environment.GetEnvironmentVariable("Audience");
+        jwtOptions.TokenValidationParameters.ValidIssuer = Environment.GetEnvironmentVariable("ValidIssuer");
+    });
 
 FirebaseApp.Create(new AppOptions
 {
     Credential = GoogleCredential.FromFile("firebase.json")
 });
 
-
-
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -48,12 +54,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
 app.UseMiddleware<UsersService.Middleware.ExceptionHandlerMiddleware>();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllers();
 
