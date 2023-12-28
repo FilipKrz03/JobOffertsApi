@@ -25,7 +25,9 @@ namespace UsersService.Services
                 returnSecureToken = true
             };
 
-            var response = await _httpClient.PostAsJsonAsync("", request);
+            string path = Environment.GetEnvironmentVariable("TokenUri")!;
+
+            var response = await _httpClient.PostAsJsonAsync(path, request);
 
             if(!response.IsSuccessStatusCode)
             {

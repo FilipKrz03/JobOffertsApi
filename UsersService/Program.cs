@@ -29,12 +29,8 @@ builder.Services.AddDbContext<UsersDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
 });
 
-builder.Services.AddHttpClient<IJwtProvider, JwtProvider>((serviceProvider , httpClient) =>
-{
-    var confiugration = serviceProvider.GetRequiredService<IConfiguration>();
+builder.Services.AddHttpClient<IJwtProvider, JwtProvider>();
 
-    httpClient.BaseAddress = new Uri(confiugration["Authentication:TokenUri"]!);
-}); 
 
 FirebaseApp.Create(new AppOptions
 {
