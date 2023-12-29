@@ -50,5 +50,12 @@ namespace JobOffersApiCore.BaseObjects
         {
             return _context.Set<TEntity>().Where(e => e.Id == id);
         }
+
+        public async Task<bool> EntityExistAsync(Guid id)
+        {
+            return await _context.Set<TEntity>()
+                .Where(e => e.Id == id)
+                .AnyAsync();
+        }
     }
 }

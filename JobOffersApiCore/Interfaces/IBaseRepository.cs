@@ -16,5 +16,6 @@ namespace JobOffersApiCore.Interfaces
         IQueryable<TEntity> Query();
         Task<TEntity> GetById(Guid id);
         IQueryable<TEntity> GetByIdQuery(Guid id);
+        Task<bool> EntityExistAsync(Guid id);
     }
 }
