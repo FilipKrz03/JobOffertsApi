@@ -51,5 +51,15 @@ namespace JobOffersService.Services
 
             return _mapper.Map<IEnumerable<JobOfferBasicResponse>>(jobOffers);
         }
+
+        public async Task JobOfferExist(Guid id)
+        {
+            bool jobOfferExist =  await _jobOfferRepository.EntityExistAsync(id);
+
+            if(jobOfferExist == false)
+            {
+                throw new ResourceNotFoundException("Job offer not found");
+            }
+        }
     }
 }
