@@ -16,12 +16,12 @@ namespace UsersService.Services
             _httpClient = httpClient;
         }
 
-        public async Task<TokenResponseDto> GetForCredentialsAsync(string email, string password)
+        public async Task<TokenResponseDto> GetForCredentialsAsync(LoginRequestDto loginRequest)
         {
             var request = new
             {
-                email,
-                password,
+                email = loginRequest.Email,
+                password = loginRequest.Password,
                 returnSecureToken = true
             };
 

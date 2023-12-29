@@ -12,17 +12,19 @@ namespace UsersService.Controllers
     public class AuthController : ControllerBase
     {
 
-        private readonly IUserService _userService;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IJwtProvider _jwtProvider;
 
-        public AuthController(IUserService userService)
+        public AuthController(IAuthenticationService authenticationService , IJwtProvider jwtProvider)
         {
-            _userService = userService;
+           _authenticationService = authenticationService;
+           _jwtProvider = jwtProvider;
         }
 
         [HttpPost("register")]
         public async Task<ActionResult> RegisterUser([FromBody] RegisterRequestDto request)
         {
-            await _userService.RegisterUser(request);
+            await   _authenticationService.RegisterAsync(request);
 
             return StatusCode(201);
         }
@@ -30,7 +32,7 @@ namespace UsersService.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> LoginUser([FromBody] LoginRequestDto request)
         {
-            var tokens = await _userService.LoginUser(request);
+            var tokens = await _jwtProvider.GetForCredentialsAsync(request);
 
             SetupRefreshTokenCookie(Response, tokens.RefreshToken);
 
@@ -54,7 +56,7 @@ namespace UsersService.Controllers
                     "To use refresh route you need to signIn first");
             }
 
-            var tokens = await _userService.RefreshUserAccessToken(refreshToken);
+            var tokens = await _jwtProvider.GetForRefreshTokenAsync(refreshToken);
 
             SetupRefreshTokenCookie(Response, refreshToken);
 
