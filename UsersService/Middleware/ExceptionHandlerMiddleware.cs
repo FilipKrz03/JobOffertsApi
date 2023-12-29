@@ -1,4 +1,5 @@
 ﻿using FirebaseAdmin.Auth;
+using JobOffersApiCore.Exceptions;
 using System.Security.Authentication;
 using UsersService.Exceptions;
 
@@ -37,6 +38,11 @@ namespace UsersService.Middleware
             catch(InvalidAccesTokenException ex)
             {
                 context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(ex.Message);
+            }
+            catch(ResourceAlreadyExistException ex)
+            {
+                context.Response.StatusCode = 409;
                 await context.Response.WriteAsync(ex.Message);
             }
             catch(Exception ex)

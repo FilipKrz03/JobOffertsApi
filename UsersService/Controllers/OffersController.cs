@@ -13,19 +13,24 @@ namespace UsersService.Controllers
     {
 
         private readonly IClaimService _claimService;
+        private readonly IUserOffersService _userOffersService;
 
-        public OffersController(IClaimService claimService)
+
+        public OffersController(IClaimService claimService, IUserOffersService userOffersService)
         {
             _claimService = claimService;
+            _userOffersService = userOffersService; 
+
         }
 
         [HttpPost("favouriteoffers")]
-        public async Task CreateFavouriteOffer([FromBody] OfferToAddDto request)
+        public async Task<ActionResult> CreateUserFavouriteOffer([FromBody] OfferToAddDto request)
         {
             var userId = _claimService.GetUserIdentityIdFromTokenClaim();
 
+            await _userOffersService.CreateUserFavouriteOffer(userId , request.OfferId);
 
-
+            return Ok();
         }
 
     }
