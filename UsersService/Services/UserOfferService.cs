@@ -12,15 +12,17 @@ namespace UsersService.Services
     public class UserOfferService : IUserOffersService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IFavouriteOfferRepositroy _favouriteOfferRepositroy;
         private readonly IMapper _mapper;
         private readonly HttpClient _httpClient;
 
         public UserOfferService(IUserRepository userRepository , IMapper mapper , 
-            HttpClient httpClient)
+            HttpClient httpClient , IFavouriteOfferRepositroy favouriteOfferRepositroy)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _httpClient = httpClient;   
+            _favouriteOfferRepositroy = favouriteOfferRepositroy;
         }
 
         public async Task CreateUserFavouriteOffer(string userId, Guid offerId)
@@ -43,11 +45,22 @@ namespace UsersService.Services
                     ($"Job offer with id {offerId} do not exist in our database");
             }
 
-        
-            // Fetch user entitie
-            // Add job offer to user entite
+            var user = await _userRepository.GetByIdentityId(userId);
 
-            //Save changes on db context
+            if(user == null)
+            {
+                throw new ResourceNotFoundException("User with id from your token do not exist !");
+            }
+
+            FavouriteOffer offer = new()
+            {
+                OfferId = offerId,
+                UserId = user.Id,
+            };
+
+            _favouriteOfferRepositroy.Insert(offer);
+
+            await _favouriteOfferRepositroy.SaveChangesAsync();   
         }
     }
 }

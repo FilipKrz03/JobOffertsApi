@@ -16,5 +16,12 @@ namespace UsersService.Repository
                 .Where(u => u.IdentityId == userIdentity && u.FavouriteOffers.Any(e => e.OfferId == offerId))
                 .AnyAsync();
         }
+
+        public async Task<User?> GetByIdentityId(string identityId)
+        {
+            return await Query()
+                .Where(x => x.IdentityId == identityId)
+                .FirstOrDefaultAsync();
+        }
     }
 }

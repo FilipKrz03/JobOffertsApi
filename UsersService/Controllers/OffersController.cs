@@ -30,7 +30,7 @@ namespace UsersService.Controllers
 
             await _userOffersService.CreateUserFavouriteOffer(userId , request.OfferId);
 
-            return Ok();
+            return StatusCode(201);
         }
 
     }

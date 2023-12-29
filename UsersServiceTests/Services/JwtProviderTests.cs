@@ -23,7 +23,7 @@ namespace UsersServiceTests.Services
 
             var jwtProvider = new JwtProvider(httpMock.ToHttpClient());
 
-            await jwtProvider.Invoking(m => m.GetForCredentialsAsync("" , ""))
+            await jwtProvider.Invoking(m => m.GetForCredentialsAsync(new UsersService.Dto.LoginRequestDto("" , "")))
                 .Should().ThrowAsync<InvalidCredentialsException>();    
         }
 
@@ -50,7 +50,7 @@ namespace UsersServiceTests.Services
 
             var jwtProvider = new JwtProvider(httpMock.ToHttpClient());
 
-            var result = await jwtProvider.GetForCredentialsAsync("", "");
+            var result = await jwtProvider.GetForCredentialsAsync(new UsersService.Dto.LoginRequestDto("", ""));
 
             result.ExpiresIn.Should().Be(expiresInValue);
             result.Idtoken.Should().Be(tokenValue);

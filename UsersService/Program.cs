@@ -23,6 +23,7 @@ builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddTransient<UsersService.Interfaces.IAuthenticationService, UsersService.Services.AuthenticationService>();
 builder.Services.AddTransient<IUserOffersService, UsersService.Services.UserOfferService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IFavouriteOfferRepositroy, FavouriteOfferRepository>();
 
 builder.Services.AddDbContext<UsersDbContext>(options =>
 {

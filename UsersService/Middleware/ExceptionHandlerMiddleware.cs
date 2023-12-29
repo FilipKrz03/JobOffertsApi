@@ -45,6 +45,11 @@ namespace UsersService.Middleware
                 context.Response.StatusCode = 409;
                 await context.Response.WriteAsync(ex.Message);
             }
+            catch(ResourceNotFoundException ex)
+            {
+                context.Response.StatusCode = 404;
+                await context.Response.WriteAsync(ex.Message);
+            }
             catch(Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
