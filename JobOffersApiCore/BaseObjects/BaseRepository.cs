@@ -57,5 +57,11 @@ namespace JobOffersApiCore.BaseObjects
                 .Where(e => e.Id == id)
                 .AnyAsync();
         }
+
+        public void DeleteEntity(TEntity entity)
+        {
+            _context.Set<TEntity>()
+                .Remove(entity);
+        }
     }
 }

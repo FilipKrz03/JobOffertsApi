@@ -16,12 +16,12 @@ namespace UsersService.Services
         private readonly IMapper _mapper;
         private readonly HttpClient _httpClient;
 
-        public UserOfferService(IUserRepository userRepository , IMapper mapper , 
-            HttpClient httpClient , IFavouriteOfferRepositroy favouriteOfferRepositroy)
+        public UserOfferService(IUserRepository userRepository, IMapper mapper,
+            HttpClient httpClient, IFavouriteOfferRepositroy favouriteOfferRepositroy)
         {
             _userRepository = userRepository;
             _mapper = mapper;
-            _httpClient = httpClient;   
+            _httpClient = httpClient;
             _favouriteOfferRepositroy = favouriteOfferRepositroy;
         }
 
@@ -39,7 +39,7 @@ namespace UsersService.Services
 
             var request = await _httpClient.GetAsync($"{offerExistUri}{offerId}");
 
-            if(!request.IsSuccessStatusCode)
+            if (!request.IsSuccessStatusCode)
             {
                 throw new ResourceNotFoundException
                     ($"Job offer with id {offerId} do not exist in our database");
@@ -47,7 +47,7 @@ namespace UsersService.Services
 
             var user = await _userRepository.GetById(userId);
 
-            if(user == null)
+            if (user == null)
             {
                 throw new ResourceNotFoundException("User with id from your token do not exist !");
             }
@@ -60,12 +60,19 @@ namespace UsersService.Services
 
             _favouriteOfferRepositroy.Insert(offer);
 
-            await _favouriteOfferRepositroy.SaveChangesAsync();   
+            await _favouriteOfferRepositroy.SaveChangesAsync();
         }
 
-        public async Task DeleteUserFavouriteOffer(Guid offerId , string userIdentity)
+        public async Task DeleteUserFavouriteOffer(Guid userId, Guid offerId)
         {
-         
+            var userFavouriteOffer = _favouriteOfferRepositroy.GetUserFavouriteOffer(userId, offerId);
+
+            if (userFavouriteOffer == null)
+            {
+                throw new ResourceNotFoundException($"Cannot delete favourite offer because " +
+                    $"offer with id {offerId} do not exist in your favourite offers");
+            }
+
         }
     }
 }
