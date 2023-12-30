@@ -63,16 +63,19 @@ namespace UsersService.Services
             await _favouriteOfferRepositroy.SaveChangesAsync();
         }
 
-        public async Task DeleteUserFavouriteOffer(Guid userId, Guid offerId)
+        public async Task DeleteUserFavouriteOffer(Guid userId, Guid favouriteOfferId)
         {
-            var userFavouriteOffer = _favouriteOfferRepositroy.GetUserFavouriteOffer(userId, offerId);
+            var userFavouriteOffer = await _favouriteOfferRepositroy.GetUserFavouriteOffer(userId, favouriteOfferId);
 
             if (userFavouriteOffer == null)
             {
                 throw new ResourceNotFoundException($"Cannot delete favourite offer because " +
-                    $"offer with id {offerId} do not exist in your favourite offers");
+                    $"offer with id {favouriteOfferId} do not exist in your favourite offers");
             }
 
+            _favouriteOfferRepositroy.DeleteEntity(userFavouriteOffer);
+
+            await _favouriteOfferRepositroy.SaveChangesAsync();
         }
     }
 }

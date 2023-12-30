@@ -15,7 +15,6 @@ namespace UsersService.Controllers
         private readonly IClaimService _claimService;
         private readonly IUserOffersService _userOffersService;
 
-
         public OffersController(IClaimService claimService, IUserOffersService userOffersService)
         {
             _claimService = claimService;
@@ -33,11 +32,14 @@ namespace UsersService.Controllers
             return StatusCode(201);
         }
 
-        [HttpDelete("favouriteoffers/{offerId}")]
-        public async Task DeleteUserFavouriteOffer()
+        [HttpDelete("favouriteoffers/{favouriteOfferId}")]
+        public async Task<ActionResult> DeleteUserFavouriteOffer(Guid favouriteOfferId)
         {
             var userId = _claimService.GetUserIdFromTokenClaim();
-        }
 
+            await _userOffersService.DeleteUserFavouriteOffer(userId, favouriteOfferId);
+
+            return NoContent();
+        }
     }
 }
