@@ -26,11 +26,17 @@ namespace UsersService.Controllers
         [HttpPost("favouriteoffers")]
         public async Task<ActionResult> CreateUserFavouriteOffer([FromBody] OfferToAddDto request)
         {
-            var userId = _claimService.GetUserIdentityIdFromTokenClaim();
+            var userId = _claimService.GetUserIdFromTokenClaim();
 
             await _userOffersService.CreateUserFavouriteOffer(userId , request.OfferId);
 
             return StatusCode(201);
+        }
+
+        [HttpDelete("favouriteoffers/{offerId}")]
+        public async Task DeleteUserFavouriteOffer()
+        {
+            var userId = _claimService.GetUserIdFromTokenClaim();
         }
 
     }

@@ -14,17 +14,19 @@ namespace UsersService.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string GetUserIdentityIdFromTokenClaim()
+        public Guid GetUserIdFromTokenClaim()
         {
             string? result =
-                _httpContextAccessor?.HttpContext?.User?.FindFirst("user_id")?.Value;
+                _httpContextAccessor?.HttpContext?.User?.FindFirst("userEntiteId")?.Value;
 
             if (result == null)
             {
                 throw new InvalidAccesTokenException("Invalid access token");
             }
 
-            return result;
+            Guid userId = Guid.Parse(result);
+
+            return userId;
         }
     }
 }

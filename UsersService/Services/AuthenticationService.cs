@@ -30,7 +30,14 @@ namespace UsersService.Services
                 EmailVerified = true
             };
 
+            var claims = new Dictionary<string, object>()
+            {
+                {"userEntiteId" , user.Id }
+            };
+
             var userRecord = await FirebaseAuth.DefaultInstance.CreateUserAsync(userArgs);
+
+            await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(userRecord.Uid , claims);
 
             user.IdentityId = userRecord.Uid;
 

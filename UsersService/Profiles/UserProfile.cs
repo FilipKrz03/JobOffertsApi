@@ -9,9 +9,9 @@ namespace UsersService.Profiles
         public UserProfile()
         {
             CreateMap<RegisterRequestDto, User>()
+                .ForMember(x => x.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(x => x.CreatedAt, opt => opt.Ignore())
                 .ForMember(x => x.UpdatedAt, opt => opt.Ignore())
-                .ForMember(x => x.Id, opt => opt.Ignore())
                 .ForMember(x => x.IdentityId, opt => opt.Ignore())
                 .ForMember(x => x.FavouriteOffers, opt => opt.Ignore());
         }

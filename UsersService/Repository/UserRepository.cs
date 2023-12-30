@@ -10,18 +10,11 @@ namespace UsersService.Repository
     {
         public UserRepository(UsersDbContext context):base(context) { }
 
-        public async Task<bool> UserFavouriteOfferExist(Guid offerId, string userIdentity)
+        public async Task<bool> UserFavouriteOfferExist(Guid offerId, Guid userId)
         {
             return await Query()
-                .Where(u => u.IdentityId == userIdentity && u.FavouriteOffers.Any(e => e.OfferId == offerId))
+                .Where(u => u.Id == userId && u.FavouriteOffers.Any(e => e.OfferId == offerId))
                 .AnyAsync();
-        }
-
-        public async Task<User?> GetByIdentityId(string identityId)
-        {
-            return await Query()
-                .Where(x => x.IdentityId == identityId)
-                .FirstOrDefaultAsync();
         }
     }
 }

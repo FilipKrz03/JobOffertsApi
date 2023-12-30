@@ -25,7 +25,7 @@ namespace UsersService.Services
             _favouriteOfferRepositroy = favouriteOfferRepositroy;
         }
 
-        public async Task CreateUserFavouriteOffer(string userId, Guid offerId)
+        public async Task CreateUserFavouriteOffer(Guid userId, Guid offerId)
         {
             bool userOfferExist = await _userRepository.UserFavouriteOfferExist(offerId, userId);
 
@@ -45,7 +45,7 @@ namespace UsersService.Services
                     ($"Job offer with id {offerId} do not exist in our database");
             }
 
-            var user = await _userRepository.GetByIdentityId(userId);
+            var user = await _userRepository.GetById(userId);
 
             if(user == null)
             {
@@ -61,6 +61,11 @@ namespace UsersService.Services
             _favouriteOfferRepositroy.Insert(offer);
 
             await _favouriteOfferRepositroy.SaveChangesAsync();   
+        }
+
+        public async Task DeleteUserFavouriteOffer(Guid offerId , string userIdentity)
+        {
+         
         }
     }
 }

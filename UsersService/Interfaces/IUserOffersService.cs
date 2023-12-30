@@ -4,6 +4,6 @@ namespace UsersService.Interfaces
 {
     public interface IUserOffersService
     {
-        Task CreateUserFavouriteOffer(string userId, Guid offerId);
+        Task CreateUserFavouriteOffer(Guid userId, Guid offerId);
     }
 }
