@@ -21,7 +21,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddTransient<UsersService.Interfaces.IAuthenticationService, UsersService.Services.AuthenticationService>();
-builder.Services.AddTransient<IUserOffersService, UsersService.Services.UserOfferService>();
+builder.Services.AddTransient<IFavouriteOfferService, UsersService.Services.FavouriteOfferService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IFavouriteOfferRepositroy, FavouriteOfferRepository>();
 

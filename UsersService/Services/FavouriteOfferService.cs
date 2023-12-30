@@ -9,14 +9,14 @@ using JobOffersApiCore.Exceptions;
 namespace UsersService.Services
 {
 
-    public class UserOfferService : IUserOffersService
+    public class FavouriteOfferService : IFavouriteOfferService
     {
         private readonly IUserRepository _userRepository;
         private readonly IFavouriteOfferRepositroy _favouriteOfferRepositroy;
         private readonly IMapper _mapper;
         private readonly HttpClient _httpClient;
 
-        public UserOfferService(IUserRepository userRepository, IMapper mapper,
+        public FavouriteOfferService(IUserRepository userRepository, IMapper mapper,
             HttpClient httpClient, IFavouriteOfferRepositroy favouriteOfferRepositroy)
         {
             _userRepository = userRepository;
@@ -25,7 +25,7 @@ namespace UsersService.Services
             _favouriteOfferRepositroy = favouriteOfferRepositroy;
         }
 
-        public async Task CreateUserFavouriteOffer(Guid userId, Guid offerId)
+        public async Task CreateFavouriteOffer(Guid userId, Guid offerId)
         {
             bool userOfferExist = await _userRepository.UserFavouriteOfferExist(offerId, userId);
 
@@ -63,7 +63,7 @@ namespace UsersService.Services
             await _favouriteOfferRepositroy.SaveChangesAsync();
         }
 
-        public async Task DeleteUserFavouriteOffer(Guid userId, Guid favouriteOfferId)
+        public async Task DeleteFavouriteOffer(Guid userId, Guid favouriteOfferId)
         {
             var userFavouriteOffer = await _favouriteOfferRepositroy.GetUserFavouriteOffer(userId, favouriteOfferId);
 
