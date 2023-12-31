@@ -25,7 +25,7 @@ namespace UsersService.Services
 
         public async Task CreateFavouriteOffer(Guid userId, Guid offerId)
         {
-            bool userOfferExist = await _userRepository.UserFavouriteOfferExist(offerId, userId);
+            bool userOfferExist = await _favouriteOfferRepositroy.UserFavouriteOfferExist(offerId, userId);
 
             if (userOfferExist)
             {
@@ -48,9 +48,9 @@ namespace UsersService.Services
                     ($"Job offer with id {offerId} do not exist in our database");
             }
 
-            var user = await _userRepository.GetById(userId);
+            bool userExist = await _userRepository.EntityExistAsync(userId);
 
-            if (user == null)
+            if (userExist == false)
             {
                 throw new ResourceNotFoundException("User with id from your token do not exist !");
             }
@@ -58,7 +58,7 @@ namespace UsersService.Services
             FavouriteOffer offer = new()
             {
                 OfferId = offerId,
-                UserId = user.Id,
+                UserId = userId
             };
 
             _favouriteOfferRepositroy.Insert(offer);
