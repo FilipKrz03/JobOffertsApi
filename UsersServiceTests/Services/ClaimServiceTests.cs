@@ -40,7 +40,7 @@ namespace UsersServiceTests.Services
             _userMock.Setup(x => x.FindFirst(It.IsAny<string>()))
                  .Returns((Claim)null!);
 
-            _claimService.Invoking(m => m.GetUserIdentityIdFromTokenClaim())
+            _claimService.Invoking(m => m.GetUserIdFromTokenClaim())
                 .Should()
                 .Throw<InvalidAccesTokenException>();
         }
@@ -53,7 +53,7 @@ namespace UsersServiceTests.Services
             _userMock.Setup(x => x.FindFirst(It.IsAny<string>()))
                 .Returns(claimToReturn);
 
-            var result = _claimService.GetUserIdentityIdFromTokenClaim();
+            var result = _claimService.GetUserIdFromTokenClaim();
 
             result.Should().Be(claimToReturn.Value);
         }
