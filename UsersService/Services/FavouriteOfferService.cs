@@ -13,14 +13,12 @@ namespace UsersService.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IFavouriteOfferRepositroy _favouriteOfferRepositroy;
-        private readonly IMapper _mapper;
         private readonly HttpClient _httpClient;
 
-        public FavouriteOfferService(IUserRepository userRepository, IMapper mapper,
+        public FavouriteOfferService(IUserRepository userRepository,
             HttpClient httpClient, IFavouriteOfferRepositroy favouriteOfferRepositroy)
         {
             _userRepository = userRepository;
-            _mapper = mapper;
             _httpClient = httpClient;
             _favouriteOfferRepositroy = favouriteOfferRepositroy;
         }
@@ -37,9 +35,14 @@ namespace UsersService.Services
 
             var offerExistUri = Environment.GetEnvironmentVariable("OfferExistUri");
 
-            var request = await _httpClient.GetAsync($"{offerExistUri}{offerId}");
+            HttpRequestMessage request =
+                new HttpRequestMessage(HttpMethod.Get, $"{offerExistUri}{offerId}");
 
-            if (!request.IsSuccessStatusCode)
+            request.Headers.Add("ApiKey", Environment.GetEnvironmentVariable("ApiKey"));
+
+            var response = await _httpClient.SendAsync(request);
+
+            if (!response.IsSuccessStatusCode)
             {
                 throw new ResourceNotFoundException
                     ($"Job offer with id {offerId} do not exist in our database");
