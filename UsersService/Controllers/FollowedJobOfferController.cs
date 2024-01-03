@@ -35,5 +35,13 @@ namespace UsersService.Controllers
             return NoContent();
         }
 
+        [HttpGet("{followedJobOfferId}")]
+        public async Task<IActionResult> GetFollowedJobOffer(Guid followedJobOfferId)
+        {
+            var jobOffer = await _followedJobOfferService.GetFollowedJobOffer(followedJobOfferId);
+
+            return Ok(jobOffer);
+        }
+
     }
 }

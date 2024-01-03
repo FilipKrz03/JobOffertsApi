@@ -1,4 +1,6 @@
-﻿using JobOffersApiCore.Exceptions;
+﻿using AutoMapper;
+using JobOffersApiCore.Exceptions;
+using UsersService.Dto;
 using UsersService.Entities;
 using UsersService.Exceptions;
 using UsersService.Interfaces;
@@ -13,15 +15,17 @@ namespace UsersService.Services
         private readonly IJobOfferRepository _jobOfferRepository;
         private readonly IClaimService _claimService;
         private readonly IJobOfferUserJoinRepository _jobOfferUserJoinRepository;
+        private readonly IMapper _mapper;
 
         public FollowedJobOfferService(IUserRepository userRepository,
             IJobOfferRepository jobOfferRepository, IClaimService claimService,
-            IJobOfferUserJoinRepository jobOfferUserJoinRepository)
+            IJobOfferUserJoinRepository jobOfferUserJoinRepository , IMapper mapper)
         {
             _userRepository = userRepository;
             _jobOfferRepository = jobOfferRepository;
             _claimService = claimService;
             _jobOfferUserJoinRepository = jobOfferUserJoinRepository;
+            _mapper = mapper;
         }
 
         public async Task AddFolowedJobOffer(Guid offerId)
@@ -73,6 +77,22 @@ namespace UsersService.Services
             _jobOfferUserJoinRepository.RemoveUserJobOffer(jobOfferUser);
 
             await _jobOfferUserJoinRepository.SaveChangesAsync();
+        }
+
+        public async Task<JobOfferDetailResponseDto?> GetFollowedJobOffer(Guid followedJobOfferId)
+        {
+            var userId = _claimService.GetUserIdFromTokenClaim();
+
+            var userJobOffer = await _jobOfferRepository.
+                GetUserJobOffer(userId , followedJobOfferId);
+
+            if(userJobOffer == null)
+            {
+                throw new ResourceNotFoundException
+                    ($"Job offer with id {followedJobOfferId} do not exist in user followed offers");
+            }
+
+            return _mapper.Map<JobOfferDetailResponseDto>(userJobOffer);
         }
     }
 }
