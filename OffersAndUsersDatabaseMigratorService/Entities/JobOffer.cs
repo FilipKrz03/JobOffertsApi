@@ -36,6 +36,6 @@ namespace OffersAndUsersDatabaseMigratorService.Entities
 
         public List<User> Users { get; set; } = new();
         public List<JobOfferUser> JobOfferUsers { get; set; } = new();  
-   
+
     }
 }

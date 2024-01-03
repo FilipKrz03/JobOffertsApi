@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OffersAndUsersDatabaseMigratorService.DbContexts;
 
@@ -11,9 +12,10 @@ using OffersAndUsersDatabaseMigratorService.DbContexts;
 namespace OffersAndUsersDatabaseMigratorService.Migrations
 {
     [DbContext(typeof(OffersApiDbContext))]
-    partial class OffersApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240103231738_AddedManyToManyWithTecAndUsers")]
+    partial class AddedManyToManyWithTecAndUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

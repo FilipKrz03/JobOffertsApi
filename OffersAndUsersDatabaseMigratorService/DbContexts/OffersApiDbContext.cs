@@ -15,6 +15,8 @@ namespace OffersAndUsersDatabaseMigratorService.DbContexts
 
         public DbSet<JobOfferUser> JobOfferUsers { get; set; } = null!;
 
+        public DbSet<TechnologyUser> TechnologyUsers { get; set; } = null!;
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,8 +24,11 @@ namespace OffersAndUsersDatabaseMigratorService.DbContexts
                   .HasMany(e => e.Users)
                   .WithMany(e => e.JobOffers)
                   .UsingEntity<JobOfferUser>();
+                  
+            modelBuilder.Entity<Technology>()
+                .HasMany(e => e.Users)
+                .WithMany(e => e.Technologies)
+                .UsingEntity<TechnologyUser>();
         }
-
-
     }
 }
