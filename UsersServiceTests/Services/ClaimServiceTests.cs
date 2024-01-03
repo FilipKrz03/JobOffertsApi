@@ -48,7 +48,9 @@ namespace UsersServiceTests.Services
         [Fact]
         public void Service_Should_ReturnClaimValue_WhenResultIsNotNull()
         {
-            var claimToReturn = new Claim("user_id", "someValue");
+            Guid idToReturn = new Guid();
+
+            var claimToReturn = new Claim("user_id", idToReturn.ToString());
 
             _userMock.Setup(x => x.FindFirst(It.IsAny<string>()))
                 .Returns(claimToReturn);
