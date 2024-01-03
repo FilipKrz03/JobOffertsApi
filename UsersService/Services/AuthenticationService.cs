@@ -12,6 +12,7 @@ namespace UsersService.Services
 
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+
         public AuthenticationService(IUserRepository userRepository , IMapper mapper)
         {
             _userRepository = userRepository;

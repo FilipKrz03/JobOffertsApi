@@ -3,7 +3,5 @@ using UsersService.Entities;
 
 namespace UsersService.Interfaces
 {
-    public interface IUserRepository : IBaseRepository<User>
-    {
-    }
+    public interface IUserRepository : IBaseRepository<User> { }
 }

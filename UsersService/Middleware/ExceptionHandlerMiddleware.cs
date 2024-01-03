@@ -7,6 +7,7 @@ namespace UsersService.Middleware
 {
     public class ExceptionHandlerMiddleware : IMiddleware
     {
+
         private readonly ILogger<ExceptionHandlerMiddleware> _logger;
 
         public ExceptionHandlerMiddleware(ILogger<ExceptionHandlerMiddleware> logger)
