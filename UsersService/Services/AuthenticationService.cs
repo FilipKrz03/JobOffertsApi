@@ -39,8 +39,6 @@ namespace UsersService.Services
 
             await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(userRecord.Uid , claims);
 
-            user.IdentityId = userRecord.Uid;
-
             _userRepository.Insert(user);
 
             await _userRepository.SaveChangesAsync();

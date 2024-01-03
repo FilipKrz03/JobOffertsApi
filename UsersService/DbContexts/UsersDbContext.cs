@@ -7,26 +7,12 @@ namespace UsersService.DbContexts
 {
     public class UsersDbContext : DbContext
     {
-        public UsersDbContext(DbContextOptions<UsersDbContext> options , ILogger<UsersDbContext> logger):base(options)
-        {
-            try
-            {
-                var databaseCreator = Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
+        public UsersDbContext(DbContextOptions<UsersDbContext> options) : base(options) { }
 
-                if (databaseCreator != null)
-                {
-                    if (!databaseCreator.CanConnect()) databaseCreator.Create();
-                    if (!databaseCreator.HasTables()) databaseCreator.CreateTables();
-                }
-
-            }
-            catch(Exception ex)
-            {
-                logger.LogError("Exception occured in Users context {ex}", ex);
-            }
-        }
+        public DbSet<JobOffer> JobOffers { get; set; } = null!;
 
         public DbSet<User> Users { get; set; } = null!;
-        public DbSet<FavouriteOffer> FavouriteOffers { get; set; } = null!;
+
+        public DbSet<Technology> Technologies { get; set; } = null!;
     }
 }
