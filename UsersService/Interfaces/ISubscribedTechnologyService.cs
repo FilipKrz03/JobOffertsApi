@@ -2,5 +2,6 @@
 {
     public interface ISubscribedTechnologyService
     {
+        Task AddSubscribedTechnology(Guid technologyId);
     }
 }

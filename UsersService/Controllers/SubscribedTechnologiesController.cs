@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UsersService.Dto;
+using UsersService.Interfaces;
 
 namespace UsersService.Controllers
 {
@@ -10,10 +11,20 @@ namespace UsersService.Controllers
     [Authorize]
     public class SubscribedTechnologiesController : ControllerBase
     {
-        [HttpPost]
-        public async Task AddSubscribedTechnology([FromBody]SubscribedTechnologyRequestDto request)
-        {
 
+        private readonly ISubscribedTechnologyService _subscribedTechnologyService;
+
+        public SubscribedTechnologiesController(ISubscribedTechnologyService subscribedTechnologyService)
+        {
+            _subscribedTechnologyService = subscribedTechnologyService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddSubscribedTechnology([FromBody]SubscribedTechnologyRequestDto request)
+        {
+            await _subscribedTechnologyService.AddSubscribedTechnology(request.TechnologyId);
+
+            return StatusCode(201);
         }
     }
 }
