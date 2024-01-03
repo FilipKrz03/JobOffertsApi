@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using JobOffersApiCore.Common;
 using JobOffersApiCore.Exceptions;
+using System.Linq.Expressions;
 using UsersService.Dto;
 using UsersService.Entities;
 using UsersService.Exceptions;
@@ -19,7 +21,7 @@ namespace UsersService.Services
 
         public FollowedJobOfferService(IUserRepository userRepository,
             IJobOfferRepository jobOfferRepository, IClaimService claimService,
-            IJobOfferUserJoinRepository jobOfferUserJoinRepository , IMapper mapper)
+            IJobOfferUserJoinRepository jobOfferUserJoinRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _jobOfferRepository = jobOfferRepository;
@@ -66,9 +68,9 @@ namespace UsersService.Services
             var userId = _claimService.GetUserIdFromTokenClaim();
 
             var jobOfferUser = await _jobOfferUserJoinRepository
-                .GetUserJobOfferAsync(userId , followedJobOfferId);
+                .GetUserJobOfferJoinAsync(userId, followedJobOfferId);
 
-            if(jobOfferUser == null)
+            if (jobOfferUser == null)
             {
                 throw new ResourceNotFoundException
                     ("Job offer already do not exist on user followed offers");
@@ -84,15 +86,36 @@ namespace UsersService.Services
             var userId = _claimService.GetUserIdFromTokenClaim();
 
             var userJobOffer = await _jobOfferRepository.
-                GetUserJobOffer(userId , followedJobOfferId);
+                GetUserJobOffer(userId, followedJobOfferId);
 
-            if(userJobOffer == null)
+            if (userJobOffer == null)
             {
                 throw new ResourceNotFoundException
                     ($"Job offer with id {followedJobOfferId} do not exist in user followed offers");
             }
 
             return _mapper.Map<JobOfferDetailResponseDto>(userJobOffer);
+        }
+
+        public async Task<PagedList<JobOfferBasicResponseDto>>
+            GetFollowedJobOffers(ResourceParamethers resourceParamethers)
+        {
+            var usedId = _claimService.GetUserIdFromTokenClaim();
+
+            Expression<Func<JobOffer, object>> keySelector = resourceParamethers.SortColumn?.ToLower() switch
+            {
+                "title" => jobOffer => jobOffer.OfferTitle,
+                "link" => jobOffer => jobOffer.OfferLink,
+                "company" => jobOffer => jobOffer.OfferCompany,
+                "localization" => jobOffer => jobOffer.Localization,
+                "earnings" => jobOffer => jobOffer.EarningsFrom ?? 0,
+                _ => jobOffer => jobOffer.CreatedAt!
+            };
+
+            var userOffersPagedList = await _jobOfferRepository
+                .GetUserJobOffersAsync(keySelector, resourceParamethers, usedId);
+
+            return _mapper.Map<PagedList<JobOfferBasicResponseDto>>(userOffersPagedList);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using UsersService.Dto;
+﻿using JobOffersApiCore.Common;
+using UsersService.Dto;
 
 namespace UsersService.Interfaces
 {
@@ -7,5 +8,7 @@ namespace UsersService.Interfaces
         Task AddFolowedJobOffer(Guid offerId);
         Task DeleteFollowedJobOffer(Guid followedJobOfferId);
         Task<JobOfferDetailResponseDto?> GetFollowedJobOffer(Guid followedJobOfferId);
+        Task<PagedList<JobOfferBasicResponseDto>>
+            GetFollowedJobOffers(ResourceParamethers resourceParamethers);
     }
 }

@@ -15,7 +15,6 @@ namespace UsersService.Repository
             _context = context;
         }
 
-
         public async Task<bool> UserJobOfferExistAsync(Guid userId , Guid jobId)
         {
             return await _context.JobOfferUsers
@@ -23,7 +22,7 @@ namespace UsersService.Repository
                 .AnyAsync();
         }
 
-        public async Task<JobOfferUser?> GetUserJobOfferAsync(Guid userId , Guid jobId)
+        public async Task<JobOfferUser?> GetUserJobOfferJoinAsync(Guid userId , Guid jobId)
         {
             return await _context.JobOfferUsers
                 .Where(e => e.UserId == userId && e.JobOfferId == jobId)

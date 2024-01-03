@@ -11,6 +11,9 @@ namespace UsersService.Profiles
             CreateMap<JobOffer, JobOfferDetailResponseDto>()
                .ForMember(dest => dest.PaymentRange, opt =>
                opt.MapFrom(src => PaymentRangeStringConverter(src.EarningsFrom, src.EarningsTo)));
+               CreateMap<JobOffer, JobOfferBasicResponseDto>()
+                .ForMember(dest => dest.PaymentRange, opt =>
+                opt.MapFrom(src => PaymentRangeStringConverter(src.EarningsFrom, src.EarningsTo)));
         }
         private string? PaymentRangeStringConverter(int? earningsFrom, int? earningsTo)
         {

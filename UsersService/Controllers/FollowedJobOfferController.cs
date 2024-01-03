@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using JobOffersApiCore.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 using UsersService.Dto;
+using UsersService.Entities;
 using UsersService.Interfaces;
 
 namespace UsersService.Controllers
@@ -41,6 +44,14 @@ namespace UsersService.Controllers
             var jobOffer = await _followedJobOfferService.GetFollowedJobOffer(followedJobOfferId);
 
             return Ok(jobOffer);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetFollowedJobOffers([FromQuery] ResourceParamethers resourceParamethers)
+        {
+            var result = await _followedJobOfferService.GetFollowedJobOffers(resourceParamethers);
+
+            return Ok(result);
         }
 
     }
