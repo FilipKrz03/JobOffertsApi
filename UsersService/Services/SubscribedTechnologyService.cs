@@ -53,5 +53,10 @@ namespace UsersService.Services
 
             await _userRepository.SaveChangesAsync();
         }
+
+        public async Task DeleteSubscribedTechnology(Guid subscribedTechnologyId)
+        {
+            
+        }
     }
 }
