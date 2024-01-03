@@ -24,6 +24,7 @@ builder.Services.AddTransient<IJobOfferRepository, JobOfferRepository>();
 builder.Services.AddTransient<UsersService.Interfaces.IAuthenticationService, UsersService.Services.AuthenticationService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IFollowedJobOfferService, FollowedJobOfferService>();
+builder.Services.AddTransient<IJobOfferUserJoinRepository , JobOfferUserJoinRepository>();
 
 builder.Services.AddDbContext<UsersDbContext>(options =>
 {

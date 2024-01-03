@@ -12,13 +12,16 @@ namespace UsersService.Services
         private readonly IUserRepository _userRepository;
         private readonly IJobOfferRepository _jobOfferRepository;
         private readonly IClaimService _claimService;
+        private readonly IJobOfferUserJoinRepository _jobOfferUserJoinRepository;
 
         public FollowedJobOfferService(IUserRepository userRepository , 
-            IJobOfferRepository jobOfferRepository , IClaimService claimService)
+            IJobOfferRepository jobOfferRepository , IClaimService claimService , 
+            IJobOfferUserJoinRepository jobOfferUserJoinRepository)
         {
             _userRepository = userRepository;
             _jobOfferRepository = jobOfferRepository;
             _claimService = claimService;
+            _jobOfferUserJoinRepository = jobOfferUserJoinRepository;
         }
 
         public async Task AddFolowedJobOffer(Guid offerId)
@@ -39,6 +42,14 @@ namespace UsersService.Services
             {
                 throw new ResourceNotFoundException
                     ($"Job offer with id {offerId} not found in our database");
+            }
+
+            bool userJobOfferExist = await _jobOfferUserJoinRepository.UserJobOfferExist(userId, offerId);
+          
+            if (userJobOfferExist)
+            {
+                throw new ResourceAlreadyExistException
+                    ($"You alredy have offer with id {offerId} in your following offers");
             }
 
             user.JobOffers.Add(jobOffer);
