@@ -50,7 +50,6 @@ namespace OffersAndUsersDatabaseMigratorService.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdentityId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -59,49 +58,49 @@ namespace OffersAndUsersDatabaseMigratorService.Migrations
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
-            //migrationBuilder.CreateTable(
-            //    name: "JobOfferTechnology",
-            //    columns: table => new
-            //    {
-            //        JobOffersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-            //        TechnologiesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-            //    },
-            //    constraints: table =>
-            //    {
-            //        table.PrimaryKey("PK_JobOfferTechnology", x => new { x.JobOffersId, x.TechnologiesId });
-            //        table.ForeignKey(
-            //            name: "FK_JobOfferTechnology_JobOffers_JobOffersId",
-            //            column: x => x.JobOffersId,
-            //            principalTable: "JobOffers",
-            //            principalColumn: "Id",
-            //            onDelete: ReferentialAction.Cascade);
-            //        table.ForeignKey(
-            //            name: "FK_JobOfferTechnology_Technologies_TechnologiesId",
-            //            column: x => x.TechnologiesId,
-            //            principalTable: "Technologies",
-            //            principalColumn: "Id",
-            //            onDelete: ReferentialAction.Cascade);
-            //    });
-
             migrationBuilder.CreateTable(
-                name: "JobOfferUser",
+                name: "JobOfferTechnology",
                 columns: table => new
                 {
-                    FollowingJobOffersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FollowingUsersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    JobOffersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TechnologiesId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobOfferUser", x => new { x.FollowingJobOffersId, x.FollowingUsersId });
+                    table.PrimaryKey("PK_JobOfferTechnology", x => new { x.JobOffersId, x.TechnologiesId });
                     table.ForeignKey(
-                        name: "FK_JobOfferUser_JobOffers_FollowingJobOffersId",
-                        column: x => x.FollowingJobOffersId,
+                        name: "FK_JobOfferTechnology_JobOffers_JobOffersId",
+                        column: x => x.JobOffersId,
                         principalTable: "JobOffers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_JobOfferUser_Users_FollowingUsersId",
-                        column: x => x.FollowingUsersId,
+                        name: "FK_JobOfferTechnology_Technologies_TechnologiesId",
+                        column: x => x.TechnologiesId,
+                        principalTable: "Technologies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JobOfferUsers",
+                columns: table => new
+                {
+                    JobOfferId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobOfferUsers", x => new { x.JobOfferId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_JobOfferUsers_JobOffers_JobOfferId",
+                        column: x => x.JobOfferId,
+                        principalTable: "JobOffers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_JobOfferUsers_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -113,9 +112,9 @@ namespace OffersAndUsersDatabaseMigratorService.Migrations
                 column: "TechnologiesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobOfferUser_FollowingUsersId",
-                table: "JobOfferUser",
-                column: "FollowingUsersId");
+                name: "IX_JobOfferUsers_UserId",
+                table: "JobOfferUsers",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -124,7 +123,7 @@ namespace OffersAndUsersDatabaseMigratorService.Migrations
                 name: "JobOfferTechnology");
 
             migrationBuilder.DropTable(
-                name: "JobOfferUser");
+                name: "JobOfferUsers");
 
             migrationBuilder.DropTable(
                 name: "Technologies");

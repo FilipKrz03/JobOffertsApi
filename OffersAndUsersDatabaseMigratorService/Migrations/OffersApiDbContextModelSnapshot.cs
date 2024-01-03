@@ -37,21 +37,6 @@ namespace OffersAndUsersDatabaseMigratorService.Migrations
                     b.ToTable("JobOfferTechnology");
                 });
 
-            modelBuilder.Entity("JobOfferUser", b =>
-                {
-                    b.Property<Guid>("FollowingJobOffersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("FollowingUsersId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("FollowingJobOffersId", "FollowingUsersId");
-
-                    b.HasIndex("FollowingUsersId");
-
-                    b.ToTable("JobOfferUser");
-                });
-
             modelBuilder.Entity("OffersAndUsersDatabaseMigratorService.Entities.JobOffer", b =>
                 {
                     b.Property<Guid>("Id")
@@ -96,6 +81,21 @@ namespace OffersAndUsersDatabaseMigratorService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("JobOffers");
+                });
+
+            modelBuilder.Entity("OffersAndUsersDatabaseMigratorService.Entities.JobOfferUser", b =>
+                {
+                    b.Property<Guid>("JobOfferId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("JobOfferId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("JobOfferUsers");
                 });
 
             modelBuilder.Entity("OffersAndUsersDatabaseMigratorService.Entities.Technology", b =>
@@ -155,19 +155,33 @@ namespace OffersAndUsersDatabaseMigratorService.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("JobOfferUser", b =>
+            modelBuilder.Entity("OffersAndUsersDatabaseMigratorService.Entities.JobOfferUser", b =>
                 {
-                    b.HasOne("OffersAndUsersDatabaseMigratorService.Entities.JobOffer", null)
-                        .WithMany()
-                        .HasForeignKey("FollowingJobOffersId")
+                    b.HasOne("OffersAndUsersDatabaseMigratorService.Entities.JobOffer", "JobOffer")
+                        .WithMany("JobOfferUsers")
+                        .HasForeignKey("JobOfferId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OffersAndUsersDatabaseMigratorService.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("FollowingUsersId")
+                    b.HasOne("OffersAndUsersDatabaseMigratorService.Entities.User", "User")
+                        .WithMany("JobOfferUsers")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("JobOffer");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("OffersAndUsersDatabaseMigratorService.Entities.JobOffer", b =>
+                {
+                    b.Navigation("JobOfferUsers");
+                });
+
+            modelBuilder.Entity("OffersAndUsersDatabaseMigratorService.Entities.User", b =>
+                {
+                    b.Navigation("JobOfferUsers");
                 });
 #pragma warning restore 612, 618
         }
