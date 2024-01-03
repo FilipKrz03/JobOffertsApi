@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using System.Linq.Expressions;
 using UsersService.Dto;
 using UsersService.Entities;
@@ -51,6 +52,17 @@ namespace UsersService.Controllers
         {
             var result = await _followedJobOfferService.GetFollowedJobOffers(resourceParamethers);
 
+            var paginationMetadata = new
+            {
+                totalCount = result.TotalCount , 
+                pageSize = result.PageSize , 
+                hasPrevious = result.HasPrevious ,
+                hasNext = result.HasNext ,
+                totalPages = result.TotalPages
+            };
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
+            
             return Ok(result);
         }
 
