@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JobOffersMapperService.Migrations
 {
     [DbContext(typeof(OffersBaseContext))]
-    [Migration("20231211181036_InitalMigration")]
-    partial class InitalMigration
+    [Migration("20240103025246_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,6 +30,9 @@ namespace JobOffersMapperService.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("OfferCompany")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -41,6 +44,9 @@ namespace JobOffersMapperService.Migrations
                     b.Property<string>("OfferTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

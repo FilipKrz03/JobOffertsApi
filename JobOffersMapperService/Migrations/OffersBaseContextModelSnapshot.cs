@@ -28,6 +28,9 @@ namespace JobOffersMapperService.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("OfferCompany")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -39,6 +42,9 @@ namespace JobOffersMapperService.Migrations
                     b.Property<string>("OfferTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

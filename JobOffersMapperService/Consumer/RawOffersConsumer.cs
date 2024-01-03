@@ -1,6 +1,7 @@
 ﻿using JobOffersApiCore.BaseConfigurations;
 using JobOffersMapperService.Interfaces;
 using JobOffersMapperService.Props;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
@@ -17,14 +18,14 @@ namespace JobOffersMapperService.Consumer
     public class RawOffersConsumer : RabbitBaseConfig , IHostedService
     {
 
-        private readonly IRawJobOfferService _rawOffersService;
+        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<RawOffersConsumer> _logger;    
 
-        public RawOffersConsumer(IRawJobOfferService rawOfferService , ILogger<RawOffersConsumer> logger)
+        public RawOffersConsumer(IServiceProvider serviceProvider , ILogger<RawOffersConsumer> logger)
             :base(Environment.GetEnvironmentVariable("RabbitConnectionUri")! , RabbitMqJobHandleEventProps.JOB_HANDLE_CLIENT_PROVIDED_NAME , true)
         {
-            _rawOffersService = rawOfferService;
             _logger = logger;
+            _serviceProvider = serviceProvider;
 
             _chanel.ExchangeDeclare(RabbitMqJobHandleEventProps.JOB_OFFER_EXCHANGE, ExchangeType.Direct);
             _chanel.QueueDeclare(RabbitMqJobHandleEventProps.JOB_HANDLE_QUEUE, false, false, false);
@@ -39,11 +40,15 @@ namespace JobOffersMapperService.Consumer
 
                 string body = Encoding.UTF8.GetString(ea.Body.ToArray());
 
-                await _rawOffersService.HandleRawOffer(body);
+                using (IServiceScope scope = _serviceProvider.CreateScope())
+                {
+                    IRawJobOfferService rawOffersService = 
+                        scope.ServiceProvider.GetRequiredService<IRawJobOfferService>();
+
+                    await rawOffersService.HandleRawOffer(body);
+                };
             };
-
             _chanel.BasicConsume(RabbitMqJobHandleEventProps.JOB_HANDLE_QUEUE, true, consumer);
-
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
