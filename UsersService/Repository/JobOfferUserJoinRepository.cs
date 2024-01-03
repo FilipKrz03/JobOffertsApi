@@ -16,14 +16,14 @@ namespace UsersService.Repository
         }
 
 
-        public async Task<bool> UserJobOfferExist(Guid userId , Guid jobId)
+        public async Task<bool> UserJobOfferExistAsync(Guid userId , Guid jobId)
         {
             return await _context.JobOfferUsers
                 .Where(j => j.JobOfferId == jobId && j.UserId == userId)
                 .AnyAsync();
         }
 
-        public async Task<JobOfferUser?> GetUserJobOffer(Guid userId , Guid jobId)
+        public async Task<JobOfferUser?> GetUserJobOfferAsync(Guid userId , Guid jobId)
         {
             return await _context.JobOfferUsers
                 .Where(e => e.UserId == userId && e.JobOfferId == jobId)

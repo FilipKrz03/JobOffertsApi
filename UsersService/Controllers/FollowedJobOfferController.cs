@@ -28,9 +28,9 @@ namespace UsersService.Controllers
         }
 
         [HttpDelete("{followedJobOfferId}")]
-        public async Task<IActionResult> DeleteFollowedJobOffer([FromQuery] Guid followedJobOfferId)
+        public async Task<IActionResult> DeleteFollowedJobOffer(Guid followedJobOfferId)
         {
-
+            await _followedJobOfferService.DeleteFollowedJobOffer(followedJobOfferId);
 
             return NoContent();
         }

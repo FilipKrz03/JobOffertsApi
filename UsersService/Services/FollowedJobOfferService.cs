@@ -14,8 +14,8 @@ namespace UsersService.Services
         private readonly IClaimService _claimService;
         private readonly IJobOfferUserJoinRepository _jobOfferUserJoinRepository;
 
-        public FollowedJobOfferService(IUserRepository userRepository , 
-            IJobOfferRepository jobOfferRepository , IClaimService claimService , 
+        public FollowedJobOfferService(IUserRepository userRepository,
+            IJobOfferRepository jobOfferRepository, IClaimService claimService,
             IJobOfferUserJoinRepository jobOfferUserJoinRepository)
         {
             _userRepository = userRepository;
@@ -30,7 +30,7 @@ namespace UsersService.Services
 
             var user = await _userRepository.GetById(userId);
 
-            if(user == null)
+            if (user == null)
             {
                 throw new InvalidAccesTokenException
                     ("User with id from your acces token do not exist provide valid token !");
@@ -44,8 +44,8 @@ namespace UsersService.Services
                     ($"Job offer with id {offerId} not found in our database");
             }
 
-            bool userJobOfferExist = await _jobOfferUserJoinRepository.UserJobOfferExist(userId, offerId);
-          
+            bool userJobOfferExist = await _jobOfferUserJoinRepository.UserJobOfferExistAsync(userId, offerId);
+
             if (userJobOfferExist)
             {
                 throw new ResourceAlreadyExistException
@@ -59,8 +59,20 @@ namespace UsersService.Services
 
         public async Task DeleteFollowedJobOffer(Guid followedJobOfferId)
         {
-          
-           
+            var userId = _claimService.GetUserIdFromTokenClaim();
+
+            var jobOfferUser = await _jobOfferUserJoinRepository
+                .GetUserJobOfferAsync(userId , followedJobOfferId);
+
+            if(jobOfferUser == null)
+            {
+                throw new ResourceNotFoundException
+                    ("Job offer already do not exist on user followed offers");
+            }
+
+            _jobOfferUserJoinRepository.RemoveUserJobOffer(jobOfferUser);
+
+            await _jobOfferUserJoinRepository.SaveChangesAsync();
         }
     }
 }
