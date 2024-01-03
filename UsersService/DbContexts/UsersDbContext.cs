@@ -14,5 +14,15 @@ namespace UsersService.DbContexts
         public DbSet<User> Users { get; set; } = null!;
 
         public DbSet<Technology> Technologies { get; set; } = null!;
+
+        public DbSet<JobOfferUser> JobOfferUsers { get; set; } = null!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<JobOffer>()
+                  .HasMany(e => e.Users)
+                  .WithMany(e => e.JobOffers)
+                  .UsingEntity<JobOfferUser>();
+        }
     }
 }

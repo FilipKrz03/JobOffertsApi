@@ -41,9 +41,15 @@ namespace UsersService.Services
                     ($"Job offer with id {offerId} not found in our database");
             }
 
-            user.FollowingJobOffers.Add(jobOffer);
+            user.JobOffers.Add(jobOffer);
 
             await _userRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteFollowedJobOffer(Guid followedJobOfferId)
+        {
+          
+           
         }
     }
 }

@@ -27,5 +27,13 @@ namespace UsersService.Controllers
             return StatusCode(201);
         }
 
+        [HttpDelete("{followedJobOfferId}")]
+        public async Task<IActionResult> DeleteFollowedJobOffer([FromQuery] Guid followedJobOfferId)
+        {
+
+
+            return NoContent();
+        }
+
     }
 }

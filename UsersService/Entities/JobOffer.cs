@@ -29,6 +29,7 @@ namespace UsersService.Entities
 
         public List<Technology> Technologies { get; set; } = new();
 
-        public List<User> FollowingUsers { get; set; } = new();
+        public List<User> Users { get; set; } = new();
+        public List<JobOfferUser> JobOfferUsers { get; set; } = new();
     }
 }
