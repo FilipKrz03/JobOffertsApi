@@ -32,14 +32,21 @@ namespace UsersService.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> LoginUser([FromBody] LoginRequestDto request)
         {
-            var tokens = await _jwtProvider.GetForCredentialsAsync(request);
+            var tokensInfo = await _jwtProvider.GetForCredentialsAsync(request);
 
-            SetupRefreshTokenCookie(Response, tokens.RefreshToken);
+            var cookieOptions = new CookieOptions
+            {
+                Expires = DateTime.Now.AddHours(24),
+                HttpOnly = true,
+                Secure = true,
+            };
+
+            Response.Cookies.Append("RefreshToken", tokensInfo.RefreshToken, cookieOptions);
 
             var responseObject = new
             {
-                accessToken = tokens.Idtoken,
-                expiresIn = tokens.ExpiresIn
+                accessToken = tokensInfo.Idtoken,
+                expiresIn = tokensInfo.ExpiresIn
             };
 
             return Ok(responseObject);
@@ -58,8 +65,6 @@ namespace UsersService.Controllers
 
             var tokens = await _jwtProvider.GetForRefreshTokenAsync(refreshToken);
 
-            SetupRefreshTokenCookie(Response, refreshToken);
-
             var responseObject = new
             {
                 accessToken = tokens.Idtoken,
@@ -67,18 +72,6 @@ namespace UsersService.Controllers
             };
 
             return Ok(responseObject);
-        }
-
-        private void SetupRefreshTokenCookie(HttpResponse resposne, string refreshToken)
-        {
-            var cookieOptions = new CookieOptions
-            {
-                Expires = DateTime.Now.AddHours(24),
-                HttpOnly = true,
-                Secure = true,
-            };
-
-            resposne.Cookies.Append("RefreshToken", refreshToken, cookieOptions);
         }
     }
 }
