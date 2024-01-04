@@ -11,7 +11,6 @@ namespace UsersService.Profiles
             CreateMap<RegisterRequestDto, User>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
                 .ForMember(x => x.CreatedAt, opt => opt.Ignore())
-                .ForMember(x => x.UpdatedAt, opt => opt.Ignore())
                 .ForMember(x => x.JobOffers, opt => opt.Ignore())
                 .ForMember(x => x.JobOfferUsers, opt => opt.Ignore())
                 .ForMember(x => x.Technologies, opt => opt.Ignore())

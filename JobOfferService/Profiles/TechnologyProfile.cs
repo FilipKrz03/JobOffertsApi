@@ -13,8 +13,7 @@ namespace JobOffersService.Profiles
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.TechnologyName, opt => opt.MapFrom(
                     src => src))
-                   .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
-               .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore());
+                   .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
             CreateMap<Technology, TechnologyBasicResponse>();
             CreateMap<Technology, TechnologyDetailResponse>();
         }

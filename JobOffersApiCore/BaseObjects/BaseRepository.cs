@@ -28,6 +28,8 @@ namespace JobOffersApiCore.BaseObjects
 
         public void Insert(TEntity entity)
         {
+            entity.CreatedAt = DateTime.Now;
+
             _context.Set<TEntity>().Add(entity);
         }
 
