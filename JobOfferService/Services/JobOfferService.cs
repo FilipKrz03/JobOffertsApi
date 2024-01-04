@@ -44,6 +44,7 @@ namespace JobOffersService.Services
                 "company" => jobOffer => jobOffer.OfferCompany,
                 "localization" => jobOffer => jobOffer.Localization,
                 "earnings" => jobOffer => jobOffer.EarningsFrom ?? 0 , 
+                "seniority" => jobOffer => jobOffer.Seniority ,
                 _ => jobOffer => jobOffer.CreatedAt!
             };
             
