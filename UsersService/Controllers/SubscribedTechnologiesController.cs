@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using JobOffersApiCore.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using UsersService.Dto;
 using UsersService.Interfaces;
 
@@ -20,7 +22,7 @@ namespace UsersService.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddSubscribedTechnology([FromBody]SubscribedTechnologyRequestDto request)
+        public async Task<IActionResult> AddSubscribedTechnology([FromBody] SubscribedTechnologyRequestDto request)
         {
             await _subscribedTechnologyService.AddSubscribedTechnology(request.TechnologyId);
 
@@ -28,11 +30,31 @@ namespace UsersService.Controllers
         }
 
         [HttpDelete("{subscribedTechnologyId}")]
-        public async Task <IActionResult> DeleteSubscribedTechnology(Guid subscribedTechnologyId)
+        public async Task<IActionResult> DeleteSubscribedTechnology(Guid subscribedTechnologyId)
         {
             await _subscribedTechnologyService.DeleteSubscribedTechnology(subscribedTechnologyId);
 
             return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSubscribedTechnolgoy([FromQuery] ResourceParamethers resourceParamethers)
+        {
+            var result = await _subscribedTechnologyService.
+                GetSubscribedTechnologies(resourceParamethers);
+
+            var paginationMetadata = new
+            {
+                totalCount = result.TotalCount,
+                pageSize = result.PageSize,
+                hasPrevious = result.HasPrevious,
+                hasNext = result.HasNext,
+                totalPages = result.TotalPages
+            };
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
+
+            return Ok(result);
         }
     }
 }
