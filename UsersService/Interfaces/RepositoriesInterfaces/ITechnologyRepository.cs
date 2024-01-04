@@ -7,7 +7,7 @@ namespace UsersService.Interfaces.RepositoriesInterfaces
 {
     public interface ITechnologyRepository : IBaseRepository<Technology>
     {
-        Task<IEnumerable<Technology>> GetUserTechnologiesAsync
+        Task<PagedList<Technology>> GetUserTechnologiesAsync
            (ResourceParamethers resourceParamethers, Expression<Func<Technology, object>> keySelector, Guid userId);
     }
 }

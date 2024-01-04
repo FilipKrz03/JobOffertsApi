@@ -91,10 +91,10 @@ namespace UsersService.Services
                 _ => technology => technology.CreatedAt!
             };
 
-            var sortedAndFilteredUserOffers = await _tecnologyRepository
+            var sortedAndFilteredUserTechnologies = await _tecnologyRepository
                 .GetUserTechnologiesAsync(resourceParamethers, keySelector, userId);
 
-            return _mapper.Map<PagedList<TechnologyBasicResponseDto>>(sortedAndFilteredUserOffers);
+            return _mapper.Map<PagedList<TechnologyBasicResponseDto>>(sortedAndFilteredUserTechnologies);
         }
     }
 }

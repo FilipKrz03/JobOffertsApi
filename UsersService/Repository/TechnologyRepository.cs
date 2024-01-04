@@ -11,7 +11,7 @@ namespace UsersService.Repository
     {
         public TechnologyRepository(UsersDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<Technology>> GetUserTechnologiesAsync
+        public async Task<PagedList<Technology>> GetUserTechnologiesAsync
            (ResourceParamethers resourceParamethers, Expression<Func<Technology, object>> keySelector , Guid userId)
         {
             var query = Query();
