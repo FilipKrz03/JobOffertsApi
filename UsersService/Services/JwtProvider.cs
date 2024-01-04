@@ -2,7 +2,7 @@
 using FirebaseAdmin.Auth;
 using UsersService.Dto;
 using UsersService.Exceptions;
-using UsersService.Interfaces;
+using UsersService.Interfaces.ServicesInterfaces;
 
 namespace UsersService.Services
 {

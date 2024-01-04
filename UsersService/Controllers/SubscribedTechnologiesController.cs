@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using UsersService.Dto;
-using UsersService.Interfaces;
+using UsersService.Interfaces.ServicesInterfaces;
 
 namespace UsersService.Controllers
 {
@@ -43,14 +43,7 @@ namespace UsersService.Controllers
             var result = await _subscribedTechnologyService.
                 GetSubscribedTechnologies(resourceParamethers);
 
-            var paginationMetadata = new
-            {
-                totalCount = result.TotalCount,
-                pageSize = result.PageSize,
-                hasPrevious = result.HasPrevious,
-                hasNext = result.HasNext,
-                totalPages = result.TotalPages
-            };
+            var paginationMetadata = new PaginationMetadata<TechnologyBasicResponseDto>(result);
 
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
 

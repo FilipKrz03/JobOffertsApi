@@ -8,7 +8,6 @@ namespace JobOffersApiCore.Common
 {
     public class PaginationMetadata<T>
     {
-
         public int PageNumber { get; init; }
         public int TotalCount { get; init; }
         public int PageSize {get;init;}

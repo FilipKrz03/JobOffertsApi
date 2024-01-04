@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using UsersService.DbContexts;
 using UsersService.Entities;
-using UsersService.Interfaces;
+using UsersService.Interfaces.RepositoriesInterfaces;
 
 namespace UsersService.Repository
 {

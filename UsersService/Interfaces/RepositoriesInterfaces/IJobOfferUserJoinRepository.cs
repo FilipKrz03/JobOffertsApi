@@ -1,6 +1,6 @@
 ﻿using UsersService.Entities;
 
-namespace UsersService.Interfaces
+namespace UsersService.Interfaces.RepositoriesInterfaces
 {
     public interface IJobOfferUserJoinRepository
     {

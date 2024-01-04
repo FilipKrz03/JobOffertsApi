@@ -1,5 +1,5 @@
-﻿using UsersService.Interfaces;
-using UsersService.Exceptions;
+﻿using UsersService.Exceptions;
+using UsersService.Interfaces.ServicesInterfaces;
 
 namespace UsersService.Services
 {

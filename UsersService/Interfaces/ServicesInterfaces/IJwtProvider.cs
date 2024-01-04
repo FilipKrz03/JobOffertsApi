@@ -1,10 +1,10 @@
 ﻿using UsersService.Dto;
 
-namespace UsersService.Interfaces
+namespace UsersService.Interfaces.ServicesInterfaces
 {
     public interface IJwtProvider
     {
         Task<TokenResponseDto> GetForCredentialsAsync(LoginRequestDto request);
-        Task<TokenResponseDto> GetForRefreshTokenAsync(string refreshToken);    
+        Task<TokenResponseDto> GetForRefreshTokenAsync(string refreshToken);
     }
 }

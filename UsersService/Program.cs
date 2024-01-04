@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using UsersService.DbContexts;
-using UsersService.Interfaces;
+using UsersService.Interfaces.RepositoriesInterfaces;
+using UsersService.Interfaces.ServicesInterfaces;
 using UsersService.Repository;
 using UsersService.Services;
 
@@ -21,7 +22,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IClaimService, ClaimService>();
 builder.Services.AddTransient<IJobOfferRepository, JobOfferRepository>();
-builder.Services.AddTransient<UsersService.Interfaces.IAuthenticationService, UsersService.Services.AuthenticationService>();
+builder.Services.AddTransient<UsersService.Interfaces.ServicesInterfaces.IAuthenticationService, UsersService.Services.AuthenticationService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IFollowedJobOfferService, FollowedJobOfferService>();
 builder.Services.AddTransient<IJobOfferUserJoinRepository , JobOfferUserJoinRepository>();

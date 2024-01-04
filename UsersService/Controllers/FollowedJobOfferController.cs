@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Linq.Expressions;
 using UsersService.Dto;
 using UsersService.Entities;
-using UsersService.Interfaces;
+using UsersService.Interfaces.ServicesInterfaces;
 
 namespace UsersService.Controllers
 {
@@ -52,14 +52,7 @@ namespace UsersService.Controllers
         {
             var result = await _followedJobOfferService.GetFollowedJobOffers(resourceParamethers);
 
-            var paginationMetadata = new
-            {
-                totalCount = result.TotalCount , 
-                pageSize = result.PageSize , 
-                hasPrevious = result.HasPrevious ,
-                hasNext = result.HasNext ,
-                totalPages = result.TotalPages
-            };
+            var paginationMetadata = new PaginationMetadata<JobOfferBasicResponseDto>(result);
 
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(paginationMetadata));
             

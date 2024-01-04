@@ -5,7 +5,8 @@ using System.Linq.Expressions;
 using UsersService.Dto;
 using UsersService.Entities;
 using UsersService.Exceptions;
-using UsersService.Interfaces;
+using UsersService.Interfaces.RepositoriesInterfaces;
+using UsersService.Interfaces.ServicesInterfaces;
 
 namespace UsersService.Services
 {

@@ -1,6 +1,6 @@
 ﻿using UsersService.Dto;
 
-namespace UsersService.Interfaces
+namespace UsersService.Interfaces.ServicesInterfaces
 {
     public interface IAuthenticationService
     {

@@ -1,7 +1,7 @@
 ﻿using JobOffersApiCore.Interfaces;
 using UsersService.Entities;
 
-namespace UsersService.Interfaces
+namespace UsersService.Interfaces.RepositoriesInterfaces
 {
     public interface IUserRepository : IBaseRepository<User> { }
 }

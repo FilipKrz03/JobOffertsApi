@@ -3,7 +3,7 @@ using JobOffersApiCore.Interfaces;
 using System.Linq.Expressions;
 using UsersService.Entities;
 
-namespace UsersService.Interfaces
+namespace UsersService.Interfaces.RepositoriesInterfaces
 {
     public interface IJobOfferRepository : IBaseRepository<JobOffer>
     {

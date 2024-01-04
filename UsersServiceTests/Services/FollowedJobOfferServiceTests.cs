@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 using UsersService.Dto;
 using UsersService.Entities;
 using UsersService.Exceptions;
-using UsersService.Interfaces;
+using UsersService.Interfaces.RepositoriesInterfaces;
+using UsersService.Interfaces.ServicesInterfaces;
 using UsersService.Services;
 
 namespace UsersServiceTests.Services

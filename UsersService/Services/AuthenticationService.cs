@@ -2,7 +2,8 @@
 using FirebaseAdmin.Auth;
 using UsersService.Dto;
 using UsersService.Entities;
-using UsersService.Interfaces;
+using UsersService.Interfaces.RepositoriesInterfaces;
+using UsersService.Interfaces.ServicesInterfaces;
 
 namespace UsersService.Services
 {

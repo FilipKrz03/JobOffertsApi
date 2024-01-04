@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using UsersService.DbContexts;
 using UsersService.Entities;
-using UsersService.Interfaces;
+using UsersService.Interfaces.RepositoriesInterfaces;
 
 namespace UsersService.Repository
 {

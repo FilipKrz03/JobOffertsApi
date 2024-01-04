@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using UsersService.Dto;
-using UsersService.Interfaces;
+using UsersService.Interfaces.ServicesInterfaces;
 
 namespace UsersService.Controllers
 {
