@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebScrapperService.Interfaces;
 using WebScrapperService.Props;
+using static WebScrapperService.Props.RabbitMQJobProps;
 
 namespace WebScrapperService.Producer
 {
@@ -17,11 +18,7 @@ namespace WebScrapperService.Producer
         public JobHandleMessageProducer():
             base(Environment.GetEnvironmentVariable("RabbitConnectionUri")! , RabbitMQJobProps.JOB_CREATE_CLIENT_PROVIDED_NAME , false)
         {
-            _chanel.ExchangeDeclare(RabbitMQJobProps.JOB_OFFER_EXCHANGE, ExchangeType.Direct);
-
-            _chanel.QueueDeclare(RabbitMQJobProps.JOB_CREATE_QUEUE, false, false, false);
-            _chanel.QueueBind(RabbitMQJobProps.JOB_CREATE_QUEUE, RabbitMQJobProps.JOB_OFFER_EXCHANGE,
-                RabbitMQJobProps.JOB_CREATE_ROUTING_KEY, null);
+            DeclareQueueAndExchange(JOB_CREATE_QUEUE, JOB_OFFER_EXCHANGE, JOB_CREATE_ROUTING_KEY);
         }
     }
 }

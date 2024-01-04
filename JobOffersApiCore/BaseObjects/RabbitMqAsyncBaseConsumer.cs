@@ -49,7 +49,6 @@ namespace JobOffersApiCore.BaseObjects
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-
             try
             {
                 _chanel.Close();

@@ -1,4 +1,5 @@
 ﻿using JobOffersApiCore.BaseConfigurations;
+using JobOffersApiCore.BaseObjects;
 using JobOffersMapperService.Interfaces;
 using JobOffersMapperService.Props;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,61 +12,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static JobOffersMapperService.Props.RabbitMqJobHandleEventProps;
 
 
 namespace JobOffersMapperService.Consumer
 {
-    public class RawOffersConsumer : RabbitBaseConfig , IHostedService
+    public class RawOffersConsumer : RabbitMqAsyncBaseConsumer, IHostedService
     {
 
         private readonly IServiceProvider _serviceProvider;
-        private readonly ILogger<RawOffersConsumer> _logger;    
 
-        public RawOffersConsumer(IServiceProvider serviceProvider , ILogger<RawOffersConsumer> logger)
-            :base(Environment.GetEnvironmentVariable("RabbitConnectionUri")! , RabbitMqJobHandleEventProps.JOB_HANDLE_CLIENT_PROVIDED_NAME , true)
+        public RawOffersConsumer(IServiceProvider serviceProvider, ILogger<RawOffersConsumer> logger)
+            : base
+            (Environment.GetEnvironmentVariable("RabbitConnectionUri")!, 
+                  JOB_HANDLE_CLIENT_PROVIDED_NAME, logger, JOB_HANDLE_QUEUE)
         {
-            _logger = logger;
             _serviceProvider = serviceProvider;
 
-            _chanel.ExchangeDeclare(RabbitMqJobHandleEventProps.JOB_OFFER_EXCHANGE, ExchangeType.Direct);
-            _chanel.QueueDeclare(RabbitMqJobHandleEventProps.JOB_HANDLE_QUEUE, false, false, false);
-            _chanel.QueueBind(RabbitMqJobHandleEventProps.JOB_HANDLE_QUEUE, RabbitMqJobHandleEventProps.JOB_OFFER_EXCHANGE,
-                RabbitMqJobHandleEventProps.JOB_HANDLE_ROUTING_KEY);
+            DeclareQueueAndExchange(JOB_HANDLE_QUEUE, JOB_OFFER_EXCHANGE, JOB_HANDLE_ROUTING_KEY);
+        }
 
-            var consumer = new AsyncEventingBasicConsumer(_chanel);
-
-            consumer.Received += async (model, ea) =>
+        protected override async Task ProccesMessageAsync(string message)
+        {
+            using (IServiceScope scope = _serviceProvider.CreateScope())
             {
-                _logger.LogInformation("New event recived - Raw offers consumer");
+                IRawJobOfferService rawOffersService =
+                    scope.ServiceProvider.GetRequiredService<IRawJobOfferService>();
 
-                string body = Encoding.UTF8.GetString(ea.Body.ToArray());
-
-                using (IServiceScope scope = _serviceProvider.CreateScope())
-                {
-                    IRawJobOfferService rawOffersService = 
-                        scope.ServiceProvider.GetRequiredService<IRawJobOfferService>();
-
-                    await rawOffersService.HandleRawOffer(body);
-                };
+                await rawOffersService.HandleRawOffer(message);
             };
-            _chanel.BasicConsume(RabbitMqJobHandleEventProps.JOB_HANDLE_QUEUE, true, consumer);
-        }
-
-        public Task StartAsync(CancellationToken cancellationToken)
-        {
-            _logger.LogInformation("Raw offers consumer start working");
-
-            return Task.CompletedTask;
-        }
-
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            _connection.Close();
-            _chanel.Close();
-
-            _logger.LogWarning("Raw offers conusmer end working");
-
-            return Task.CompletedTask;
         }
     }
 }

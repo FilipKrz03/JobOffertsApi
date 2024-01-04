@@ -13,6 +13,7 @@ using WebScrapperService.Props;
 
 namespace WebScrapperService.Consumer
 {
+    // Opmitalization Todo ! 
     public class OffersEventConsumer : RabbitBaseConfig , IHostedService
     {
 

@@ -25,6 +25,7 @@ namespace JobOffersApiCore.BaseConfigurations
             _connection = factory.CreateConnection();
             _chanel = _connection.CreateModel();
         }
+
         protected void DeclareQueueAndExchange(string queueName, string exchangeName, string routingKey)
         {
             _chanel.ExchangeDeclare(exchangeName, ExchangeType.Direct);
