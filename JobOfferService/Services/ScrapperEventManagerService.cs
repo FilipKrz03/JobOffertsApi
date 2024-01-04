@@ -2,6 +2,7 @@
 using JobOfferService.Props;
 using JobOffersService.Interfaces;
 using JobOffersService.Services;
+using static JobOfferService.Props.RabbitMQOffersScraperProps;
 
 namespace JobOfferService.Services
 {
@@ -31,12 +32,11 @@ namespace JobOfferService.Services
 
                     string routingKey = isDatabaseInitialized switch
                     {
-                        true => RabbitMQOffersScraperProps.OFFERS_UPDATE_ROUTING_KEY,
-                        false => RabbitMQOffersScraperProps.OFFERS_CREATE_ROUTING_KEY
+                        true => OFFERS_UPDATE_ROUTING_KEY,
+                        false => OFFERS_CREATE_ROUTING_KEY
                     };
 
-                    _scrapperMessageProducer.SendMessage
-                        (RabbitMQOffersScraperProps.OFFERS_SCRAPER_EXCHANGE, routingKey);
+                    _scrapperMessageProducer.SendMessage(OFFERS_SCRAPER_EXCHANGE, routingKey);
                 }
 
                 await Task.Delay(TimeSpan.FromMinutes(60), stoppingToken);

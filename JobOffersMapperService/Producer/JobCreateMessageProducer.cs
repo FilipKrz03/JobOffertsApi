@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace JobOffersMapperService.Producer
 {
-    public class JobCreateMessageProducer : RabbitMessageProducer, IRabbitMessageProducer
+    public class JobCreateMessageProducer : RabbitBaseMessageProducer, IRabbitMessageProducer
     {
         public JobCreateMessageProducer() : base(Environment.GetEnvironmentVariable("RabbitConnectionUri")!,
             RabbitMqJobCreateProps.JOB_CREATE_CLIENT_PROVIDED_NAME , false)

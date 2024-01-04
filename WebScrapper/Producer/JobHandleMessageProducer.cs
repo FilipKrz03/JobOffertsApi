@@ -12,7 +12,7 @@ using WebScrapperService.Props;
 
 namespace WebScrapperService.Producer
 {
-    public class JobHandleMessageProducer : RabbitMessageProducer , IRabbitMessageProducer
+    public class JobHandleMessageProducer : RabbitBaseMessageProducer , IRabbitMessageProducer
     {
         public JobHandleMessageProducer():
             base(Environment.GetEnvironmentVariable("RabbitConnectionUri")! , RabbitMQJobProps.JOB_CREATE_CLIENT_PROVIDED_NAME , false)

@@ -5,23 +5,18 @@ using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Text;
 using System.Threading.Channels;
+using static JobOfferService.Props.RabbitMQOffersScraperProps;
 
 namespace JobOfferService.Producer
 {
-    public class ScrapperMessageProducer : RabbitMessageProducer , IRabbitMessageProducer
+    public class ScrapperMessageProducer : RabbitBaseMessageProducer, IRabbitMessageProducer
     {
         public ScrapperMessageProducer() : base(Environment.GetEnvironmentVariable("RabbitConnectionUri")!,
-            RabbitMQOffersScraperProps.OFFERS_SCRAPPER_CLIENT_PROVIDED_NAME, false)
+           OFFERS_SCRAPPER_CLIENT_PROVIDED_NAME, false)
         {
-            _chanel.ExchangeDeclare(RabbitMQOffersScraperProps.OFFERS_SCRAPER_EXCHANGE, ExchangeType.Direct);
+            DeclareQueueAndExchange(OFFERS_CREATE_QUEUE , OFFERS_SCRAPER_EXCHANGE, OFFERS_CREATE_ROUTING_KEY);
 
-            _chanel.QueueDeclare(RabbitMQOffersScraperProps.OFFERS_CREATE_QUEUE, false, false, false);
-            _chanel.QueueBind(RabbitMQOffersScraperProps.OFFERS_CREATE_QUEUE , 
-                RabbitMQOffersScraperProps.OFFERS_SCRAPER_EXCHANGE , RabbitMQOffersScraperProps.OFFERS_CREATE_ROUTING_KEY);
-
-            _chanel.QueueDeclare(RabbitMQOffersScraperProps.OFFERS_UPDATE_QUEUE , false, false, false);
-            _chanel.QueueBind(RabbitMQOffersScraperProps.OFFERS_UPDATE_QUEUE,
-                RabbitMQOffersScraperProps.OFFERS_SCRAPER_EXCHANGE, RabbitMQOffersScraperProps.OFFERS_UPDATE_ROUTING_KEY);
+            DeclareQueueAndExchange(OFFERS_UPDATE_QUEUE, OFFERS_SCRAPER_EXCHANGE,  OFFERS_UPDATE_ROUTING_KEY);
         }
     }
 }
