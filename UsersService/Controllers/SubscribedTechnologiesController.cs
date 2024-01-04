@@ -27,10 +27,10 @@ namespace UsersService.Controllers
             return StatusCode(201);
         }
 
-
-        [HttpDelete("{subscribedTechnologyId)}")]
+        [HttpDelete("{subscribedTechnologyId}")]
         public async Task <IActionResult> DeleteSubscribedTechnology(Guid subscribedTechnologyId)
         {
+            await _subscribedTechnologyService.DeleteSubscribedTechnology(subscribedTechnologyId);
 
             return NoContent();
         }

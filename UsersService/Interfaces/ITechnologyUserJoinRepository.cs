@@ -6,7 +6,7 @@ namespace UsersService.Interfaces
     {
         Task<bool> UserTechnologyExistAsync(Guid userId, Guid technologyId);
         Task<TechnologyUser?> GetTechnologyUserJoinEntitiyAsync(Guid userId, Guid technologyId);
-        void DeleteTechnologyUserJoinEntityAsync(TechnologyUser entitiy);
+        void DeleteTechnologyUserJoinEntity(TechnologyUser entitiy);
         Task SaveChangesAsync();
 
     }

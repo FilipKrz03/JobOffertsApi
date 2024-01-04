@@ -28,7 +28,7 @@ namespace UsersService.Repository
                .FirstOrDefaultAsync();
         }
 
-        public void DeleteTechnologyUserJoinEntityAsync(TechnologyUser entitiy)
+        public void DeleteTechnologyUserJoinEntity(TechnologyUser entitiy)
         {
             _context.TechnologyUsers.Remove(entitiy);
         }

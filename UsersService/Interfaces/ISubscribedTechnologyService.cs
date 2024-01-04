@@ -3,5 +3,6 @@
     public interface ISubscribedTechnologyService
     {
         Task AddSubscribedTechnology(Guid technologyId);
+        Task DeleteSubscribedTechnology(Guid subscribedTechnologyId);
     }
 }

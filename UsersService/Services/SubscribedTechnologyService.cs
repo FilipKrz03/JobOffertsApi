@@ -56,7 +56,19 @@ namespace UsersService.Services
 
         public async Task DeleteSubscribedTechnology(Guid subscribedTechnologyId)
         {
-            
+            var userId = _claimService.GetUserIdFromTokenClaim();
+
+            var userTechnologyJoinEntity = await 
+                _technologyUserJoinRepository.GetTechnologyUserJoinEntitiyAsync(userId, subscribedTechnologyId);
+
+            if(userTechnologyJoinEntity == null)
+            {
+                throw new ResourceNotFoundException($"User do not subscibe technology with id {subscribedTechnologyId}");
+            }
+
+            _technologyUserJoinRepository.DeleteTechnologyUserJoinEntity(userTechnologyJoinEntity);
+
+            await _technologyUserJoinRepository.SaveChangesAsync();
         }
     }
 }
