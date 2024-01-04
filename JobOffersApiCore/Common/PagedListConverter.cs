@@ -19,7 +19,7 @@ namespace JobOffersApiCore.Common
                 context.Mapper.Map<List<TSource>, List<TDestination>>(source);
 
             return new
-                PagedList<TDestination>(collection, source.PageNumber, source.PageSize, source.TotalCount);
+                PagedList<TDestination>(collection, source.PageSize, source.PageNumber, source.TotalCount);
         }
     }
 }
