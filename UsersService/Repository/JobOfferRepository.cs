@@ -52,11 +52,11 @@ namespace UsersService.Repository
                 .CreateAsync(query, resourceParamethers.PageSize, resourceParamethers.PageNumber);
         }
 
-        public async Task<IEnumerable<JobOffer>> GetNewJobOffers(TimeSpan timeSpanToTake)
+        public async Task<IEnumerable<JobOffer>> GetJobOffersFromTresholdDate(DateTime tresholdDate)
         {
             return await
                  Query()
-                .Where(e => DateTime.Now - e.CreatedAt < timeSpanToTake)
+                .Where(e => e.CreatedAt >= tresholdDate)
                 .Take(1000) // In case when db is creating could be a lot of new offers
                 .ToListAsync();
         }

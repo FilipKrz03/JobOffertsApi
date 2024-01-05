@@ -15,8 +15,12 @@ namespace UsersService.Services
 
         public async Task LetUsersKnowAboutNewMatchingOffers()
         {
+            DateTime tresholdDate = DateTime.UtcNow - TimeSpan.FromHours(3);
+
             var newlyCreatedOffers = 
-                await _jobOfferRepository.GetNewJobOffers(TimeSpan.FromHours(3));
+                await _jobOfferRepository.GetJobOffersFromTresholdDate(tresholdDate);
+
+            Console.WriteLine("Co to bedzie co to bedzie");
 
             // Map user followed technologies  to new offer technologies
 
