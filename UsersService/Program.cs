@@ -31,6 +31,7 @@ builder.Services.AddTransient<IJobOfferUserJoinRepository, JobOfferUserJoinRepos
 builder.Services.AddTransient<ISubscribedTechnologyService, SubscribedTechnologyService>();
 builder.Services.AddTransient<ITechnologyRepository, TechnologyRepository>();
 builder.Services.AddTransient<ITechnologyUserJoinRepository, TechnologyUserJoinRepository>();
+builder.Services.AddTransient<IUserAnalyzeService, UserAnalyzeService>();
 
 builder.Services.AddDbContext<UsersDbContext>(options =>
 {

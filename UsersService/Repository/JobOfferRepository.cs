@@ -21,7 +21,7 @@ namespace UsersService.Repository
         }
 
         public async Task<PagedList<JobOffer>> GetUserJobOffersAsync
-            (Expression<Func<JobOffer , object>> keySelector , ResourceParamethers resourceParamethers , Guid userId)
+            (Expression<Func<JobOffer, object>> keySelector, ResourceParamethers resourceParamethers, Guid userId)
         {
             var query = Query();
 
@@ -50,6 +50,15 @@ namespace UsersService.Repository
 
             return await PagedList<JobOffer>
                 .CreateAsync(query, resourceParamethers.PageSize, resourceParamethers.PageNumber);
+        }
+
+        public async Task<IEnumerable<JobOffer>> GetNewJobOffers(TimeSpan timeSpanToTake)
+        {
+            return await
+                 Query()
+                .Where(e => DateTime.Now - e.CreatedAt < timeSpanToTake)
+                .Take(1000) // In case when db is creating could be a lot of new offers
+                .ToListAsync();
         }
     }
 }

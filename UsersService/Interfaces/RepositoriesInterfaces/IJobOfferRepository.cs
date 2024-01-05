@@ -10,5 +10,7 @@ namespace UsersService.Interfaces.RepositoriesInterfaces
         Task<JobOffer?> GetUserJobOffer(Guid userId, Guid jobOfferId);
         Task<PagedList<JobOffer>> GetUserJobOffersAsync
            (Expression<Func<JobOffer, object>> keySelector, ResourceParamethers resourceParamethers, Guid userId);
+
+        Task<IEnumerable<JobOffer>> GetNewJobOffers(TimeSpan timeSpanToTake);
     }
 }
