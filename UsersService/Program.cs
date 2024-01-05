@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
+using UsersService.Config;
 using UsersService.DbContexts;
 using UsersService.Interfaces.RepositoriesInterfaces;
 using UsersService.Interfaces.ServicesInterfaces;
@@ -25,7 +27,7 @@ builder.Services.AddTransient<IJobOfferRepository, JobOfferRepository>();
 builder.Services.AddTransient<UsersService.Interfaces.ServicesInterfaces.IAuthenticationService, UsersService.Services.AuthenticationService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IFollowedJobOfferService, FollowedJobOfferService>();
-builder.Services.AddTransient<IJobOfferUserJoinRepository , JobOfferUserJoinRepository>();
+builder.Services.AddTransient<IJobOfferUserJoinRepository, JobOfferUserJoinRepository>();
 builder.Services.AddTransient<ISubscribedTechnologyService, SubscribedTechnologyService>();
 builder.Services.AddTransient<ITechnologyRepository, TechnologyRepository>();
 builder.Services.AddTransient<ITechnologyUserJoinRepository, TechnologyUserJoinRepository>();
@@ -46,6 +48,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         jwtOptions.Audience = Environment.GetEnvironmentVariable("Audience");
         jwtOptions.TokenValidationParameters.ValidIssuer = Environment.GetEnvironmentVariable("ValidIssuer");
     });
+
+builder.Services.AddQuartz(options =>
+{
+    options.UseMicrosoftDependencyInjectionJobFactory();
+});
+
+builder.Services.AddQuartzHostedService();
+
+builder.Services.ConfigureOptions<UserAnalyzeBackgroundJobConfig>();
 
 FirebaseApp.Create(new AppOptions
 {

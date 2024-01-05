@@ -35,7 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UsersService", "UsersServic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsersServiceTests", "UsersServiceTests\UsersServiceTests.csproj", "{FCAFD0A0-D13C-4206-B669-F0D7CA6093C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OffersAndUsersDatabaseMigratorService", "OffersAndUsersDatabaseMigratorService\OffersAndUsersDatabaseMigratorService.csproj", "{105FCB37-9FD3-4084-93CA-0181200572C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffersAndUsersDatabaseMigratorService", "OffersAndUsersDatabaseMigratorService\OffersAndUsersDatabaseMigratorService.csproj", "{105FCB37-9FD3-4084-93CA-0181200572C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
