@@ -56,7 +56,8 @@ namespace UsersService.Repository
         {
             return await
                  Query()
-                .Where(e => e.CreatedAt >= tresholdDate)
+                .Where(x => x.CreatedAt >= tresholdDate && x.Technologies.Count > 0)
+                .Include(x => x.Technologies)
                 .Take(1000) // In case when db is creating could be a lot of new offers
                 .ToListAsync();
         }
