@@ -1,10 +1,13 @@
 ﻿using JobOffersApiCore.BaseObjects;
+using JobOffersApiCore.Enum;
 
 namespace UsersService.Entities
 {
     public class User : BaseEntity
     {
         public string Email { get; set; } = string.Empty;
+
+        public Seniority DesiredSeniority { get; set; } = Seniority.Unknown;
 
         public List<JobOffer> JobOffers { get; set; } =
            new List<JobOffer>();

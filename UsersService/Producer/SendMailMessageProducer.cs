@@ -7,7 +7,11 @@ namespace UsersService.Producer
     public class SendMailMessageProducer : RabbitBaseMessageProducer , IRabbitMessageProducer
     {
         public SendMailMessageProducer
-            () : base(Environment.GetEnvironmentVariable("RabbitConnectionUri")!, MAIL_SEND_CLIENT_PROVIDED_NAME ,  false )
+            () : base(
+                Environment.GetEnvironmentVariable("RabbitConnectionUri")!,
+                MAIL_SEND_CLIENT_PROVIDED_NAME ,
+                false 
+                )
         {
             DeclareQueueAndExchange(
                 MAIL_SEND_QUEUE,
