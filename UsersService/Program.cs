@@ -35,6 +35,7 @@ builder.Services.AddTransient<ITechnologyRepository, TechnologyRepository>();
 builder.Services.AddTransient<ITechnologyUserJoinRepository, TechnologyUserJoinRepository>();
 builder.Services.AddTransient<IUserAnalyzeService, UserAnalyzeService>();
 builder.Services.AddTransient<IRabbitMessageProducer, SendEmailWithRecomendedOffersToUsersGroupMessageProducer>();
+builder.Services.AddSingleton<IMailContentCreatorService, MailContentCreatorService>();
 
 builder.Services.AddDbContext<UsersDbContext>(options =>
 {

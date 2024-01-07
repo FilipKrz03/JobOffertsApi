@@ -26,14 +26,19 @@ namespace UsersService.Services
 
         public async Task LetUsersKnowAboutNewMatchingOffers()
         {
-            DateTime tresholdDate = DateTime.UtcNow - TimeSpan.FromHours(3);
+            DateTime tresholdDate = DateTime.UtcNow - TimeSpan.FromHours(150);
 
             var newlyCreatedOffers = await _jobOfferRepository.
                 GetJobOffersWithTechnologiesFromTresholdDateAsync(tresholdDate);
 
             var allUsers = await _userRepository.GetAllUsersWithTechnologiesAsync();
 
-            var groupedUsersWithSameTechnologies = allUsers.GroupBy
+            var usersWithSubscribedTechnologies = allUsers.Where(user => user.Technologies.Count > 0);
+            var usersWithoutSubscribedTechnologies = allUsers.Where(user => user.Technologies.Count == 0);
+
+            
+
+            var groupedUsersWithSameTechnologies = usersWithSubscribedTechnologies.GroupBy
                 (u => string.Join(",", u.Technologies.OrderBy(t => t.TechnologyName).Select(t => t.TechnologyName)));
 
             foreach (var group in groupedUsersWithSameTechnologies)
@@ -44,21 +49,22 @@ namespace UsersService.Services
                     .Where(offer => offer.Technologies
                         .Any(tech => groupTechnologyNames.Contains(tech.TechnologyName))).ToList();
 
-                var userEmailsList = group.Select(e => e.Email).ToList();
+                var emailsList = group.Select(e => e.Email).ToList();
 
                 var mailContent = CreateEmailContent(matchingOffers);
 
-                var messageObject = new
+                var mailObject = new
                 {
-                    userEmailsList,
-                    mailContent
+                    emailsList,
+                    mailContent,
+                    subject = "Offers for you !"
                 };
 
                 _sendEmailToUsersGruopWithRecommendedOffersMessageProducer
                     .SendMessage(
-                    MAIL_SENDER_EXCHANGE,
-                    MAIL_WITH_RECOMENDED_OFFERS_TO_USER_GROUP_ROUTING_KEY,
-                    messageObject
+                    MAIL_SEND_EXCHANGE,
+                    MAIL_SEND_ROUTING_KEY,
+                    mailObject
                     );
             }
         }
@@ -72,7 +78,7 @@ namespace UsersService.Services
             htmlContent.AppendLine("<head>");
             htmlContent.AppendLine("<meta charset=\"UTF-8\">");
             htmlContent.AppendLine("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-            htmlContent.AppendLine("<title>Moja Strona</title>");
+            htmlContent.AppendLine("<title>Job offers</title>");
             htmlContent.AppendLine("</head>");
             htmlContent.AppendLine("<body>");
 
@@ -92,5 +98,9 @@ namespace UsersService.Services
 
             return htmlContent.ToString();
         }
+
+     
+
+
     }
 }
