@@ -1,5 +1,6 @@
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
+using JobOffersApiCore.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
@@ -9,6 +10,7 @@ using UsersService.Config;
 using UsersService.DbContexts;
 using UsersService.Interfaces.RepositoriesInterfaces;
 using UsersService.Interfaces.ServicesInterfaces;
+using UsersService.Producer;
 using UsersService.Repository;
 using UsersService.Services;
 
@@ -32,6 +34,7 @@ builder.Services.AddTransient<ISubscribedTechnologyService, SubscribedTechnology
 builder.Services.AddTransient<ITechnologyRepository, TechnologyRepository>();
 builder.Services.AddTransient<ITechnologyUserJoinRepository, TechnologyUserJoinRepository>();
 builder.Services.AddTransient<IUserAnalyzeService, UserAnalyzeService>();
+builder.Services.AddTransient<IRabbitMessageProducer, SendEmailWithRecomendedOffersToUsersGroupMessageProducer>();
 
 builder.Services.AddDbContext<UsersDbContext>(options =>
 {

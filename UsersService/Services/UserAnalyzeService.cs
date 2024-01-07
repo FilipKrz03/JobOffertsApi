@@ -1,7 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using JobOffersApiCore.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 using UsersService.Entities;
 using UsersService.Interfaces.RepositoriesInterfaces;
 using UsersService.Interfaces.ServicesInterfaces;
+using static UsersService.Props.RabbitMqMailSendProps;
 
 namespace UsersService.Services
 {
@@ -10,73 +12,30 @@ namespace UsersService.Services
 
         private readonly IJobOfferRepository _jobOfferRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IRabbitMessageProducer _sendEmailToUsersGruopWithRecommendedOffersMessageProducer;
 
-        public UserAnalyzeService(IJobOfferRepository jobOfferRepository, IUserRepository userRepository)
+        public UserAnalyzeService(IJobOfferRepository jobOfferRepository, IUserRepository userRepository,
+            IRabbitMessageProducer sendEmailToUsersGruopWithRecommendedOffersMessageProducer)
         {
             _jobOfferRepository = jobOfferRepository;
             _userRepository = userRepository;
+            _sendEmailToUsersGruopWithRecommendedOffersMessageProducer =
+                sendEmailToUsersGruopWithRecommendedOffersMessageProducer;
         }
 
         public async Task LetUsersKnowAboutNewMatchingOffers()
         {
-            DateTime tresholdDate = DateTime.UtcNow - TimeSpan.FromHours(240);
+            DateTime tresholdDate = DateTime.UtcNow - TimeSpan.FromHours(3);
 
-            var newlyCreatedOffers =
-                await _jobOfferRepository.GetJobOffersFromTresholdDate(tresholdDate);
+            var newlyCreatedOffers = await _jobOfferRepository.
+                GetJobOffersWithTechnologiesFromTresholdDateAsync(tresholdDate);
 
-            var allUsers = await _userRepository.GetAllUsersAsync();
+            var allUsers = await _userRepository.GetAllUsersWithTechnologiesAsync();
 
-            // For tests 
-
-            List<Technology> techs = new List<Technology>()
-            {
-                new Technology(){TechnologyName = "C#"} ,
-                new Technology(){TechnologyName = "Angular"}
-            };
-
-            List<Technology> techs2 = new List<Technology>()
-            {
-                new Technology(){TechnologyName = "Java"} ,
-                new Technology(){TechnologyName = "React.Js"}
-            };
-
-            List<Technology> techs3 = new List<Technology>()
-            {
-                new Technology(){TechnologyName = "JavaScript"} ,
-                new Technology(){TechnologyName = "Nest.js"} ,
-                new Technology(){TechnologyName = "Next.js"} ,
-            };
-
-            List<Technology> techs4 = new List<Technology>()
-            {
-                new Technology(){TechnologyName = "Nest.js"} ,
-                new Technology(){TechnologyName = "Next.js"} ,
-                new Technology(){TechnologyName = "JavaScript"} ,
-            };
-
-            List<User> fakeUsers = new List<User>()
-            {
-                new User() {Technologies = techs},
-                new User(){Technologies = techs2} ,
-                new User(){Technologies = techs3} ,
-                new User(){Technologies = techs4} ,
-                new User(){Technologies = techs4} ,
-                new User(){Technologies = techs3} ,
-                new User(){Technologies = techs2} ,
-                new User(){Technologies = techs},
-                new User(){Technologies = techs4} ,
-                new User(){Technologies = techs} ,
-                new User(){Technologies = techs3} ,
-                new User(),
-                new User(),
-            };
-
-
-            // good way ? 
-            var groupedUsers = fakeUsers.GroupBy
+            var groupedUsersWithSameTechnologies = allUsers.GroupBy
                 (u => string.Join(",", u.Technologies.OrderBy(t => t.TechnologyName).Select(t => t.TechnologyName)));
 
-            foreach (var group in groupedUsers)
+            foreach (var group in groupedUsersWithSameTechnologies)
             {
                 var groupTechnologyNames = group.Key.Split(",");
 
@@ -84,14 +43,20 @@ namespace UsersService.Services
                     .Where(offer => offer.Technologies
                         .Any(tech => groupTechnologyNames.Contains(tech.TechnologyName))).ToList();
 
-                foreach (var user in group)
+                var userEmailsList = group.Select(e => e.Email).ToList();
+
+                var messageObject = new
                 {
-                    user.JobOffers = matchingOffers;
-                }
+                    userEmailsList,
+                    matchingOffers
+                };
 
-                var userList = group.ToList();
-
-                // Send event to send email (body should be : userList + mattchingOffers)
+                _sendEmailToUsersGruopWithRecommendedOffersMessageProducer
+                    .SendMessage(
+                    MAIL_SENDER_EXCHANGE,
+                    MAIL_WITH_RECOMENDED_OFFERS_TO_USER_GROUP_ROUTING_KEY,
+                    messageObject
+                    );
             }
         }
     }

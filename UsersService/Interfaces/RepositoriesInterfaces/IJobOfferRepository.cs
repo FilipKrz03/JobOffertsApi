@@ -11,6 +11,6 @@ namespace UsersService.Interfaces.RepositoriesInterfaces
         Task<PagedList<JobOffer>> GetUserJobOffersAsync
            (Expression<Func<JobOffer, object>> keySelector, ResourceParamethers resourceParamethers, Guid userId);
 
-        Task<IEnumerable<JobOffer>> GetNewJobOffers(TimeSpan timeSpanToTake);
+        Task<IEnumerable<JobOffer>> GetJobOffersWithTechnologiesFromTresholdDateAsync(DateTime tresholdDate);
     }
 }

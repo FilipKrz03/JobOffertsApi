@@ -52,7 +52,8 @@ namespace UsersService.Repository
                 .CreateAsync(query, resourceParamethers.PageSize, resourceParamethers.PageNumber);
         }
 
-        public async Task<IEnumerable<JobOffer>> GetJobOffersFromTresholdDate(DateTime tresholdDate)
+        public async Task<IEnumerable<JobOffer>> 
+            GetJobOffersWithTechnologiesFromTresholdDateAsync(DateTime tresholdDate)
         {
             return await
                  Query()

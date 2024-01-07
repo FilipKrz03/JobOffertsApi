@@ -10,10 +10,12 @@ namespace UsersService.Repository
     {
         public UserRepository(UsersDbContext context):base(context) { }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        public async Task<IEnumerable<User>> GetAllUsersWithTechnologiesAsync()
         {
             // Only for analyze service
-            return await Query().ToListAsync();
+            return await Query()
+                .Include(x => x.Technologies)
+                .ToListAsync();
         }
     }
 }
