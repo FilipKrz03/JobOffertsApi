@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
+using System.Text.Json.Serialization;
 using UsersService.Config;
 using UsersService.DbContexts;
 using UsersService.Interfaces.RepositoriesInterfaces;
@@ -18,7 +19,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLogging();
 builder.Services.AddTransient<UsersService.Middleware.ExceptionHandlerMiddleware>();
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -36,6 +42,7 @@ builder.Services.AddTransient<ITechnologyUserJoinRepository, TechnologyUserJoinR
 builder.Services.AddTransient<IUserAnalyzeService, UserAnalyzeService>();
 builder.Services.AddTransient<IRabbitMessageProducer, SendMailMessageProducer>();
 builder.Services.AddSingleton<IMailContentCreatorService, MailContentCreatorService>();
+builder.Services.AddTransient<IUserService , UserService>();    
 
 builder.Services.AddDbContext<UsersDbContext>(options =>
 {

@@ -1,4 +1,5 @@
 ﻿using JobOffersApiCore.BaseObjects;
+using JobOffersApiCore.Enum;
 using Microsoft.EntityFrameworkCore;
 using UsersService.DbContexts;
 using UsersService.Entities;
