@@ -1,4 +1,5 @@
 ﻿using MailKit.Net.Smtp;
+using MailSedningService.Dto;
 using MailSedningService.Interfaces;
 using MimeKit;
 using System;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace MailSedningService.Services
 {
-    public class SendMailToUsersGroupWithRecommendedOfferService : ISendMailToUsersGroupWithRecommendedOfferService
+    public class MailService : IMailService
     {
-        public void SendMail()
+        public void SendMail(MailToSendDto mailToSend)
         {
             var sendingEmail = Environment.GetEnvironmentVariable("sendingEmail");
             var smtpServer = Environment.GetEnvironmentVariable("smtpServer");
@@ -21,12 +22,15 @@ namespace MailSedningService.Services
 
             var email = new MimeMessage();
 
-            string body = "Test";
-
             email.From.Add(MailboxAddress.Parse(sendingEmail));
-            email.To.Add(MailboxAddress.Parse("filipos2003@gmail.com"));
-            email.Subject = "Test";
-            email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = body };
+
+            foreach(var mail in mailToSend.EmailsList)
+            {
+                email.To.Add(MailboxAddress.Parse(mail));
+            }
+
+            email.Subject = mailToSend.Subject;
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = mailToSend.MailContent};
 
             using var smtp = new SmtpClient();
 

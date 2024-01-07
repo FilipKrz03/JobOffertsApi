@@ -1,4 +1,5 @@
-﻿using MailSedningService.Interfaces;
+﻿using MailSedningService.Consumer;
+using MailSedningService.Interfaces;
 using MailSedningService.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,12 +16,11 @@ IHost _host = Host.CreateDefaultBuilder()
     })
     .ConfigureServices((hostContext, services) =>
     {
-        services.AddTransient<ISendMailToUsersGroupWithRecommendedOfferService, SendMailToUsersGroupWithRecommendedOfferService>();
+        services.AddTransient<IMailService, MailService>();
+        services.AddHostedService<MailSendingEventConsumer>();
     })
     .Build();
 
-var mailSender = _host.Services.GetRequiredService<ISendMailToUsersGroupWithRecommendedOfferService>();
-
-mailSender.SendMail();
+_host.RunAsync().Wait();
 
 

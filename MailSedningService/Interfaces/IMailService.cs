@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MailSedningService.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace MailSedningService.Interfaces
 {
-    public interface ISendMailToUsersGroupWithRecommendedOfferService
+    public interface IMailService
     {
-        public void SendMail();
+        public void SendMail(MailToSendDto mailToSend);
     }
 }
