@@ -58,11 +58,11 @@ namespace JobOffersMapperService.Profiles
             return value;
         }
 
-        private Seniority ConvertSeniority(string source) => source.ToLower().Trim() switch
+        private Seniority ConvertSeniority(string source) => source switch
         {
-            "junior" => Seniority.Junior,
-            "mid" => Seniority.Mid,
-            "senior" => Seniority.Senior,
+            _ when source.ToLower().Contains("junior") => Seniority.Junior,
+            _ when source.ToLower().Contains("mid") => Seniority.Mid,
+            _ when source.ToLower().Contains("senior") => Seniority.Senior,
             _ => Seniority.Unknown
         };
     }
