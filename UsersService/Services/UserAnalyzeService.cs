@@ -1,4 +1,5 @@
-﻿using JobOffersApiCore.Interfaces;
+﻿using JobOffersApiCore.Enum;
+using JobOffersApiCore.Interfaces;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using UsersService.Entities;
@@ -57,16 +58,29 @@ namespace UsersService.Services
                 );
             }
 
-            var groupedUsersWithSameTechnologies = usersWithSubscribedTechnologies.GroupBy
-                (u => string.Join(",", u.Technologies.OrderBy(t => t.TechnologyName).Select(t => t.TechnologyName)));
+            var groupedUsersWithSameTechnologiesAndSeniority = usersWithSubscribedTechnologies.GroupBy
+                (u => new
+                {
+                    Technologies = string.Join(",", u.Technologies.OrderBy(t => t.TechnologyName).Select(t => t.TechnologyName)),
+                    Seniority = u.DesiredSeniority
+                });
 
-            foreach (var group in groupedUsersWithSameTechnologies)
+            foreach (var group in groupedUsersWithSameTechnologiesAndSeniority)
             {
-                var groupTechnologyNames = group.Key.Split(",");
+                var groupTechnologyNames = group.Key.Technologies.Split(",");
 
                 var matchingOffers = newlyCreatedOffers
                     .Where(offer => offer.Technologies
                         .Any(tech => groupTechnologyNames.Contains(tech.TechnologyName))).ToList();
+
+                //If user desired seniority is unkown than we do not want to limit job offers based on seniority level
+                if(group.Key.Seniority != Seniority.Unknown)
+                {
+                    matchingOffers = matchingOffers.Where(
+                        offer => offer.Seniority == group.Key.Seniority || offer.Seniority == Seniority.Unknown
+                        ).ToList();
+                    // If offer seniority is Unkown then we want to include it 
+                }
          
                 var mailContent = _mailContentCreatorService
                     .CreateMailContentForUserWithListOfJobOffersBasedOnPreferations(matchingOffers);
