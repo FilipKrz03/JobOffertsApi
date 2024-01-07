@@ -4,9 +4,9 @@ using static UsersService.Props.RabbitMqMailSendProps;
 
 namespace UsersService.Producer
 {
-    public class SendEmailWithRecomendedOffersToUsersGroupMessageProducer : RabbitBaseMessageProducer , IRabbitMessageProducer
+    public class SendMailMessageProducer : RabbitBaseMessageProducer , IRabbitMessageProducer
     {
-        public SendEmailWithRecomendedOffersToUsersGroupMessageProducer
+        public SendMailMessageProducer
             () : base(Environment.GetEnvironmentVariable("RabbitConnectionUri")!, MAIL_SEND_CLIENT_PROVIDED_NAME ,  false )
         {
             DeclareQueueAndExchange(

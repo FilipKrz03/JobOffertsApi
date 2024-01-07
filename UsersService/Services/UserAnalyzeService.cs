@@ -13,15 +13,20 @@ namespace UsersService.Services
 
         private readonly IJobOfferRepository _jobOfferRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IRabbitMessageProducer _sendEmailToUsersGruopWithRecommendedOffersMessageProducer;
+        private readonly IRabbitMessageProducer _sendEmailMessageProducer;
+        private readonly IMailContentCreatorService _mailContentCreatorService;
 
-        public UserAnalyzeService(IJobOfferRepository jobOfferRepository, IUserRepository userRepository,
-            IRabbitMessageProducer sendEmailToUsersGruopWithRecommendedOffersMessageProducer)
+        public UserAnalyzeService(
+            IJobOfferRepository jobOfferRepository, 
+            IUserRepository userRepository,
+            IRabbitMessageProducer sendEmailMessageProducer , 
+            IMailContentCreatorService mailContentCreatorService
+            )
         {
             _jobOfferRepository = jobOfferRepository;
             _userRepository = userRepository;
-            _sendEmailToUsersGruopWithRecommendedOffersMessageProducer =
-                sendEmailToUsersGruopWithRecommendedOffersMessageProducer;
+            _sendEmailMessageProducer = sendEmailMessageProducer;
+            _mailContentCreatorService = mailContentCreatorService;
         }
 
         public async Task LetUsersKnowAboutNewMatchingOffers()
@@ -36,7 +41,21 @@ namespace UsersService.Services
             var usersWithSubscribedTechnologies = allUsers.Where(user => user.Technologies.Count > 0);
             var usersWithoutSubscribedTechnologies = allUsers.Where(user => user.Technologies.Count == 0);
 
-            
+            if(usersWithoutSubscribedTechnologies.Any())
+            {
+                var mailObject = new
+                {
+                    emailsList = usersWithoutSubscribedTechnologies.Select(e => e.Email).ToList() , 
+                    mailContent = _mailContentCreatorService.CreateMailForUserWithNoSubscribedTechnologies(), 
+                    subject = "Tell us about yourself !"
+                };
+
+                _sendEmailMessageProducer.SendMessage(
+                MAIL_SEND_EXCHANGE,
+                MAIL_SEND_ROUTING_KEY,
+                mailObject
+                );
+            }
 
             var groupedUsersWithSameTechnologies = usersWithSubscribedTechnologies.GroupBy
                 (u => string.Join(",", u.Technologies.OrderBy(t => t.TechnologyName).Select(t => t.TechnologyName)));
@@ -48,59 +67,23 @@ namespace UsersService.Services
                 var matchingOffers = newlyCreatedOffers
                     .Where(offer => offer.Technologies
                         .Any(tech => groupTechnologyNames.Contains(tech.TechnologyName))).ToList();
-
-                var emailsList = group.Select(e => e.Email).ToList();
-
-                var mailContent = CreateEmailContent(matchingOffers);
+         
+                var mailContent = _mailContentCreatorService
+                    .CreateMailContentForUserWithListOfJobOffersBasedOnPreferations(matchingOffers);
 
                 var mailObject = new
                 {
-                    emailsList,
-                    mailContent,
+                    emailsList = group.Select(e => e.Email).ToList() ,
+                    mailContent ,
                     subject = "Offers for you !"
                 };
 
-                _sendEmailToUsersGruopWithRecommendedOffersMessageProducer
-                    .SendMessage(
+                _sendEmailMessageProducer.SendMessage(
                     MAIL_SEND_EXCHANGE,
                     MAIL_SEND_ROUTING_KEY,
                     mailObject
                     );
             }
         }
-
-        private string CreateEmailContent(IEnumerable<JobOffer> jobOffers)
-        {
-            StringBuilder htmlContent = new();
-
-            htmlContent.AppendLine("<!DOCTYPE html>");
-            htmlContent.AppendLine("<html lang=\"en\">");
-            htmlContent.AppendLine("<head>");
-            htmlContent.AppendLine("<meta charset=\"UTF-8\">");
-            htmlContent.AppendLine("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-            htmlContent.AppendLine("<title>Job offers</title>");
-            htmlContent.AppendLine("</head>");
-            htmlContent.AppendLine("<body>");
-
-            htmlContent.AppendLine
-                ("<h1>Hi! Especially for you, we have delivered some offers based on your preferences that might interest you </h1>");
-
-            foreach (var jobOffer in jobOffers)
-            {
-                htmlContent.AppendLine($"<a href='{jobOffer.OfferLink}'>");
-                htmlContent.AppendLine($"<h3>{jobOffer.OfferTitle}</h3>");
-                htmlContent.AppendLine($"<p> {jobOffer.OfferCompany}</p>");
-                htmlContent.AppendLine("</a>");
-            }
-
-            htmlContent.AppendLine("</body>");
-            htmlContent.AppendLine("</html>");
-
-            return htmlContent.ToString();
-        }
-
-     
-
-
     }
 }

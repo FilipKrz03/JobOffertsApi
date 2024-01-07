@@ -33,7 +33,9 @@ namespace UsersService.Services
             {
                 htmlContent.AppendLine($"<a href='{jobOffer.OfferLink}'>");
                 htmlContent.AppendLine
-                    ($"<div> <h3> {jobOffer.OfferTitle} - </h3> <p>{jobOffer.OfferCompany}</p></div>");
+                    ($"<div> <h3 style='display: inline;'> {jobOffer.OfferTitle} - </h3>");
+                htmlContent.
+                    AppendLine($"<p style='display: inline;'>{jobOffer.OfferCompany}</p> </div>");
                 htmlContent.AppendLine("</a>");
             }
 
