@@ -37,6 +37,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UsersServiceTests", "UsersS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffersAndUsersDatabaseMigratorService", "OffersAndUsersDatabaseMigratorService\OffersAndUsersDatabaseMigratorService.csproj", "{105FCB37-9FD3-4084-93CA-0181200572C6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MailSendingService", "MailSendingService", "{6FC9E8B2-E276-4705-921B-7DFDDB8E1376}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailSedningService", "MailSedningService\MailSedningService.csproj", "{B60A874A-8B93-4966-A116-A6F170D4E9AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +95,10 @@ Global
 		{105FCB37-9FD3-4084-93CA-0181200572C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{105FCB37-9FD3-4084-93CA-0181200572C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{105FCB37-9FD3-4084-93CA-0181200572C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B60A874A-8B93-4966-A116-A6F170D4E9AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B60A874A-8B93-4966-A116-A6F170D4E9AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B60A874A-8B93-4966-A116-A6F170D4E9AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B60A874A-8B93-4966-A116-A6F170D4E9AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +114,7 @@ Global
 		{1787E847-B668-4114-BECF-97FFA75C7A03} = {186F575B-5F3D-4C7A-8EE5-DE7A2D437799}
 		{2C875743-C085-4316-B29F-0689EE3C4302} = {349E37CC-2A9B-4885-9031-E5BA9FFA04C2}
 		{FCAFD0A0-D13C-4206-B669-F0D7CA6093C7} = {349E37CC-2A9B-4885-9031-E5BA9FFA04C2}
+		{B60A874A-8B93-4966-A116-A6F170D4E9AB} = {6FC9E8B2-E276-4705-921B-7DFDDB8E1376}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {302C81D0-E9D8-4ADB-B2D4-8155C79FDC67}
