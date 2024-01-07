@@ -15,12 +15,10 @@ namespace UsersService.Controllers
     {
 
         private readonly ISubscribedTechnologyService _subscribedTechnologyService;
-        private readonly IUserAnalyzeService userAnalyzeService;
 
-        public SubscribedTechnologiesController(ISubscribedTechnologyService subscribedTechnologyService , IUserAnalyzeService userAnalyzeService) 
+        public SubscribedTechnologiesController(ISubscribedTechnologyService subscribedTechnologyService) 
         {
             _subscribedTechnologyService = subscribedTechnologyService;
-            this.userAnalyzeService = userAnalyzeService;
         }
 
         [HttpPost]
@@ -44,8 +42,6 @@ namespace UsersService.Controllers
         {
             var result = await _subscribedTechnologyService.
                 GetSubscribedTechnologies(resourceParamethers);
-
-            await userAnalyzeService.LetUsersKnowAboutNewMatchingOffers();
 
             var paginationMetadata = new PaginationMetadata<TechnologyBasicResponseDto>(result);
 
