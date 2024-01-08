@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebScrapperService.Interfaces;
 using WebScrapperService.Props;
+using static WebScrapperService.Props.RabbitMQOffersEventProps;
 
 namespace WebScrapperService.Services
 {
@@ -26,8 +27,8 @@ namespace WebScrapperService.Services
             {
                 bool isInit = routingKey switch
                 {
-                    RabbitMQOffersEventProps.OFFERS_CREATE_EVENT_ROUTRING_KEY => true,
-                    RabbitMQOffersEventProps.OFFERS_UPDATE_ROUTING_KEY => false,
+                    OFFERS_CREATE_ROUTING_KEY => true,
+                    OFFERS_UPDATE_ROUTING_KEY => false,
                     _ => throw new ArgumentException("Not recognized routing key"),
                 };
 

@@ -25,7 +25,8 @@ IHost _host = Host.CreateDefaultBuilder()
     .ConfigureServices(services =>
     {
         services.AddScoped<IOffersService, OffersService>();
-        services.AddHostedService<OffersEventConsumer>();
+        services.AddHostedService<OffersCreateEventConsumer>();
+        services.AddHostedService<OffersUpdateEventConsumer>();
         services.AddHostedService<OfferCheckIfOutdatedEventConsumer>();
         services.AddScoped<IScrapperService, PracujPlScrapperService>();
         services.AddScoped<IWebDriverFactory , WebDriverFactory>();
