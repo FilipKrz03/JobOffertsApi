@@ -10,7 +10,6 @@ namespace JobOffersService.Profiles
         public JobOfferProfile()
         {
             CreateMap<JobOfferProcessed, JobOffer>()
-               .ForMember(dest => dest.Id, opt => opt.Ignore())
                .ForMember(dest => dest.Technologies, opt => opt.Ignore())
                .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
             CreateMap<JobOffer, JobOfferDetailResponse>()
