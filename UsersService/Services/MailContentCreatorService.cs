@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using UsersService.Dto;
 using UsersService.Entities;
 using UsersService.Interfaces.ServicesInterfaces;
 
@@ -7,7 +8,7 @@ namespace UsersService.Services
     public class MailContentCreatorService : IMailContentCreatorService
     {
         public string CreateMailContentForUserWithListOfJobOffersBasedOnPreferations
-            (IEnumerable<JobOffer> jobOffers)
+            (IEnumerable<JobOfferWithLinkCompanyTitleSeniorityTechnologiesDto> jobOffers)
         {
             StringBuilder htmlContent = new();
 

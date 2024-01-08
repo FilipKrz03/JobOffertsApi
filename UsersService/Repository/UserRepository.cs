@@ -2,6 +2,7 @@
 using JobOffersApiCore.Enum;
 using Microsoft.EntityFrameworkCore;
 using UsersService.DbContexts;
+using UsersService.Dto;
 using UsersService.Entities;
 using UsersService.Interfaces.RepositoriesInterfaces;
 
@@ -11,11 +12,12 @@ namespace UsersService.Repository
     {
         public UserRepository(UsersDbContext context):base(context) { }
 
-        public async Task<IEnumerable<User>> GetAllUsersWithTechnologiesAsync()
+        public async Task<IEnumerable<UserWithEmailSeniorityAndTechnolgiesDto>>
+            GetAllUsersWithEmailSeniorityAndTechnologiesAsync()
         {
             // Only for analyze service
             return await Query()
-                .Include(x => x.Technologies)
+                .Select(x => new UserWithEmailSeniorityAndTechnolgiesDto(x.Email , x.DesiredSeniority , x.Technologies))      
                 .ToListAsync();
         }
     }

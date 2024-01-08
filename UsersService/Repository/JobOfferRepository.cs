@@ -3,6 +3,7 @@ using JobOffersApiCore.Common;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using UsersService.DbContexts;
+using UsersService.Dto;
 using UsersService.Entities;
 using UsersService.Interfaces.RepositoriesInterfaces;
 
@@ -52,13 +53,14 @@ namespace UsersService.Repository
                 .CreateAsync(query, resourceParamethers.PageSize, resourceParamethers.PageNumber);
         }
 
-        public async Task<IEnumerable<JobOffer>> 
-            GetJobOffersWithTechnologiesFromTresholdDateAsync(DateTime tresholdDate)
+        public async Task<IEnumerable<JobOfferWithLinkCompanyTitleSeniorityTechnologiesDto>>
+             GetJobOffersWithLinkCompanyTitleSeniorityTechnologiesFromTresholdDateAsync(DateTime tresholdDate)
         {
             return await
                  Query()
                 .Where(x => x.CreatedAt >= tresholdDate && x.Technologies.Count > 0)
-                .Include(x => x.Technologies)
+                .Select(x => new JobOfferWithLinkCompanyTitleSeniorityTechnologiesDto
+                (x.OfferLink, x.OfferTitle, x.OfferCompany, x.Seniority, x.Technologies))
                 .Take(1000) // In case when db is creating could be a lot of new offers
                 .ToListAsync();
         }

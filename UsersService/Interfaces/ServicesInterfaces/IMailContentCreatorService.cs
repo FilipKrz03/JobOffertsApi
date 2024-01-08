@@ -1,11 +1,12 @@
-﻿using UsersService.Entities;
+﻿using UsersService.Dto;
+using UsersService.Entities;
 
 namespace UsersService.Interfaces.ServicesInterfaces
 {
     public interface IMailContentCreatorService
     {
         string CreateMailContentForUserWithListOfJobOffersBasedOnPreferations
-            (IEnumerable<JobOffer> jobOffers);
+            (IEnumerable<JobOfferWithLinkCompanyTitleSeniorityTechnologiesDto> jobOffers);
 
         string CreateMailForUserWithNoSubscribedTechnologies();
     }

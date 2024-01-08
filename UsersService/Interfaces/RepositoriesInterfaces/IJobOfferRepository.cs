@@ -1,6 +1,7 @@
 ﻿using JobOffersApiCore.Common;
 using JobOffersApiCore.Interfaces;
 using System.Linq.Expressions;
+using UsersService.Dto;
 using UsersService.Entities;
 
 namespace UsersService.Interfaces.RepositoriesInterfaces
@@ -11,6 +12,7 @@ namespace UsersService.Interfaces.RepositoriesInterfaces
         Task<PagedList<JobOffer>> GetUserJobOffersAsync
            (Expression<Func<JobOffer, object>> keySelector, ResourceParamethers resourceParamethers, Guid userId);
 
-        Task<IEnumerable<JobOffer>> GetJobOffersWithTechnologiesFromTresholdDateAsync(DateTime tresholdDate);
+        Task<IEnumerable<JobOfferWithLinkCompanyTitleSeniorityTechnologiesDto>> 
+            GetJobOffersWithLinkCompanyTitleSeniorityTechnologiesFromTresholdDateAsync(DateTime tresholdDate);
     }
 }

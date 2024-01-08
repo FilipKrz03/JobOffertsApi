@@ -18,9 +18,9 @@ namespace UsersService.Services
         private readonly IMailContentCreatorService _mailContentCreatorService;
 
         public UserAnalyzeService(
-            IJobOfferRepository jobOfferRepository, 
+            IJobOfferRepository jobOfferRepository,
             IUserRepository userRepository,
-            IRabbitMessageProducer sendEmailMessageProducer , 
+            IRabbitMessageProducer sendEmailMessageProducer,
             IMailContentCreatorService mailContentCreatorService
             )
         {
@@ -35,19 +35,20 @@ namespace UsersService.Services
             DateTime tresholdDate = DateTime.UtcNow - TimeSpan.FromHours(150);
 
             var newlyCreatedOffers = await _jobOfferRepository.
-                GetJobOffersWithTechnologiesFromTresholdDateAsync(tresholdDate);
+              GetJobOffersWithLinkCompanyTitleSeniorityTechnologiesFromTresholdDateAsync(tresholdDate);
 
-            var allUsers = await _userRepository.GetAllUsersWithTechnologiesAsync();
+            var allUsers = await
+                _userRepository.GetAllUsersWithEmailSeniorityAndTechnologiesAsync();
 
             var usersWithSubscribedTechnologies = allUsers.Where(user => user.Technologies.Count > 0);
             var usersWithoutSubscribedTechnologies = allUsers.Where(user => user.Technologies.Count == 0);
 
-            if(usersWithoutSubscribedTechnologies.Any())
+            if (usersWithoutSubscribedTechnologies.Any())
             {
                 var mailObject = new
                 {
-                    emailsList = usersWithoutSubscribedTechnologies.Select(e => e.Email).ToList() , 
-                    mailContent = _mailContentCreatorService.CreateMailForUserWithNoSubscribedTechnologies(), 
+                    emailsList = usersWithoutSubscribedTechnologies.Select(e => e.Email).ToList(),
+                    mailContent = _mailContentCreatorService.CreateMailForUserWithNoSubscribedTechnologies(),
                     subject = "Tell us about yourself !"
                 };
 
@@ -74,21 +75,21 @@ namespace UsersService.Services
                         .Any(tech => groupTechnologyNames.Contains(tech.TechnologyName))).ToList();
 
                 //If user desired seniority is unkown than we do not want to limit job offers based on seniority level
-                if(group.Key.Seniority != Seniority.Unknown)
+                if (group.Key.Seniority != Seniority.Unknown)
                 {
                     matchingOffers = matchingOffers.Where(
                         offer => offer.Seniority == group.Key.Seniority || offer.Seniority == Seniority.Unknown
                         ).ToList();
                     // If offer seniority is Unkown then we want to include it 
                 }
-         
+
                 var mailContent = _mailContentCreatorService
                     .CreateMailContentForUserWithListOfJobOffersBasedOnPreferations(matchingOffers);
 
                 var mailObject = new
                 {
-                    emailsList = group.Select(e => e.Email).ToList() ,
-                    mailContent ,
+                    emailsList = group.Select(e => e.Email).ToList(),
+                    mailContent,
                     subject = "Offers for you !"
                 };
 
