@@ -19,7 +19,7 @@ namespace JobOffersMapperService.Config
                 .AddJob<FindOutdatedJobOffersEventSenderJob>(jobBuilder => jobBuilder.WithIdentity(jobKey))
                     .AddTrigger(trigger =>
                         trigger.ForJob(jobKey)
-                        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(21, 5))
+                        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(21, 38))
                          .Build());
         }
     }

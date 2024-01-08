@@ -1,5 +1,6 @@
 ﻿using JobOffersApiCore.Dto;
 using JobOffersApiCore.Interfaces;
+using JobOffersMapperService.Dto;
 using JobOffersMapperService.Entites;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace JobOffersMapperService.Interfaces
     public interface IJobOffersBaseRepository : IBaseRepository<JobOfferBase>
     {
         Task<bool> OfferExistAsync(JobOfferRaw offer);
+        Task<IEnumerable<JobOfferWithIdTitleLinkDto>> GetAllJobOffersWithIdTitleLinkAsync();
     }
 }

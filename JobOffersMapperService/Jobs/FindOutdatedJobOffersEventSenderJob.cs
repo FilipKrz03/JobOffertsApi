@@ -1,15 +1,18 @@
-﻿using Quartz;
+﻿using JobOffersMapperService.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Quartz;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static JobOffersMapperService.Props.RabbitMqJobProps;
 
 namespace JobOffersMapperService.Jobs
 {
     public class FindOutdatedJobOffersEventSenderJob : IJob
     {
-        
+
         private readonly IServiceProvider _serviceProvider;
 
         public FindOutdatedJobOffersEventSenderJob(IServiceProvider serviceProvider)
@@ -17,11 +20,25 @@ namespace JobOffersMapperService.Jobs
             _serviceProvider = serviceProvider;
         }
 
-        public Task Execute(IJobExecutionContext context)
+        public async Task Execute(IJobExecutionContext context)
         {
-            Console.WriteLine("Working !!");
+            IServiceScope scope = _serviceProvider.CreateScope();
 
-            return Task.CompletedTask;
+            IJobOffersBaseRepository jobOffersBaseRepository =
+                scope.ServiceProvider.GetRequiredService<IJobOffersBaseRepository>();
+            IJobCheckIfOutdatedMessageProducer jobCheckIfOutdatedMessageProducer =
+                scope.ServiceProvider.GetRequiredService<IJobCheckIfOutdatedMessageProducer>();
+
+            var allOffers = await jobOffersBaseRepository.GetAllJobOffersWithIdTitleLinkAsync();
+
+            foreach (var offer in allOffers)
+            {
+                jobCheckIfOutdatedMessageProducer.SendMessage(
+                    JOB_OFFER_EXCHANGE,
+                    JOB_CHECK_IF_OUTDATED_ROUTING_KEY,
+                    offer
+                    );
+            }
         }
     }
 }
