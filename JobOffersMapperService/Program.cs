@@ -30,7 +30,8 @@ IHost _host = Host.CreateDefaultBuilder()
     {
         services.AddScoped<IRawJobOfferService, RawJobOfferService>();
         services.AddScoped<IJobOffersBaseRepository, JobOffersBaseRepository>();
-        services.AddScoped<IRabbitMessageProducer, JobCreateMessageProducer>();
+        services.AddScoped<IJobCreateMessageProducer, JobCreateMessageProducer>();
+        services.AddScoped<IJobCheckIfOutdatedMessageProducer, JobCheckIfOutdatedMessageProducer>();
         services.AddHostedService<RawOffersConsumer>();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
       
@@ -46,7 +47,7 @@ IHost _host = Host.CreateDefaultBuilder()
 
         services.AddQuartzHostedService();
 
-        services.ConfigureOptions<CheckIfOutdateEventSenderJobConfig>();
+        services.ConfigureOptions<FindOutdatedJobOffersEventSenderJobConfig>();
     })
     .UseSerilog()
     .Build();

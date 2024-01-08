@@ -1,8 +1,6 @@
 ﻿using JobOffersApiCore.BaseConfigurations;
 using JobOffersApiCore.Interfaces;
 using JobOffersMapperService.Interfaces;
-using JobOffersMapperService.Props;
-using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,18 +10,18 @@ using static JobOffersMapperService.Props.RabbitMqJobProps;
 
 namespace JobOffersMapperService.Producer
 {
-    public class JobCreateMessageProducer : RabbitBaseMessageProducer, IJobCreateMessageProducer
+    public class JobCheckIfOutdatedMessageProducer : RabbitBaseMessageProducer, IJobCheckIfOutdatedMessageProducer
     {
-        public JobCreateMessageProducer() : base(
+        public JobCheckIfOutdatedMessageProducer() : base(
             Environment.GetEnvironmentVariable("RabbitConnectionUri")!,
-            JOB_CREATE_CLIENT_PROVIDED_NAME,
+            JOB_CHECK_IF_OUTDATED_CLIENT_PROVIDED_NAME,
             false
             )
         {
             DeclareQueueAndExchange(
-                JOB_CREATE_QUEUE,
+                JOB_CHECK_IF_OUTDATED_QUEUE,
                 JOB_OFFER_EXCHANGE,
-                JOB_CREATE_ROUTING_KEY
+                JOB_CHECK_IF_OUTDATED_ROUTING_KEY
                 );
         }
     }

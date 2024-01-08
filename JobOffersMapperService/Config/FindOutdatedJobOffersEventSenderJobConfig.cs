@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace JobOffersMapperService.Config
 {
-    public class CheckIfOutdateEventSenderJobConfig : IConfigureOptions<QuartzOptions>
+    public class FindOutdatedJobOffersEventSenderJobConfig : IConfigureOptions<QuartzOptions>
     {
         public void Configure(QuartzOptions options)
         {
-            var jobKey = JobKey.Create(nameof(CheckIfOutdateEventSenderJob));
+            var jobKey = JobKey.Create(nameof(FindOutdatedJobOffersEventSenderJob));
 
             options
-                .AddJob<CheckIfOutdateEventSenderJob>(jobBuilder => jobBuilder.WithIdentity(jobKey))
+                .AddJob<FindOutdatedJobOffersEventSenderJob>(jobBuilder => jobBuilder.WithIdentity(jobKey))
                     .AddTrigger(trigger =>
                         trigger.ForJob(jobKey)
                         .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(21, 5))

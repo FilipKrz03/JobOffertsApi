@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace JobOffersMapperService.Jobs
 {
-    public class CheckIfOutdateEventSenderJob : IJob
+    public class FindOutdatedJobOffersEventSenderJob : IJob
     {
         
         private readonly IServiceProvider _serviceProvider;
 
-        public CheckIfOutdateEventSenderJob(IServiceProvider serviceProvider)
+        public FindOutdatedJobOffersEventSenderJob(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }

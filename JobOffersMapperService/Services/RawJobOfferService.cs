@@ -8,7 +8,7 @@ using JobOffersMapperService.Interfaces;
 using JobOffersMapperService.Props;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using static JobOffersMapperService.Props.RabbitMqJobCreateProps;
+using static JobOffersMapperService.Props.RabbitMqJobProps;
 
 namespace JobOffersMapperService.Services
 {
@@ -18,10 +18,14 @@ namespace JobOffersMapperService.Services
         private readonly IJobOffersBaseRepository _offersBaseRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<RawJobOfferService> _logger;
-        private readonly IRabbitMessageProducer _jobCreateMessageProducer;
+        private readonly IJobCreateMessageProducer _jobCreateMessageProducer;
 
-        public RawJobOfferService(IJobOffersBaseRepository offersBaseRepository, IMapper mapper,
-            ILogger<RawJobOfferService> logger, IRabbitMessageProducer jobCreateMessageProducer)
+        public RawJobOfferService(
+            IJobOffersBaseRepository offersBaseRepository,
+            IMapper mapper,
+            ILogger<RawJobOfferService> logger,
+            IJobCreateMessageProducer jobCreateMessageProducer
+            )
         {
             _offersBaseRepository = offersBaseRepository;
             _mapper = mapper;
@@ -47,9 +51,9 @@ namespace JobOffersMapperService.Services
 
                 await _offersBaseRepository.SaveChangesAsync();
 
-                var processedJobOffer = _mapper.Map<JobOfferRaw, JobOfferProcessed>(offer , opts =>
+                var processedJobOffer = _mapper.Map<JobOfferRaw, JobOfferProcessed>(offer, opts =>
                     opts.Items["Id"] = jobOfferBaseEntity.Id);
-            
+
                 _jobCreateMessageProducer.SendMessage(
                     JOB_OFFER_EXCHANGE,
                     JOB_CREATE_ROUTING_KEY,
