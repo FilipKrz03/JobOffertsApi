@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Quartz;
+using JobOffersMapperService.Config;
 using RabbitMQ.Client;
 using Serilog;
 
@@ -36,6 +38,15 @@ IHost _host = Host.CreateDefaultBuilder()
         {
             options.UseSqlServer(hostContext.Configuration.GetConnectionString("DefaultConnection")!);
         });
+
+        services.AddQuartz(options =>
+        {
+            options.UseMicrosoftDependencyInjectionJobFactory();
+        });
+
+        services.AddQuartzHostedService();
+
+        services.ConfigureOptions<CheckIfOutdateEventSenderJobConfig>();
     })
     .UseSerilog()
     .Build();
