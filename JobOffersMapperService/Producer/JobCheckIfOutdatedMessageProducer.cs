@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static JobOffersMapperService.Props.RabbitMqJobProps;
+using static JobOffersMapperService.Props.RabbitMqJobScrapperProps;
 
 namespace JobOffersMapperService.Producer
 {
@@ -20,7 +20,7 @@ namespace JobOffersMapperService.Producer
         {
             DeclareQueueAndExchange(
                 JOB_CHECK_IF_OUTDATED_QUEUE,
-                JOB_OFFER_EXCHANGE,
+                JOB_SCRAPPER_EVENTS_EXCHANGE ,
                 JOB_CHECK_IF_OUTDATED_ROUTING_KEY
                 );
         }

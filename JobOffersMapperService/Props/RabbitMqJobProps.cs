@@ -13,9 +13,5 @@ namespace JobOffersMapperService.Props
         public const string JOB_CREATE_QUEUE = "job.create";
         public const string JOB_CREATE_ROUTING_KEY = "job.create";
         public const string JOB_CREATE_CLIENT_PROVIDED_NAME = "Job Offer Create Event Sender";
-
-        public const string JOB_CHECK_IF_OUTDATED_QUEUE = "job.check_if_outdated";
-        public const string JOB_CHECK_IF_OUTDATED_ROUTING_KEY = "job.check_if_outdated";
-        public const string JOB_CHECK_IF_OUTDATED_CLIENT_PROVIDED_NAME = "Job Check If Outdated Event Sender";
     }
 }
