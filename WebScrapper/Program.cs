@@ -26,16 +26,14 @@ IHost _host = Host.CreateDefaultBuilder()
     {
         services.AddScoped<IOffersService, OffersService>();
         services.AddHostedService<OffersEventConsumer>();
-        //services.AddScoped<IScrapperService, PracujPlScrapper>();
+        services.AddHostedService<OfferCheckIfOutdatedEventConsumer>();
+        services.AddScoped<IScrapperService, PracujPlScrapperService>();
         services.AddScoped<IWebDriverFactory , WebDriverFactory>();
-        services.AddScoped<IScrapperService, TheProtocolScrapper>();
+        services.AddScoped<IScrapperService, TheProtocolScrapperService>();
         services.AddScoped<IRabbitMessageProducer, JobHandleMessageProducer>();
+        services.AddSingleton<IJobTopicalityCheckerService , JobTopicalityCheckerService>();
     })
     .UseSerilog()
     .Build();
 
-//_host.RunAsync().Wait();
-
-var app = _host.Services.GetRequiredService<IScrapperService>();
-
-app.ScrapOfferts(false);
+_host.RunAsync().Wait();

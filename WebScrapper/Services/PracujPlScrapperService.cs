@@ -11,9 +11,9 @@ using WebScrapperService.Interfaces;
 
 namespace WebScrapperService.Services
 {
-    public class PracujPlScrapper : BaseJobScrapper, IScrapperService
+    public class PracujPlScrapperService : BaseJobScrapper, IScrapperService
     {
-        public PracujPlScrapper(ILogger<PracujPlScrapper> log, IRabbitMessageProducer jobOfferMessageProducer , 
+        public PracujPlScrapperService(ILogger<PracujPlScrapperService> log, IRabbitMessageProducer jobOfferMessageProducer , 
             IWebDriverFactory webDriverFactory)
              : base(log, jobOfferMessageProducer, webDriverFactory ,  "https://it.pracuj.pl/praca?pn=",
                   ".c1fljezf", "h1", "[data-test='text-employerName']", "[data-test='text-benefit']",

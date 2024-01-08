@@ -1,18 +1,27 @@
 ﻿using JobOffersApiCore.BaseObjects;
+using JobOffersApiCore.Dto;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebScrapperService.Interfaces;
 using static WebScrapperService.Props.RabbitMQJobEventProps;
 
 namespace WebScrapperService.Consumer
 {
     internal sealed class OfferCheckIfOutdatedEventConsumer : RabbitMqBaseConsumer
     {
-        public OfferCheckIfOutdatedEventConsumer
-            (ILogger<OfferCheckIfOutdatedEventConsumer> logger) :
+
+        private readonly IServiceProvider _serviceProvider;
+
+        public OfferCheckIfOutdatedEventConsumer(
+            ILogger<OfferCheckIfOutdatedEventConsumer> logger,
+            IServiceProvider serviceProvider
+            ) :
             base(
                 Environment.GetEnvironmentVariable("RabbitConnectionUri")!,
                 JOB_CHECK_IF_OUTDATED_CLIENT_PROVIDED_NAME,
@@ -20,6 +29,8 @@ namespace WebScrapperService.Consumer
                 JOB_CHECK_IF_OUTDATED_QUEUE
                 )
         {
+            _serviceProvider = serviceProvider;
+
             DeclareQueueAndExchange(
                 JOB_CHECK_IF_OUTDATED_QUEUE,
                 JOB_SCRAPPER_EVENTS_EXCHANGE,
@@ -29,7 +40,11 @@ namespace WebScrapperService.Consumer
 
         protected override void ProccesMessage(string message)
         {
-            
+            IServiceScope scope = _serviceProvider.CreateScope();
+            IJobTopicalityCheckerService jobTopicalityCheckerService =
+                scope.ServiceProvider.GetRequiredService<IJobTopicalityCheckerService>();
+
+            jobTopicalityCheckerService.CheckIfOfferStillExist(message);
         }
     }
 }
