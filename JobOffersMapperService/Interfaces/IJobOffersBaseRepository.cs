@@ -1,6 +1,5 @@
 ﻿using JobOffersApiCore.Dto;
 using JobOffersApiCore.Interfaces;
-using JobOffersMapperService.Dto;
 using JobOffersMapperService.Entites;
 using System;
 using System.Collections.Generic;

@@ -11,7 +11,8 @@ namespace WebScrapperService.Consumer
 {
     internal sealed class OfferCheckIfOutdatedEventConsumer : RabbitMqBaseConsumer
     {
-        public OfferCheckIfOutdatedEventConsumer(ILogger<OfferCheckIfOutdatedEventConsumer> logger) :
+        public OfferCheckIfOutdatedEventConsumer
+            (ILogger<OfferCheckIfOutdatedEventConsumer> logger) :
             base(
                 Environment.GetEnvironmentVariable("RabbitConnectionUri")!,
                 JOB_CHECK_IF_OUTDATED_CLIENT_PROVIDED_NAME,

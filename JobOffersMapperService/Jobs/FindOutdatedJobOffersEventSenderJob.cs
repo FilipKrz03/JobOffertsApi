@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static JobOffersMapperService.Props.RabbitMqJobProps;
+using static JobOffersMapperService.Props.RabbitMqJobScrapperProps;
 
 namespace JobOffersMapperService.Jobs
 {
@@ -34,8 +34,8 @@ namespace JobOffersMapperService.Jobs
             foreach (var offer in allOffers)
             {
                 jobCheckIfOutdatedMessageProducer.SendMessage(
-                    JOB_OFFER_EXCHANGE,
-                    JOB_CHECK_IF_OUTDATED_ROUTING_KEY,
+                    JOB_SCRAPPER_EVENTS_EXCHANGE ,
+                    JOB_CHECK_IF_OUTDATED_ROUTING_KEY , 
                     offer
                     );
             }

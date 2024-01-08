@@ -2,7 +2,6 @@
 using JobOffersApiCore.Dto;
 using JobOffersApiCore.Interfaces;
 using JobOffersMapperService.DbContexts;
-using JobOffersMapperService.Dto;
 using JobOffersMapperService.Entites;
 using JobOffersMapperService.Interfaces;
 using Microsoft.EntityFrameworkCore;
