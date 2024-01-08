@@ -14,7 +14,7 @@ namespace JobOffersMapperService.Profiles
         public JobOfferProfile()
         {
             CreateMap<JobOfferRaw, JobOfferBase>()
-                .ForMember(x => x.Id, opt => opt.Ignore())
+                .ForMember(x => x.Id, opt => Guid.NewGuid())
                    .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
             CreateMap<JobOfferRaw, JobOfferProcessed>()
               .ConvertUsing<JobOfferRawConverter>();

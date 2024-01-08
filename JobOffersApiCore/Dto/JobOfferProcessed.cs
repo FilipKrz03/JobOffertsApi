@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace JobOffersApiCore.Dto
 {
-    public record JobOfferProcessed(string OfferTitle , string OfferCompany ,string Localization ,
+    public record JobOfferProcessed(Guid Id , string OfferTitle , string OfferCompany ,string Localization ,
         string WorkMode , IEnumerable<string> RequiredTechnologies , string OfferLink ,
         Seniority Seniority , int? EarningsFrom , int? EarningsTo ) { }
 }

@@ -26,9 +26,9 @@ IHost _host = Host.CreateDefaultBuilder()
     {
         services.AddScoped<IOffersService, OffersService>();
         services.AddHostedService<OffersEventConsumer>();
-        services.AddScoped<IScrapperService, PracujPlScrapper>();
+        //services.AddScoped<IScrapperService, PracujPlScrapper>();
         services.AddScoped<IWebDriverFactory , WebDriverFactory>();
-        //services.AddScoped<IScrapperService, TheProtocolScrapper>();
+        services.AddScoped<IScrapperService, TheProtocolScrapper>();
         services.AddScoped<IRabbitMessageProducer, JobHandleMessageProducer>();
     })
     .UseSerilog()

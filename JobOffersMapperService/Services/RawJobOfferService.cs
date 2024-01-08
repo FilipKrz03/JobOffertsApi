@@ -8,7 +8,7 @@ using JobOffersMapperService.Interfaces;
 using JobOffersMapperService.Props;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using static JobOffersMapperService.Props.RabbitMqJobCreateProps; 
+using static JobOffersMapperService.Props.RabbitMqJobCreateProps;
 
 namespace JobOffersMapperService.Services
 {
@@ -20,8 +20,8 @@ namespace JobOffersMapperService.Services
         private readonly ILogger<RawJobOfferService> _logger;
         private readonly IRabbitMessageProducer _jobCreateMessageProducer;
 
-        public RawJobOfferService(IJobOffersBaseRepository offersBaseRepository , IMapper mapper , 
-            ILogger<RawJobOfferService> logger , IRabbitMessageProducer jobCreateMessageProducer)
+        public RawJobOfferService(IJobOffersBaseRepository offersBaseRepository, IMapper mapper,
+            ILogger<RawJobOfferService> logger, IRabbitMessageProducer jobCreateMessageProducer)
         {
             _offersBaseRepository = offersBaseRepository;
             _mapper = mapper;
@@ -40,17 +40,21 @@ namespace JobOffersMapperService.Services
                 bool offerExist = await _offersBaseRepository.OfferExistAsync(offer);
 
                 if (offerExist) return;
-                 
+
                 var jobOfferBaseEntity = _mapper.Map<JobOfferRaw, JobOfferBase>(offer);
 
                 _offersBaseRepository.Insert(jobOfferBaseEntity);
 
                 await _offersBaseRepository.SaveChangesAsync();
 
-                var processedJobOffer = _mapper.Map<JobOfferRaw, JobOfferProcessed>(offer);
-
-                _jobCreateMessageProducer.SendMessage
-                    (JOB_OFFER_EXCHANGE , JOB_CREATE_ROUTING_KEY , processedJobOffer);
+                var processedJobOffer = _mapper.Map<JobOfferRaw, JobOfferProcessed>(offer , opts =>
+                    opts.Items["Id"] = jobOfferBaseEntity.Id);
+            
+                _jobCreateMessageProducer.SendMessage(
+                    JOB_OFFER_EXCHANGE,
+                    JOB_CREATE_ROUTING_KEY,
+                    processedJobOffer
+                    );
 
                 _logger.LogInformation
                     ("Handle raw offer - New offer added to base db and create job offer event sended");

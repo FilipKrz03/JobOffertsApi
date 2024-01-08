@@ -15,9 +15,11 @@ namespace JobOffersMapperService.Profiles
         {
             var seniority = ConvertSeniority(source.Seniority);
             (int? earningsFrom, int? eariningsTo) = GetEarnings(source.salaryString);
+   
+            var idValue = context.Items["Id"];
 
             return new
-                (source.OfferTitle, source.OfferCompany, source.Localization,
+                (Guid.Parse(idValue.ToString()!), source.OfferTitle, source.OfferCompany, source.Localization,
                 source.WorkMode, source.RequiredTechnologies, source.OfferLink, seniority, earningsFrom, eariningsTo);
         }
 
