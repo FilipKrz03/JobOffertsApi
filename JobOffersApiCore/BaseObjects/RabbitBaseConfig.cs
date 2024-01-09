@@ -33,5 +33,15 @@ namespace JobOffersApiCore.BaseConfigurations
 
             _chanel.QueueBind(queueName, exchangeName, routingKey);
         }
+
+        protected void DeclareQueueAndExchange
+            (string queueName, string exchangeName, string routingKey , string exchangeType)
+        {
+            _chanel.ExchangeDeclare(exchangeName, exchangeType);
+            _chanel.QueueDeclare(queueName, false, false, false);
+
+            _chanel.QueueBind(queueName, exchangeName, routingKey);
+        }
+
     }
 }
