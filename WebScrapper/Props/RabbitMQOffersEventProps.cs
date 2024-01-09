@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebScrapperService.Props
 {
-    internal static class RabbitMQOffersEventProps
+    public static class RabbitMQOffersEventProps
     {
         public const string OFFERS_EVENT_CONSUMER_PROVIDED_NAME = "Offers Event Consumer";
          

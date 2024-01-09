@@ -13,7 +13,7 @@ using static WebScrapperService.Props.RabbitMQJobEventProps;
 
 namespace WebScrapperService.Consumer
 {
-    internal sealed class OfferCheckIfOutdatedEventConsumer : RabbitMqBaseConsumer
+    public sealed class OfferCheckIfOutdatedEventConsumer : RabbitMqBaseConsumer
     {
 
         private readonly IServiceProvider _serviceProvider;

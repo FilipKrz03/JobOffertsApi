@@ -11,7 +11,7 @@ using WebScrapperService.Interfaces;
 
 namespace WebScrapperService.Services
 {
-    internal sealed class JobTopicalityCheckerService : IJobTopicalityCheckerService
+    public sealed class JobTopicalityCheckerService : IJobTopicalityCheckerService
     {
 
         private readonly IWebDriverFactory _webDriverFactory;

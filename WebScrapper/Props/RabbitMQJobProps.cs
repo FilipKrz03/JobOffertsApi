@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebScrapperService.Props
 {
-    internal static class RabbitMQJobProps
+    public static class RabbitMQJobProps
     {
         public const string JOB_OFFER_EXCHANGE = "job_events";
         public const string JOB_CREATE_QUEUE = "job.handle";

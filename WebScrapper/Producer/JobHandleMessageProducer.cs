@@ -13,7 +13,7 @@ using static WebScrapperService.Props.RabbitMQJobProps;
 
 namespace WebScrapperService.Producer
 {
-    internal sealed class JobHandleMessageProducer : RabbitBaseMessageProducer, IJobHandleMessageProducer
+    public sealed class JobHandleMessageProducer : RabbitBaseMessageProducer, IJobHandleMessageProducer
     {
         public JobHandleMessageProducer() :
             base(

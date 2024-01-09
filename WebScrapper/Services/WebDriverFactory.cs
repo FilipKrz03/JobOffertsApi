@@ -10,7 +10,7 @@ using WebScrapperService.Interfaces;
 
 namespace WebScrapperService.Services
 {
-    internal class WebDriverFactory : IWebDriverFactory
+    public class WebDriverFactory : IWebDriverFactory
     {
         public IWebDriver GetWebDriver()
         {

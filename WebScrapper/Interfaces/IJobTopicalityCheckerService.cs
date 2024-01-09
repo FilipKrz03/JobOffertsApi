@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebScrapperService.Interfaces
 {
-    internal interface IJobTopicalityCheckerService
+    public interface IJobTopicalityCheckerService
     {
         void CheckIfOfferStillExist(string message);
     }

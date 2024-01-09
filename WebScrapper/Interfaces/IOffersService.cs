@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebScrapperService.Interfaces
 {
-    internal interface IOffersService
+    public interface IOffersService
     {
         public void HandleOffersCreateAndUpdate(string routingKey);
     }

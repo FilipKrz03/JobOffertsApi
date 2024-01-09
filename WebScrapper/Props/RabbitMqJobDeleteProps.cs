@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebScrapperService.Props
 {
-    internal static class RabbitMqJobDeleteProps
+    public static class RabbitMqJobDeleteProps
     {
         // This props are not in RabbitMqJobProps because they need diffrent exchange 
         // They need exchange with type Fanout . Whic is diffrent from RabbitMqJobProps exchange

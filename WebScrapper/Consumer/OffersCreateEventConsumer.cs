@@ -11,7 +11,7 @@ using static WebScrapperService.Props.RabbitMQOffersEventProps;
 
 namespace WebScrapperService.Consumer
 {
-    internal sealed class OffersCreateEventConsumer : RabbitMqBaseConsumer
+    public sealed class OffersCreateEventConsumer : RabbitMqBaseConsumer
     {
 
         private readonly IServiceProvider _serviceProvider;

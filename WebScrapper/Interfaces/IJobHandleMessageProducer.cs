@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace WebScrapperService.Interfaces
 {
-    internal interface IJobHandleMessageProducer : IRabbitMessageProducer { }
+    public interface IJobHandleMessageProducer : IRabbitMessageProducer { }
 }

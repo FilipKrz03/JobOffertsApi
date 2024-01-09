@@ -10,7 +10,7 @@ using static WebScrapperService.Props.RabbitMqJobDeleteProps;
 
 namespace WebScrapperService.Producer
 {
-    internal sealed class JobDeleteMessageProducer : RabbitBaseMessageProducer, IJobDeleteMessageProducer
+    public sealed class JobDeleteMessageProducer : RabbitBaseMessageProducer, IJobDeleteMessageProducer
     {
         public JobDeleteMessageProducer() :
             base(
