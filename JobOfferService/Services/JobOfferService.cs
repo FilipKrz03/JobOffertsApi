@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using JobOffersApiCore.Common;
+using JobOffersApiCore.Dto;
 using JobOffersApiCore.Exceptions;
 using JobOffersService.Dto;
 using JobOffersService.Entities;
 using JobOffersService.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Linq.Expressions;
 
 namespace JobOffersService.Services
@@ -14,12 +16,17 @@ namespace JobOffersService.Services
 
         private readonly IJobOfferRepository _jobOfferRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<JobOfferService> _logger;  
 
-        public JobOfferService(IJobOfferRepository jobOfferRepository , 
-            IMapper mapper)
+        public JobOfferService(
+            IJobOfferRepository jobOfferRepository , 
+            IMapper mapper , 
+            ILogger<JobOfferService> logger
+            )
         {
             _jobOfferRepository = jobOfferRepository;
             _mapper = mapper;
+            _logger = logger;   
         }
 
         public async Task<JobOfferDetailResponse> GetJobOfferDetail(Guid jobId)
@@ -61,6 +68,30 @@ namespace JobOffersService.Services
             {
                 throw new ResourceNotFoundException("Job offer not found");
             }
+        }
+
+        public async Task DeleteJobOfferFromEvent(string message)
+        {
+            var jobOfferFromEvent = JsonConvert.DeserializeObject<JobOfferToDeleteFromEventDto>(message);
+
+            if(jobOfferFromEvent == null)
+            {
+                _logger.LogWarning("DeleteJobOfferFromEvent - failed to parse message");
+                return;
+            }
+
+            var jobOfferEntitie =  await _jobOfferRepository.GetById(jobOfferFromEvent.Id);
+
+            if(jobOfferEntitie == null)
+            {
+                _logger.LogWarning
+                    ("DeleteJobOfferFromEvent - Job offer entitie with if from message not found");
+                return;
+            }
+
+            _jobOfferRepository.DeleteEntity(jobOfferEntitie);
+
+            await _jobOfferRepository.SaveChangesAsync();
         }
     }
 }

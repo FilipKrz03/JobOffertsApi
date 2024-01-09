@@ -8,5 +8,6 @@ namespace JobOffersService.Interfaces
         Task<JobOfferDetailResponse> GetJobOfferDetail(Guid jobId);
         Task<IEnumerable<JobOfferBasicResponse>>GetJobOffers(ResourceParamethers resourceParamethers);
         Task JobOfferExist(Guid id);
+        Task DeleteJobOfferFromEvent(string message);
     }
 }

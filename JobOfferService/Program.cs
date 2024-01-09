@@ -34,6 +34,7 @@ public class Program
 
         builder.Services.AddHostedService<ScrapperEventManagerService>();
         builder.Services.AddHostedService<OffersToCreateConsumer>();
+        builder.Services.AddHostedService<OffersToDeleteConsumer>();
 
         builder.Services.AddDbContext<JobOffersContext>(options =>
         {
