@@ -32,7 +32,9 @@ IHost _host = Host.CreateDefaultBuilder()
         services.AddScoped<IJobOffersBaseRepository, JobOffersBaseRepository>();
         services.AddScoped<IJobCreateMessageProducer, JobCreateMessageProducer>();
         services.AddScoped<IJobCheckIfOutdatedMessageProducer, JobCheckIfOutdatedMessageProducer>();
+        services.AddTransient<IJobOfferBaseService, JobOfferBaseService>();
         services.AddHostedService<RawOffersConsumer>();
+        services.AddHostedService<OffersToDeleteConsumer>();
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
       
         services.AddDbContext<OffersBaseContext>(options =>
