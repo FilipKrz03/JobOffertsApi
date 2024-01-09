@@ -113,4 +113,16 @@ services:
     environment:
      - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
 
-      
+  mailsendingservice:
+    container_name: mailsendingservice
+    image: ${DOCKER_REGISTRY-}mailsendingservice
+    restart: on-failure:always
+    build : 
+      context: .
+      dockerfile: MailSendingService/Dockerfile
+    depends_on : 
+     rabbitmq:
+       condition: service_healthy
+    environment : 
+     - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
+
