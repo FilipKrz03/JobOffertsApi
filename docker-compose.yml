@@ -97,3 +97,20 @@ services:
       condition: service_started
     environment:
     - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
+
+  usersservice:
+    container_name: usersservice
+    image: ${DOCKER_REGISTRY-}usersservice
+    restart: on-failure:always
+    build:
+     context: .
+     dockerfile: UsersService/Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      offersdb:
+        condition: service_started
+    environment:
+     - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
+
+      
