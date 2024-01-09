@@ -8,23 +8,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebScrapperService.Interfaces;
+using static WebScrapperService.Props.RabbitMqJobDeleteProps;
 
 namespace WebScrapperService.Services
 {
     public sealed class JobTopicalityCheckerService : IJobTopicalityCheckerService
     {
 
-        private readonly IWebDriverFactory _webDriverFactory;
         private IWebDriver _driver;
+        private readonly IWebDriverFactory _webDriverFactory;
+        private readonly IJobDeleteMessageProducer _jobDeleteMessageProducer;
         private readonly ILogger<JobTopicalityCheckerService> _logger;
 
         public JobTopicalityCheckerService(
             IWebDriverFactory webDriverFactory,
-            ILogger<JobTopicalityCheckerService> logger
+            ILogger<JobTopicalityCheckerService> logger , 
+            IJobDeleteMessageProducer jobDeleteMessageProducer
             )
         {
             _webDriverFactory = webDriverFactory;
             _logger = logger;
+            _jobDeleteMessageProducer = jobDeleteMessageProducer;   
             _driver = _webDriverFactory.GetWebDriver();
         }
 
@@ -69,7 +73,13 @@ namespace WebScrapperService.Services
 
             if (!offerTitleFromLink.Any() || offerTitleFromLink.First().Text != offer.OfferTitle)
             {
-                // send delete event
+                _logger.LogInformation("Offer to delete event sended");
+
+                _jobDeleteMessageProducer.SendMessage(
+                    JOB_DELETE_EXCHANGE,
+                    JOB_DELETE_ROUTING_KEY,
+                    new {offer.Id}   
+                    );
             }
         }
     }
