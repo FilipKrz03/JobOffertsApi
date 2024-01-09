@@ -39,10 +39,21 @@ namespace WebScrapperService.Services
 
         protected string FullUrl => $"{BaseUrl}{PageNumber}";
 
-        protected BaseJobScrapper(ILogger<BaseJobScrapper> log, IJobHandleMessageProducer jobHandleMessageProducer,
-            IWebDriverFactory webDriverFactory ,string baseUrl, string jobElementOnPageSelector, string jobTitleSelector,
-            string companySelector, string localizationSelector, string workModeSelector,
-            string senioritySelector, string technologiesSelector,  string salarySelector , string? linkSelector)
+        protected BaseJobScrapper(
+            ILogger<BaseJobScrapper> log,
+            IJobHandleMessageProducer jobHandleMessageProducer,
+            IWebDriverFactory webDriverFactory,
+            string baseUrl,
+            string jobElementOnPageSelector,
+            string jobTitleSelector,
+            string companySelector,
+            string localizationSelector,
+            string workModeSelector,
+            string senioritySelector,
+            string technologiesSelector,
+            string salarySelector,
+            string? linkSelector
+            )
         {
             _logger = log;
             _jobHandleMessageProducer = jobHandleMessageProducer;
@@ -74,7 +85,7 @@ namespace WebScrapperService.Services
                     var jobElements = GetJobElementsFromPage();
 
                     if (jobElements.Count == 0) break;
-                   
+
                     IEnumerable<string> jobLinks = GetJobLinks(jobElements);
 
                     foreach (string jobLink in jobLinks)
@@ -129,7 +140,7 @@ namespace WebScrapperService.Services
                 company = company.Replace("About the company", "").Replace("O firmie", "");
 
                 return new(jobTitle, company, localization, workMode,
-                    seniority, techologies, _driver.Url , salaryString.Length > 0 ? salaryString[0] : null);
+                    seniority, techologies, _driver.Url, salaryString.Length > 0 ? salaryString[0] : null);
             }
             catch (Exception ex)
             {

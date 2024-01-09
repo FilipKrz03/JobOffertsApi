@@ -19,12 +19,19 @@ namespace JobOffersApiCore.BaseObjects
         private readonly ILogger _logger;
         private readonly string _queue;
 
-        public RabbitMqBaseConsumer(string connectionUri, string clientProvidedName,
-            ILogger<RabbitMqBaseConsumer> logger , string queue)
-            : base(connectionUri, clientProvidedName, false)
+        public RabbitMqBaseConsumer(
+            string connectionUri,
+            string clientProvidedName,
+            ILogger<RabbitMqBaseConsumer> logger,
+            string queue
+            ) : base(
+                connectionUri,
+                clientProvidedName,
+                false
+                )
         {
             _logger = logger;
-            _queue = queue; 
+            _queue = queue;
         }
 
         protected abstract void ProccesMessage(string message);

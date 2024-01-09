@@ -10,8 +10,11 @@ namespace UsersService.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IClaimService _claimService;
+
         public UserService(
-            IUserRepository userRepository , IClaimService claimService)
+            IUserRepository userRepository ,
+            IClaimService claimService
+            )
         {
             _userRepository = userRepository;
             _claimService = claimService;

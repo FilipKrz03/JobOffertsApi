@@ -12,8 +12,10 @@ namespace JobOfferService.Services
         private readonly IRabbitMessageProducer _scrapperMessageProducer;
         private readonly IServiceProvider _serviceProvider;
 
-        public ScrapperEventManagerService(IRabbitMessageProducer scrapperMessageProducer,
-            IServiceProvider serviceProvider)
+        public ScrapperEventManagerService(
+            IRabbitMessageProducer scrapperMessageProducer,
+            IServiceProvider serviceProvider
+            )
         {
             _serviceProvider = serviceProvider;
             _scrapperMessageProducer = scrapperMessageProducer;

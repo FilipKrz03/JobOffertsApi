@@ -20,9 +20,13 @@ namespace UsersService.Services
         private readonly IJobOfferUserJoinRepository _jobOfferUserJoinRepository;
         private readonly IMapper _mapper;
 
-        public FollowedJobOfferService(IUserRepository userRepository,
-            IJobOfferRepository jobOfferRepository, IClaimService claimService,
-            IJobOfferUserJoinRepository jobOfferUserJoinRepository, IMapper mapper)
+        public FollowedJobOfferService(
+            IUserRepository userRepository,
+            IJobOfferRepository jobOfferRepository,
+            IClaimService claimService,
+            IJobOfferUserJoinRepository jobOfferUserJoinRepository,
+            IMapper mapper
+            )
         {
             _userRepository = userRepository;
             _jobOfferRepository = jobOfferRepository;

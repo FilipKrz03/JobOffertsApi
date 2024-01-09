@@ -21,7 +21,11 @@ namespace JobOffersService.Consumer
         {
             _serviceProvider = serviceProvider;
 
-            DeclareQueueAndExchange(JOB_CREATE_QUEUE, JOB_OFFER_EXCHANGE, JOB_CREATE_ROUTING_KEY);
+            DeclareQueueAndExchange(
+                JOB_CREATE_QUEUE,
+                JOB_OFFER_EXCHANGE,
+                JOB_CREATE_ROUTING_KEY
+                );
         }
 
         protected override async Task ProccesMessageAsync(string message)

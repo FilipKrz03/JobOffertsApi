@@ -15,16 +15,19 @@ namespace UsersService.Controllers
         private readonly IAuthenticationService _authenticationService;
         private readonly IJwtProvider _jwtProvider;
 
-        public AuthController(IAuthenticationService authenticationService , IJwtProvider jwtProvider)
+        public AuthController
+            (IAuthenticationService authenticationService,
+            IJwtProvider jwtProvider
+            )
         {
-           _authenticationService = authenticationService;
-           _jwtProvider = jwtProvider;
+            _authenticationService = authenticationService;
+            _jwtProvider = jwtProvider;
         }
 
         [HttpPost("register")]
         public async Task<ActionResult> RegisterUser([FromBody] RegisterRequestDto request)
         {
-            await   _authenticationService.RegisterAsync(request);
+            await _authenticationService.RegisterAsync(request);
 
             return StatusCode(201);
         }

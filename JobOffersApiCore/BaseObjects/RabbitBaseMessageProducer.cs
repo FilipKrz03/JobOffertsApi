@@ -9,10 +9,18 @@ using System.Threading.Tasks;
 
 namespace JobOffersApiCore.BaseConfigurations
 {
-    public class RabbitBaseMessageProducer : RabbitBaseConfig , IRabbitMessageProducer
+    public class RabbitBaseMessageProducer : RabbitBaseConfig, IRabbitMessageProducer
     {
-        public RabbitBaseMessageProducer(string connectionUri, string clientProvidedName , bool asyncMode) : 
-            base(connectionUri, clientProvidedName , asyncMode) { }
+        public RabbitBaseMessageProducer
+            (
+            string connectionUri,
+            string clientProvidedName,
+            bool asyncMode
+            ) : base(
+                connectionUri,
+                clientProvidedName,
+                asyncMode
+                ) { }
 
         public void SendMessage<T>(string exchange, string routingKey, T message)
         {

@@ -19,9 +19,13 @@ namespace UsersService.Services
         private readonly ITechnologyUserJoinRepository _technologyUserJoinRepository;
         private readonly IMapper _mapper;
 
-        public SubscribedTechnologyService(IClaimService claimService, IUserRepository userRepository,
-            ITechnologyRepository technologyRepository, ITechnologyUserJoinRepository technologyUserJoinRepository , 
-            IMapper mapper)
+        public SubscribedTechnologyService(
+            IClaimService claimService,
+            IUserRepository userRepository,
+            ITechnologyRepository technologyRepository,
+            ITechnologyUserJoinRepository technologyUserJoinRepository,
+            IMapper mapper
+            )
         {
             _claimService = claimService;
             _userRepository = userRepository;

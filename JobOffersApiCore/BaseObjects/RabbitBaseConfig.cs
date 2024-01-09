@@ -13,7 +13,11 @@ namespace JobOffersApiCore.BaseConfigurations
         protected readonly IConnection _connection;
         protected readonly IModel _chanel;
 
-        public RabbitBaseConfig(string connectionUri , string clinetProvidedName,  bool asyncMode)
+        public RabbitBaseConfig(
+            string connectionUri,
+            string clinetProvidedName,
+            bool asyncMode
+            )
         {
             var factory = new ConnectionFactory()
             {
@@ -35,7 +39,7 @@ namespace JobOffersApiCore.BaseConfigurations
         }
 
         protected void DeclareQueueAndExchange
-            (string queueName, string exchangeName, string routingKey , string exchangeType)
+            (string queueName, string exchangeName, string routingKey, string exchangeType)
         {
             _chanel.ExchangeDeclare(exchangeName, exchangeType);
             _chanel.QueueDeclare(queueName, false, false, false);

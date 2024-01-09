@@ -17,12 +17,19 @@ namespace JobOffersApiCore.BaseObjects
         private readonly ILogger _logger;
         private readonly string _queue;
 
-        public RabbitMqAsyncBaseConsumer(string connectionUri, string clientProvidedName,
-            ILogger<RabbitMqAsyncBaseConsumer> logger, string queue)
-            : base(connectionUri, clientProvidedName, true)
+        public RabbitMqAsyncBaseConsumer(
+            string connectionUri,
+            string clientProvidedName,
+            ILogger<RabbitMqAsyncBaseConsumer> logger,
+            string queue
+            ) : base(
+                connectionUri,
+                clientProvidedName,
+                true
+                )
         {
             _logger = logger;
-            _queue = queue; 
+            _queue = queue;
         }
 
         protected abstract Task ProccesMessageAsync(string message);

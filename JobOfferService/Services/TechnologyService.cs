@@ -14,8 +14,10 @@ namespace JobOffersService.Services
         private readonly ITechnologyRepository _technologyRepository;
         private readonly IMapper _mapper;
 
-        public TechnologyService(ITechnologyRepository technologyRepository , 
-            IMapper mapper)
+        public TechnologyService(
+            ITechnologyRepository technologyRepository,
+            IMapper mapper
+            )
         {
             _technologyRepository = technologyRepository;
             _mapper = mapper;
@@ -30,19 +32,19 @@ namespace JobOffersService.Services
                 _ => technology => technology.CreatedAt!
             };
 
-            var technologieEntities = 
+            var technologieEntities =
                 await _technologyRepository.GetTechnologiesAsync(resourceParamethers, keySelector);
 
             return _mapper.Map<IEnumerable<TechnologyBasicResponse>>(technologieEntities);
         }
 
         public async Task<TechnologyDetailResponse> GetTechnologyWithJobOffers
-            (Guid id , ResourceParamethers resourceParamethers)
+            (Guid id, ResourceParamethers resourceParamethers)
         {
             var technologyEntityWithJobOffers = await _technologyRepository.
-                GetTechnologyWithJobOffersAsync(id , resourceParamethers);
+                GetTechnologyWithJobOffersAsync(id, resourceParamethers);
 
-            if(technologyEntityWithJobOffers == null)
+            if (technologyEntityWithJobOffers == null)
             {
                 throw new ResourceNotFoundException($"Technology with id {id} do not exist");
             }
