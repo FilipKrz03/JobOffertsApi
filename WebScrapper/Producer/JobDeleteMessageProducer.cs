@@ -1,6 +1,4 @@
 ﻿using JobOffersApiCore.BaseConfigurations;
-using JobOffersApiCore.Interfaces;
-using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
@@ -8,24 +6,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebScrapperService.Interfaces;
-using WebScrapperService.Props;
-using static WebScrapperService.Props.RabbitMQJobProps;
+using static WebScrapperService.Props.RabbitMqJobDeleteProps;
 
 namespace WebScrapperService.Producer
 {
-    public class JobHandleMessageProducer : RabbitBaseMessageProducer, IJobHandleMessageProducer
+    internal sealed class JobDeleteMessageProducer : RabbitBaseMessageProducer, IJobDeleteMessageProducer
     {
-        public JobHandleMessageProducer() :
+        public JobDeleteMessageProducer() :
             base(
                 Environment.GetEnvironmentVariable("RabbitConnectionUri")!,
-                JOB_CREATE_CLIENT_PROVIDED_NAME,
+                JOB_DELETE_CLIENT_PROVIDED_NAME,
                 false
                 )
         {
             DeclareQueueAndExchange(
-                JOB_CREATE_QUEUE,
-                JOB_OFFER_EXCHANGE,
-                JOB_CREATE_ROUTING_KEY
+                JOB_DELETE_QUEUE,
+                JOB_DELETE_EXCHANGE,
+                JOB_DELETE_ROUTING_KEY,
+                ExchangeType.Fanout
                 );
         }
     }

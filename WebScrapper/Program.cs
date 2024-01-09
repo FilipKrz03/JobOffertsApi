@@ -31,7 +31,8 @@ IHost _host = Host.CreateDefaultBuilder()
         services.AddScoped<IScrapperService, PracujPlScrapperService>();
         services.AddScoped<IWebDriverFactory , WebDriverFactory>();
         services.AddScoped<IScrapperService, TheProtocolScrapperService>();
-        services.AddScoped<IRabbitMessageProducer, JobHandleMessageProducer>();
+        services.AddScoped<IJobHandleMessageProducer, JobHandleMessageProducer>();
+        services.AddScoped<IJobDeleteMessageProducer , JobDeleteMessageProducer>();
         services.AddSingleton<IJobTopicalityCheckerService , JobTopicalityCheckerService>();
     })
     .UseSerilog()
