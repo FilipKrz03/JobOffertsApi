@@ -18,7 +18,7 @@ using WebScrapperService.Props;
 
 namespace WebScrapperService.Services
 {
-    public abstract class BaseJobScrapper
+    internal abstract class BaseJobScrapper
     {
         protected int PageNumber { get; set; } = 1;
 

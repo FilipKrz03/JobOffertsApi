@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebScrapperService.Interfaces
 {
-    public interface IWebDriverFactory
+    internal interface IWebDriverFactory
     {
         public IWebDriver GetWebDriver();
     }

@@ -11,7 +11,7 @@ using WebScrapperService.Interfaces;
 
 namespace WebScrapperService.Services
 {
-    public class PracujPlScrapperService : BaseJobScrapper, IScrapperService
+    internal class PracujPlScrapperService : BaseJobScrapper, IScrapperService
     {
         public PracujPlScrapperService(ILogger<PracujPlScrapperService> log, IRabbitMessageProducer jobOfferMessageProducer , 
             IWebDriverFactory webDriverFactory)

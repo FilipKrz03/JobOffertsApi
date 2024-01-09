@@ -42,6 +42,5 @@ namespace JobOffersApiCore.BaseConfigurations
 
             _chanel.QueueBind(queueName, exchangeName, routingKey);
         }
-
     }
 }

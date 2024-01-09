@@ -10,7 +10,7 @@ using static WebScrapperService.Props.RabbitMQOffersEventProps;
 
 namespace WebScrapperService.Services
 {
-    public class OffersService : IOffersService 
+    internal class OffersService : IOffersService 
     {
         private readonly IEnumerable<IScrapperService> _scrapperServices;
         private readonly ILogger<OffersService> _logger;

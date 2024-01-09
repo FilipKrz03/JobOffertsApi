@@ -12,7 +12,7 @@ using JobOffersApiCore.Interfaces;
 
 namespace WebScrapperService.Services
 {
-    public class TheProtocolScrapperService : BaseJobScrapper, IScrapperService
+    internal class TheProtocolScrapperService : BaseJobScrapper, IScrapperService
     {
         private readonly IJavaScriptExecutor _jse;
 

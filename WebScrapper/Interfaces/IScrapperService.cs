@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebScrapperService.Interfaces
 {
-    public interface IScrapperService
+    internal interface IScrapperService
     {
         void ScrapOfferts(bool isInit);
     }

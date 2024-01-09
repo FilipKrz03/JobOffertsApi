@@ -29,7 +29,7 @@ namespace JobOffersMapperService.Services
         {
             return await
                  Query()
-                .Select(x => new JobOfferWithIdTitleLinkDto(x.Id, x.OfferTitle, x.OfferCompany))
+                .Select(x => new JobOfferWithIdTitleLinkDto(x.Id, x.OfferTitle, x.OfferLink))
                 .ToListAsync();
         }
     }
