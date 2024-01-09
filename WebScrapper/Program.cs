@@ -24,13 +24,14 @@ IHost _host = Host.CreateDefaultBuilder()
     })
     .ConfigureServices(services =>
     {
-        services.AddScoped<IOffersService, OffersService>();
         services.AddHostedService<OffersCreateEventConsumer>();
         services.AddHostedService<OffersUpdateEventConsumer>();
         services.AddHostedService<OfferCheckIfOutdatedEventConsumer>();
+
+        services.AddScoped<IOffersService, OffersService>();
         services.AddScoped<IScrapperService, PracujPlScrapperService>();
-        services.AddScoped<IWebDriverFactory , WebDriverFactory>();
         services.AddScoped<IScrapperService, TheProtocolScrapperService>();
+        services.AddScoped<IWebDriverFactory , WebDriverFactory>();
         services.AddScoped<IJobHandleMessageProducer, JobHandleMessageProducer>();
         services.AddScoped<IJobDeleteMessageProducer , JobDeleteMessageProducer>();
         services.AddSingleton<IJobTopicalityCheckerService , JobTopicalityCheckerService>();

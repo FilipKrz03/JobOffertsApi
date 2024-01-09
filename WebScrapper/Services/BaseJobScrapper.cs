@@ -24,7 +24,7 @@ namespace WebScrapperService.Services
 
         protected readonly IWebDriver _driver;
         protected readonly ILogger<BaseJobScrapper> _logger;
-        protected readonly IRabbitMessageProducer _jobOfferMessageProducer;
+        protected readonly IJobHandleMessageProducer _jobHandleMessageProducer;
 
         protected readonly string BaseUrl;
         protected readonly string JobElementOnPageSelector;
@@ -39,13 +39,13 @@ namespace WebScrapperService.Services
 
         protected string FullUrl => $"{BaseUrl}{PageNumber}";
 
-        protected BaseJobScrapper(ILogger<BaseJobScrapper> log, IRabbitMessageProducer jobOfferMessageProducer,
+        protected BaseJobScrapper(ILogger<BaseJobScrapper> log, IJobHandleMessageProducer jobHandleMessageProducer,
             IWebDriverFactory webDriverFactory ,string baseUrl, string jobElementOnPageSelector, string jobTitleSelector,
             string companySelector, string localizationSelector, string workModeSelector,
             string senioritySelector, string technologiesSelector,  string salarySelector , string? linkSelector)
         {
             _logger = log;
-            _jobOfferMessageProducer = jobOfferMessageProducer;
+            _jobHandleMessageProducer = jobHandleMessageProducer;
 
             _driver = webDriverFactory.GetWebDriver();
 
@@ -85,7 +85,7 @@ namespace WebScrapperService.Services
 
                         if (offer != null)
                         {
-                            _jobOfferMessageProducer.SendMessage
+                            _jobHandleMessageProducer.SendMessage
                                 (RabbitMQJobProps.JOB_OFFER_EXCHANGE, RabbitMQJobProps.JOB_CREATE_ROUTING_KEY, offer);
 
                             _logger.LogInformation("WebScrapperService - offer.handle event sended");
@@ -98,7 +98,7 @@ namespace WebScrapperService.Services
             {
                 _logger.LogError("Error occured {ex}", ex);
             }
-            _jobOfferMessageProducer.CloseConnection();
+            _jobHandleMessageProducer.CloseConnection();
             _driver.Close();
         }
 

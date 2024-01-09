@@ -22,13 +22,13 @@ namespace WebScrapperService.Services
 
         public JobTopicalityCheckerService(
             IWebDriverFactory webDriverFactory,
-            ILogger<JobTopicalityCheckerService> logger , 
+            ILogger<JobTopicalityCheckerService> logger,
             IJobDeleteMessageProducer jobDeleteMessageProducer
             )
         {
             _webDriverFactory = webDriverFactory;
             _logger = logger;
-            _jobDeleteMessageProducer = jobDeleteMessageProducer;   
+            _jobDeleteMessageProducer = jobDeleteMessageProducer;
             _driver = _webDriverFactory.GetWebDriver();
         }
 
@@ -78,7 +78,7 @@ namespace WebScrapperService.Services
                 _jobDeleteMessageProducer.SendMessage(
                     JOB_DELETE_EXCHANGE,
                     JOB_DELETE_ROUTING_KEY,
-                    new {offer.Id}   
+                    new { offer.Id }
                     );
             }
         }
