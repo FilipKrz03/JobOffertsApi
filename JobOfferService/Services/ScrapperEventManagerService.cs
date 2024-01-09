@@ -12,7 +12,7 @@ namespace JobOfferService.Services
         private readonly IRabbitMessageProducer _scrapperMessageProducer;
         private readonly IServiceProvider _serviceProvider;
 
-        public ScrapperEventManagerService(IRabbitMessageProducer scrapperMessageProducer , 
+        public ScrapperEventManagerService(IRabbitMessageProducer scrapperMessageProducer,
             IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
@@ -21,11 +21,11 @@ namespace JobOfferService.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while(!stoppingToken.IsCancellationRequested)
+            while (!stoppingToken.IsCancellationRequested)
             {
                 using (IServiceScope scope = _serviceProvider.CreateScope())
                 {
-                    IJobOfferRepository jobOfferRepository = 
+                    IJobOfferRepository jobOfferRepository =
                         scope.ServiceProvider.GetService<IJobOfferRepository>()!;
 
                     bool isDatabaseInitialized = await jobOfferRepository.IsDatabaseInitalizedAsync();
@@ -36,7 +36,17 @@ namespace JobOfferService.Services
                         false => OFFERS_CREATE_ROUTING_KEY
                     };
 
-                    _scrapperMessageProducer.SendMessage(OFFERS_SCRAPER_EXCHANGE, routingKey);
+                    string message = isDatabaseInitialized switch
+                    {
+                        true => OFFERS_UPDATE_MESSAGE,
+                        false => OFFERS_CREATE_MESSAGE
+                    };
+
+                    _scrapperMessageProducer.SendMessage(
+                        OFFERS_SCRAPER_EXCHANGE,
+                        routingKey,
+                        message
+                        );
                 }
 
                 await Task.Delay(TimeSpan.FromMinutes(60), stoppingToken);

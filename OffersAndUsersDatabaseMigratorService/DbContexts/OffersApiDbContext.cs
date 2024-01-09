@@ -24,7 +24,7 @@ namespace OffersAndUsersDatabaseMigratorService.DbContexts
                   .HasMany(e => e.Users)
                   .WithMany(e => e.JobOffers)
                   .UsingEntity<JobOfferUser>();
-                  
+
             modelBuilder.Entity<Technology>()
                 .HasMany(e => e.Users)
                 .WithMany(e => e.Technologies)

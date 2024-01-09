@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace WebScrapperService.Services
 {
     public class OffersService : IOffersService
     {
+
         private readonly IEnumerable<IScrapperService> _scrapperServices;
         private readonly ILogger<OffersService> _logger;
 
@@ -21,14 +23,16 @@ namespace WebScrapperService.Services
             _logger = logger;
         }
 
-        public void HandleOffersCreateAndUpdate(string routingKey)
+        public void HandleOffersCreateAndUpdate(string messageJson)
         {
+            string message = JsonConvert.DeserializeObject<string>(messageJson)!;
+
             try
             {
-                bool isInit = routingKey switch
+                bool isInit = message switch
                 {
-                    OFFERS_CREATE_ROUTING_KEY => true,
-                    OFFERS_UPDATE_ROUTING_KEY => false,
+                    OFFERS_CREATE_MESSAGE => true,
+                    OFFERS_UPDATE_MESSAGE => false,
                     _ => throw new ArgumentException("Not recognized routing key"),
                 };
 
