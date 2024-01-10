@@ -17,5 +17,9 @@ RUN dotnet publish "OffersAndUsersDatabaseMigratorService.csproj" -c Release -o 
 
 FROM base AS final
 WORKDIR /app
+
+COPY wait-for-it.sh /app/wait-for-it.sh
+RUN chmod +x /app/wait-for-it.sh
+
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "OffersAndUsersDatabaseMigratorService.dll"]
