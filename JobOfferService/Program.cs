@@ -1,6 +1,6 @@
 using JobOffersApiCore.Interfaces;
 using JobOfferService.Producer;
-using JobOfferService.Services;
+using JobOffersService.Config;
 using JobOffersService.Consumer;
 using JobOffersService.DbContexts;
 using JobOffersService.Interfaces;
@@ -8,6 +8,7 @@ using JobOffersService.Middleware;
 using JobOffersService.Repositories;
 using JobOffersService.Services;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
 using Serilog;
 
 public class Program
@@ -27,21 +28,28 @@ public class Program
         builder.Services.AddSingleton<IRabbitMessageProducer, ScrapperMessageProducer>();
 
         builder.Services.AddScoped<ITechnologyRepository, TechnologyRepository>();
-        builder.Services.AddScoped<IProcessedOfferService, ProcessedJobOfferService>();
+        builder.Services.AddScoped<IProcessedOfferService, JobOffersService.Services.ProcessedJobOfferService>();
         builder.Services.AddScoped<IJobOfferRepository, JobOffersRepository>();
         builder.Services.AddScoped<IJobOfferService, JobOffersService.Services.JobOfferService>();
         builder.Services.AddScoped<ITechnologyService, TechnologyService>();
-
-        builder.Services.AddHostedService<ScrapperEventManagerService>();
         builder.Services.AddHostedService<OffersToCreateConsumer>();
         builder.Services.AddHostedService<OffersToDeleteConsumer>();
 
         builder.Services.AddDbContext<JobOffersContext>(options =>
         {
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DockerConnection")!);
         });
 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+        builder.Services.AddQuartz(options =>
+        {
+            options.UseMicrosoftDependencyInjectionJobFactory();
+        });
+
+        builder.Services.AddQuartzHostedService();
+
+        builder.Services.ConfigureOptions<ScrapperEventManagerJobConfig>();
 
         Log.Logger = new LoggerConfiguration()
               .ReadFrom.Configuration(builder.Configuration)
