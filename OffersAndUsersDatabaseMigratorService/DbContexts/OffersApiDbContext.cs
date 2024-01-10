@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using OffersAndUsersDatabaseMigratorService.Entities;
 
 namespace OffersAndUsersDatabaseMigratorService.DbContexts

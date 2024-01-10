@@ -102,6 +102,7 @@ namespace WebScrapperService.Services
                             _logger.LogInformation("WebScrapperService - offer.handle event sended");
                         }
                     }
+            
                     PageNumber++;
                 }
             }
@@ -109,7 +110,7 @@ namespace WebScrapperService.Services
             {
                 _logger.LogError("Error occured {ex}", ex);
             }
-            _jobHandleMessageProducer.CloseConnection();
+
             _driver.Close();
         }
 

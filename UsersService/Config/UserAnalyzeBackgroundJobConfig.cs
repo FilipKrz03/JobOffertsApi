@@ -17,7 +17,7 @@ namespace UsersService.Config
                  .AddTrigger(trigger =>
                     trigger.ForJob(jobKey)
                         .WithSimpleSchedule(scheadule =>
-                        scheadule.WithIntervalInMinutes(60).RepeatForever()));
+                        scheadule.WithIntervalInMinutes(180).RepeatForever()));
         }
     }
 }

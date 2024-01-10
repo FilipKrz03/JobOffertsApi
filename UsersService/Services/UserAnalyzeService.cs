@@ -40,6 +40,8 @@ namespace UsersService.Services
             var allUsers = await
                 _userRepository.GetAllUsersWithEmailSeniorityAndTechnologiesAsync();
 
+            if (!allUsers.Any()) return;
+
             var usersWithSubscribedTechnologies = allUsers.Where(user => user.Technologies.Count > 0);
             var usersWithoutSubscribedTechnologies = allUsers.Where(user => user.Technologies.Count == 0);
 
