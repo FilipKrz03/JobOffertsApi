@@ -19,14 +19,14 @@ namespace WebScrapperTests.Services
     public class ScrapperTests
     {
         private readonly Mock<ILogger<SimpleScrapper>> _loggerMock;
-        private readonly Mock<IRabbitMessageProducer> _rabbitMessageProducerMock;
+        private readonly Mock<IJobHandleMessageProducer> _rabbitMessageProducerMock;
         private readonly Mock<IWebDriver> _driverMock;
-        private readonly SimpleScrapper _simpleScrapper;        
+        private readonly SimpleScrapper _simpleScrapper;
 
         public ScrapperTests()
         {
             _driverMock = new();
-        
+
             Mock<IWebDriverFactory> factoryMock = new();
             factoryMock.Setup(x => x.GetWebDriver())
                 .Returns(_driverMock.Object);
@@ -37,7 +37,11 @@ namespace WebScrapperTests.Services
             _driverMock.Setup(x => x.Navigate().GoToUrl("url"));
             _driverMock.Setup(x => x.Manage().Timeouts().ImplicitWait);
 
-            _simpleScrapper = new(_loggerMock.Object, _rabbitMessageProducerMock.Object, factoryMock.Object);
+            _simpleScrapper = new
+                (_loggerMock.Object,
+                _rabbitMessageProducerMock.Object,
+                factoryMock.Object
+                );
         }
 
         [Fact]
@@ -72,7 +76,7 @@ namespace WebScrapperTests.Services
             _driverMock.Verify(x => x.Close(), Times.Once);
         }
 
-        [Fact] 
+        [Fact]
         public void Scrapper_Should_SendRabbitEvent_WhenScrappedOffer()
         {
             Mock<IWebElement> webElementMock = new();
@@ -110,7 +114,7 @@ namespace WebScrapperTests.Services
 
             _simpleScrapper.ScrapOfferts(false);
 
-            _rabbitMessageProducerMock.Verify(x => x.SendMessage(It.IsAny<string>() , It.IsAny<string>() , It.IsAny<JobOfferRaw>()));
+            _rabbitMessageProducerMock.Verify(x => x.SendMessage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<JobOfferRaw>()));
         }
 
 
@@ -150,7 +154,7 @@ namespace WebScrapperTests.Services
 
             int expectedTimesCallForOneItemOnPageAndPageFromOneTo10 = 10 * 3;
 
-            _driverMock.Verify(x => x.FindElements(It.IsAny<By>()) ,
+            _driverMock.Verify(x => x.FindElements(It.IsAny<By>()),
                 Times.Exactly(expectedTimesCallForOneItemOnPageAndPageFromOneTo10));
         }
 
@@ -205,7 +209,7 @@ namespace WebScrapperTests.Services
             //In this case we setup driver to simulate finding one element on 30 pages
 
             _driverMock.Verify(x => x.FindElements(It.IsAny<By>()),
-                Times.Exactly(expectedTimesCall + 1 ));
+                Times.Exactly(expectedTimesCall + 1));
 
             // + 1 because check call that returns empty result (it ends loop)
         }

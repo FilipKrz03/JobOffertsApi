@@ -1,7 +1,7 @@
 ﻿using JobOffersApiCore.Interfaces;
 using JobOfferService.Props;
-using JobOfferService.Services;
 using JobOffersService.Interfaces;
+using JobOffersService.Jobs;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using System;
@@ -9,13 +9,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static JobOfferService.Props.RabbitMQOffersScraperProps;
 
 namespace JobOfferServiceTests.Services
 {
     public class ScrapperEventManagerServiceTests
     {
         private readonly Mock<IRabbitMessageProducer> _rabbitMessageProducerMock;
-        private readonly ScrapperEventManagerService _scrapperEventManagerService;
+        private readonly ScrapperEventManagerJob _scrapperEventManagerJob;
         private readonly Mock<IJobOfferRepository> _jobOfferRepositoryMock;
 
         public ScrapperEventManagerServiceTests()
@@ -37,22 +38,25 @@ namespace JobOfferServiceTests.Services
             serviceProviderMock.Setup(x => x.GetService(typeof(IServiceScopeFactory)))
                 .Returns(serviceScopeFactory.Object);
 
-            _scrapperEventManagerService = new(_rabbitMessageProducerMock.Object, serviceProviderMock.Object);
+            _scrapperEventManagerJob = new
+                (_rabbitMessageProducerMock.Object,
+                serviceProviderMock.Object
+                );
         }
 
         [Theory]
-        [InlineData(false , RabbitMQOffersScraperProps.OFFERS_CREATE_ROUTING_KEY)]
-        [InlineData(true , RabbitMQOffersScraperProps.OFFERS_UPDATE_ROUTING_KEY)]
-        public async Task 
-            Service_Should_SendProperRabbitEvent_DependingOnDatabaseInitialization(bool isDbInitalized, string routingKey)
+        [InlineData(false, RabbitMQOffersScraperProps.OFFERS_CREATE_MESSAGE)]
+        [InlineData(true, RabbitMQOffersScraperProps.OFFERS_UPDATE_MESSAGE)]
+        public async Task
+            Service_Should_SendProperRabbitEventMessage_DependingOnDatabaseInitialization(bool isDbInitalized, string message)
         {
             _jobOfferRepositoryMock.Setup(r => r.IsDatabaseInitalizedAsync())
                .ReturnsAsync(isDbInitalized);
 
-            await _scrapperEventManagerService.StartAsync(default);
+            await _scrapperEventManagerJob.Execute(default!);
 
             _rabbitMessageProducerMock.Verify
-                (x => x.SendMessage(It.IsAny<string>(), routingKey));
+                (x => x.SendMessage(It.IsAny<string>(), It.IsAny<string>(), message));
         }
     }
 }

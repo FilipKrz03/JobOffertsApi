@@ -48,7 +48,7 @@ namespace JobOffersMapperServiceTests.Profiles
         [InlineData("Junior  ", Seniority.Junior)]
         [InlineData("mId  ", Seniority.Mid)]
         [InlineData(" Senior", Seniority.Senior)]
-        [InlineData("Not recognaizable seniority" , Seniority.Unknown)]
+        [InlineData("Not recognaizable" , Seniority.Unknown)]
         public void Converter_Should_ReturnProperSeniorityValue_WhenMappingFromStringSeniorityToEnumSeniority
             (string stringSeniority , Seniority expectedSeniority)
         {

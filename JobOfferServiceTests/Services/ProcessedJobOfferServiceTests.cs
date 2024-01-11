@@ -33,8 +33,12 @@ namespace JobOfferServiceTests.Services
             _loggerMock = new();
             _processedJobOfferService = new(_technologyRepositoryMock.Object, _loggerMock.Object,
                 _mapperMock.Object, _jobOfferRepositoryMock.Object);
-            _procesedJobOfferSimple = new("", "", "", "", Enumerable.Empty<string>(), "",
-                Seniority.Unknown, null, null);
+
+            _procesedJobOfferSimple = new(
+                Guid.Empty ,"", "", "", "",
+                Enumerable.Empty<string>(), 
+                "", Seniority.Unknown, null, null 
+                );
         }
 
         [Fact]

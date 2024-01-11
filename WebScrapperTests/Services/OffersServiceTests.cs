@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using WebScrapperService.Interfaces;
 using WebScrapperService.Props;
 using WebScrapperService.Services;
+using static WebScrapperService.Props.RabbitMQOffersEventProps;
 
 namespace WebScrapperTests.Services
 {
@@ -36,9 +37,9 @@ namespace WebScrapperTests.Services
         }
 
         [Theory]
-        [InlineData(RabbitMQOffersEventProps.OFFERS_CREATE_EVENT_ROUTRING_KEY, true)]
-        [InlineData(RabbitMQOffersEventProps.OFFERS_UPDATE_ROUTING_KEY, false)]
-        public void Service_Should_ScrappOffersWithProperLogic_WhenRoutingKeyRecognized(string routingKey, bool isInitLogic)
+        [InlineData($"\"{OFFERS_CREATE_MESSAGE}\"", true)]
+        [InlineData($"\"{OFFERS_UPDATE_MESSAGE}\"", false)]
+        public void Service_Should_ScrappOffersWithProperLogic_WhenMessageRecognized(string routingKey, bool isInitLogic)
         {
             _offersService.HandleOffersCreateAndUpdate(routingKey);
 
@@ -47,9 +48,9 @@ namespace WebScrapperTests.Services
         }
 
         [Fact]
-        public void Service_ShouldNot_ScrappOffers_WhenRoutingKeyNotRecognized()
+        public void Service_ShouldNot_ScrappOffers_WhenMessageNotRecognized()
         {
-            _offersService.HandleOffersCreateAndUpdate("Not recognized key");
+            _offersService.HandleOffersCreateAndUpdate("\"Not recognized message\"");
 
             _scrapperServiceMock1.Verify(x => x.ScrapOfferts(It.IsAny<bool>()), Times.Never);
             _scrapperServiceMock2.Verify(x => x.ScrapOfferts(It.IsAny<bool>()), Times.Never);
@@ -58,7 +59,7 @@ namespace WebScrapperTests.Services
         [Fact]
         public void Service_Should_ThrowCatchAndLogArgumentException_WhenRoutingKeyNotRecognized()
         {
-            _offersService.HandleOffersCreateAndUpdate("Not recognized key");
+            _offersService.HandleOffersCreateAndUpdate("\"Not recognized message\"");
 
             _loggerMock.Verify(logger => logger.Log(
            It.Is<LogLevel>(logLevel => logLevel == LogLevel.Error),

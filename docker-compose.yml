@@ -2,22 +2,6 @@ version: '3.4'
 
 services:
 
-  rabbitmq:
-    container_name: "rabbitmq"
-    image: rabbitmq:3-management
-    restart: on-failure:3
-    ports:
-     - 5672:5672
-     - 15672:15672
-    environment:
-     - RABBITMQ_DEFAULT_USER=RabbitUser
-     - RABBITMQ_DEFAULT_PASS=RabbitPassword
-    healthcheck:
-     test: rabbitmq-diagnostics -q ping
-     interval: 30s
-     timeout: 30s
-     retries: 3
-
   offersdb:
      container_name: "offersdb"
      image: mcr.microsoft.com/mssql/server:2019-latest
@@ -36,6 +20,35 @@ services:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=offersbasedbpwd123@
 
+  offersandusersdatabasemigratorservice:
+   container_name: offersandusersdatabasemigratorservice
+   image: ${DOCKER_REGISTRY-}offersandusersdatabasemigratorservice
+   restart: on-failure
+   build : 
+    context: .
+    dockerfile: OffersAndUsersDatabaseMigratorService/Dockerfile
+   depends_on : 
+     - offersdb
+   entrypoint: ["/app/wait-for-it.sh" , "-t" , "30" , "-h" , "host.docker.internal" , "-p" , "1432", "--" , "dotnet" , "OffersAndUsersDatabaseMigratorService.dll"]
+   environment:
+    - ConnectionStrings__DefaultConnection=Server=host.docker.internal,1432;Database=Offers;User ID = sa;Password=offersdbpwd123@;TrustServerCertificate=true
+
+  rabbitmq:
+    container_name: "rabbitmq"
+    image: rabbitmq:3-management
+    restart: on-failure:3
+    ports:
+     - 5672:5672
+     - 15672:15672
+    environment:
+     - RABBITMQ_DEFAULT_USER=RabbitUser
+     - RABBITMQ_DEFAULT_PASS=RabbitPassword
+    healthcheck:
+     test: rabbitmq-diagnostics -q ping
+     interval: 30s
+     timeout: 30s
+     retries: 3
+
   selenium:
     container_name: "selenium"
     image: selenium/standalone-chrome
@@ -51,7 +64,7 @@ services:
   joboffersservice:
     container_name: "joboffersservice"
     image: ${DOCKER_REGISTRY-}joboffersservice
-    restart: on-failure:always
+    restart: on-failure
     build:
       context: .
       dockerfile: JobOfferService/Dockerfile 
@@ -64,12 +77,12 @@ services:
        condition: service_started
     environment:
      - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
-     - ConnectionString=Server=offersdb,1433;Initial Catalog=Offers;User ID = sa;Password=offersdbpwd123@;TrustServerCertificate=true
+     - ConnectionStrings__DefaultConnection=Server=host.docker.internal,1432;Initial Catalog=Offers;User ID = sa;Password=offersdbpwd123@;TrustServerCertificate=true
 
   webscrapperservice:
     container_name: "webscrapperservice"
     image: ${DOCKER_REGISTRY-}webscrapperservice
-    restart: on-failure:always
+    restart: on-failure
     build:
         context: .
         dockerfile: WebScrapper/Dockerfile
@@ -86,7 +99,7 @@ services:
   joboffersmapperserivce:
     container_name: "joboffersmapperservice"
     image: ${DOCKER_REGISTRY}joboffersmapperservice
-    restart: on-failure:always
+    restart: on-failure
     build:
         context: .
         dockerfile: JobOffersMapperService/Dockerfile
@@ -97,14 +110,17 @@ services:
       condition: service_started
     environment:
     - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
+    - ConnectionStrings__DefaultConnection=Server=host.docker.internal,1431;Initial Catalog=OffersBase;User ID = sa;Password=offersbasedbpwd123@;TrustServerCertificate=true
 
   usersservice:
     container_name: usersservice
     image: ${DOCKER_REGISTRY-}usersservice
-    restart: on-failure:always
+    restart: on-failure
     build:
      context: .
      dockerfile: UsersService/Dockerfile
+    ports:
+      - 7104:80
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -112,6 +128,11 @@ services:
         condition: service_started
     environment:
      - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
+     - ConnectionStrings__DefaultConnection=Server=host.docker.internal,1432;Initial Catalog=Offers;User ID = sa;Password=offersdbpwd123@;TrustServerCertificate=true
+     - TokenUri=https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBsoEs2qyaopc2QhsnA_0o51e0Ityhw_uk
+     - RefreshUri=https://securetoken.googleapis.com/v1/token?key=AIzaSyBsoEs2qyaopc2QhsnA_0o51e0Ityhw_uk
+     - Audience=joboffersapiauth
+     - ValidIssuer=https://securetoken.google.com/joboffersapiauth
 
   mailsendingservice:
     container_name: mailsendingservice
@@ -119,10 +140,14 @@ services:
     restart: on-failure:always
     build : 
       context: .
-      dockerfile: MailSendingService/Dockerfile
+      dockerfile: MailSedningService/Dockerfile
     depends_on : 
      rabbitmq:
        condition: service_healthy
     environment : 
      - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
-
+     - sendingEmail=filipos2003@gmail.com
+     - smtpServer=smtp.gmail.com
+     - smtpPort=465
+     - smtpLogin=filipos2003@gmail.com
+     - smtpPassword=uwgm gwce wmbk jvvg

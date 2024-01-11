@@ -15,7 +15,7 @@ namespace WebScrapperTests.Common
     public class SimpleScrapper : BaseJobScrapper
     {
         public SimpleScrapper
-            (ILogger<SimpleScrapper>logger , IRabbitMessageProducer messageProdcuer, IWebDriverFactory webDriverFactory )
+            (ILogger<SimpleScrapper>logger , IJobHandleMessageProducer messageProdcuer, IWebDriverFactory webDriverFactory )
             :base(logger , messageProdcuer, webDriverFactory , "" , "" ,"" ,"" ,"" , "" , "" ,"" ,"" , "") { }
     }
 }

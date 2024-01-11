@@ -1,4 +1,5 @@
-﻿using JobOffersService.DbContexts;
+﻿using JobOffersService.Consumer;
+using JobOffersService.DbContexts;
 using JobOffersService.Entities;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -14,13 +15,14 @@ namespace JobOfferServiceTests.Common
 
         public IntegrationTestBase()
         {
-            Environment.SetEnvironmentVariable("RabbitConnectionUri", "amqp://guest:guest@localhost:5672");
-
             var appFactory = new WebApplicationFactory<Program>()
                 .WithWebHostBuilder(builder =>
                 {
                     builder.ConfigureServices(services =>
                     {
+                        // To avoid errors due to rabbitMqConnection
+                        services.RemoveAll(typeof(IHostedService));
+
                         services.RemoveAll(typeof(JobOffersContext));
                         services.AddDbContext<JobOffersContext>(options =>
                         {

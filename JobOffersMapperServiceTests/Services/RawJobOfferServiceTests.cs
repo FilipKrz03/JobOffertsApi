@@ -19,7 +19,7 @@ namespace JobOffersMapperServiceTests.Services
         private readonly Mock<IJobOffersBaseRepository> _offersBaseRepositoryMock;
         private readonly Mock<IMapper> _mapperMock;
         private readonly Mock<ILogger<RawJobOfferService>> _loggerMock;
-        private readonly Mock<IRabbitMessageProducer> _rabbitMessageProducerMock;
+        private readonly Mock<IJobCreateMessageProducer> _jobCreateMessageProducerMock;
         private readonly JobOfferRaw _simpleJobOfferRaw;
         private readonly RawJobOfferService _rawOfferService;
 
@@ -28,10 +28,14 @@ namespace JobOffersMapperServiceTests.Services
             _offersBaseRepositoryMock = new();
             _mapperMock = new();
             _loggerMock = new();
-            _rabbitMessageProducerMock = new();
+            _jobCreateMessageProducerMock = new();
             _simpleJobOfferRaw = new("", "", "", "", "", Enumerable.Empty<string>(), "", "");
-            _rawOfferService = new RawJobOfferService(_offersBaseRepositoryMock.Object,
-           _mapperMock.Object, _loggerMock.Object, _rabbitMessageProducerMock.Object);
+            _rawOfferService = new RawJobOfferService(
+                _offersBaseRepositoryMock.Object,
+                _mapperMock.Object,
+                _loggerMock.Object,
+                _jobCreateMessageProducerMock.Object
+           );
         }
 
         [Fact]
@@ -57,7 +61,7 @@ namespace JobOffersMapperServiceTests.Services
 
             await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
-            _mapperMock.Verify(m => m.Map<JobOfferRaw , JobOfferBase>(It.IsAny<JobOfferRaw>()), Times.Never);
+            _mapperMock.Verify(m => m.Map<JobOfferRaw, JobOfferBase>(It.IsAny<JobOfferRaw>()), Times.Never);
         }
 
         [Fact]
@@ -85,7 +89,7 @@ namespace JobOffersMapperServiceTests.Services
         public async Task Service_ShouldNot_CallInsertJobOfferBaseToRepository_WhenJobOfferExistInDatabase()
         {
             SetupOfferBaseRepositoryMockOfferExistAsyncMethod(true);
-            
+
             await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _offersBaseRepositoryMock.Verify(x => x.Insert(It.IsAny<JobOfferBase>()), Times.Never);
@@ -99,7 +103,9 @@ namespace JobOffersMapperServiceTests.Services
 
             await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
-            _mapperMock.Verify(m => m.Map<JobOfferRaw, JobOfferProcessed>(It.IsAny<JobOfferRaw>()), Times.Once);
+            _mapperMock.Verify(m => m.Map<JobOfferRaw, JobOfferProcessed>
+            (It.IsAny<JobOfferRaw>() , It.IsAny<System.Action<IMappingOperationOptions<JobOfferRaw , JobOfferProcessed>>>()),
+            Times.Once);
         }
 
         [Fact]
@@ -109,7 +115,7 @@ namespace JobOffersMapperServiceTests.Services
 
             await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
-            _rabbitMessageProducerMock.Verify(x => x.SendMessage
+            _jobCreateMessageProducerMock.Verify(x => x.SendMessage
             (It.IsAny<string>(), It.IsAny<string>(), It.IsAny<JobOfferProcessed>()), Times.Once);
         }
 
@@ -120,7 +126,7 @@ namespace JobOffersMapperServiceTests.Services
 
             await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
-            _rabbitMessageProducerMock.Verify(x => x.SendMessage
+            _jobCreateMessageProducerMock.Verify(x => x.SendMessage
             (It.IsAny<string>(), It.IsAny<string>(), It.IsAny<JobOfferProcessed>()), Times.Never);
         }
 

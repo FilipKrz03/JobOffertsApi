@@ -21,13 +21,20 @@ namespace JobOfferServiceTests.Services
 
         private readonly Mock<IJobOfferRepository> _jobOfferRepositoryMock;
         private readonly Mock<IMapper> _mapperMock;
+        private readonly Mock<ILogger<JobOffersService.Services.JobOfferService>> _loggerMock;
         private readonly JobOffersService.Services.JobOfferService _offerService;
 
         public JobOfferServiceTests()
         {
             _mapperMock = new();
             _jobOfferRepositoryMock = new();
-            _offerService = new(_jobOfferRepositoryMock.Object, _mapperMock.Object);
+            _loggerMock = new();
+
+            _offerService = new(
+                _jobOfferRepositoryMock.Object,
+                _mapperMock.Object , 
+                _loggerMock.Object
+                );
         }
 
         [Fact]
