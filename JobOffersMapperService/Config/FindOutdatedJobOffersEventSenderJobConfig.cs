@@ -20,8 +20,7 @@ namespace JobOffersMapperService.Config
                     .AddTrigger(trigger =>
                         trigger.ForJob(jobKey)
                         .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(22, 0))
-                        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(4, 0))
-                        .Build());
+                        .WithSchedule(CronScheduleBuilder.DailyAtHourAndMinute(4, 0)));
         }
     }
 }

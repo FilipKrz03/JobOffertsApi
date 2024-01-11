@@ -12,6 +12,7 @@ using Quartz;
 using JobOffersMapperService.Config;
 using RabbitMQ.Client;
 using Serilog;
+using JobOffersMapperService.Repository;
 
 IHost _host = Host.CreateDefaultBuilder()
     .ConfigureAppConfiguration(builder =>
