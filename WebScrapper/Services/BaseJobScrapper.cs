@@ -103,13 +103,13 @@ namespace WebScrapperService.Services
 
                     PageNumber++;
                 }
+                _driver!.Close();
+                _jobHandleMessageProducer.CloseConnection();
             }
             catch (Exception ex)
             {
                 _logger.LogError("Error occured {ex}", ex);
             }
-
-            _driver!.Close();
         }
 
         protected virtual void NavigateToOffersPage(string offersPageLink)

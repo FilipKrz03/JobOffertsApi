@@ -14,10 +14,15 @@ namespace JobOffersMapperService.Profiles
         public JobOfferProfile()
         {
             CreateMap<JobOfferRaw, JobOfferBase>()
-                .ForMember(x => x.Id, opt => Guid.NewGuid())
+                .ForMember(x => x.Id, opt => opt.MapFrom(x => GetGuid()))
                    .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
             CreateMap<JobOfferRaw, JobOfferProcessed>()
               .ConvertUsing<JobOfferRawConverter>();
+        }
+
+        private Guid GetGuid()
+        {
+            return Guid.NewGuid();
         }
     }
 }
