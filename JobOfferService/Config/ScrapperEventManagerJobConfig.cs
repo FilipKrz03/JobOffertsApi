@@ -15,7 +15,7 @@ namespace JobOffersService.Config
                  .AddTrigger(trigger =>
                     trigger.ForJob(jobKey)
                         .WithSimpleSchedule(scheadule =>
-                            scheadule.WithIntervalInMinutes(180).RepeatForever()));
+                            scheadule.WithIntervalInMinutes(240).RepeatForever()));
         }
     }
 }

@@ -45,5 +45,6 @@ using (var scope = _host.Services.CreateScope())
     catch (Exception ex)
     {
         Console.WriteLine(ex.Message);
+        throw;
     }
 }

@@ -14,7 +14,6 @@ namespace WebScrapperService.Services
 {
     public class TheProtocolScrapperService : BaseJobScrapper, IScrapperService
     {
-        private readonly IJavaScriptExecutor _jse;
 
         public TheProtocolScrapperService(
             ILogger<TheProtocolScrapperService> log,
@@ -35,10 +34,7 @@ namespace WebScrapperService.Services
                   "[data-test='chip-technology']",
                   "[data-test='text-contractSalary']",
                    null
-                   )
-        {
-            _jse = (IJavaScriptExecutor)_driver;
-        }
+                   ) { }
 
         protected override IEnumerable<string> GetJobLinks(ICollection<IWebElement> elements)
         {
@@ -63,19 +59,17 @@ namespace WebScrapperService.Services
         {
             base.NavigateToJobDetailPage(jobPageLink);
             SecurityChecker();
-            _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
         }
 
         private void SecurityChecker()
         {
             try
             {
-                var h1 = _driver.FindElement(By.CssSelector("h1")).Text;
+                var h1 = _driver!.FindElement(By.CssSelector("h1")).Text;
 
                 if (h1 == "theprotocol.it")
                 {
-                    Task.Delay(4000).Wait();
-                    _jse.ExecuteScript("document.querySelector('input').click()");
+                    Task.Delay(1000).Wait();
                 }
             }
             catch (Exception ex)
