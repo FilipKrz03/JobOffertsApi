@@ -24,7 +24,7 @@ namespace UsersService.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddFolowedJobOffer([FromBody] OfferToAddDto request)
+        public async Task<IActionResult> AddFolowedJobOffer([FromBody] FollowedOfferToAddRequestDto request)
         {
             await _followedJobOfferService.AddFolowedJobOffer(request.OfferId);
 

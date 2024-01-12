@@ -15,8 +15,8 @@ namespace UsersService.Controllers
         private readonly IAuthenticationService _authenticationService;
         private readonly IJwtProvider _jwtProvider;
 
-        public AuthController
-            (IAuthenticationService authenticationService,
+        public AuthController(
+            IAuthenticationService authenticationService,
             IJwtProvider jwtProvider
             )
         {

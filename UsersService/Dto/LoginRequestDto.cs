@@ -2,21 +2,20 @@
 
 namespace UsersService.Dto
 {
-    public record LoginRequestDto
+    public class LoginRequestDto
     {
-        //[Required(ErrorMessage = "Email is required")]
-        //[EmailAddress(ErrorMessage = "Invalid email address")]
+        [Required]
+        [EmailAddress]
         public string Email { get; init; }
 
-        //[Required(ErrorMessage = "Password is required")]
-        //[MinLength(5, ErrorMessage = "Min length of password is 5 characters")]
-        //[MaxLength(30, ErrorMessage = "Max length of password is 30")]
+        [Required]
+        [MinLength(5)]
         public string Password { get; init; }
 
-        public LoginRequestDto(string Email, string Password)
+        public LoginRequestDto(string email, string password)
         {
-            this.Email = Email;
-            this.Password = Password;
+            Email = email;
+            Password = password;
         }
     }
 }

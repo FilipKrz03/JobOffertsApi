@@ -1,4 +1,10 @@
-﻿namespace UsersService.Dto
+﻿using UsersService.Dto.ValidationAtrributes;
+
+namespace UsersService.Dto
 {
-    public record SubscribedTechnologyRequestDto(Guid TechnologyId) { }
+    public class SubscribedTechnologyRequestDto
+    {
+        [RequireNonDefault(ErrorMessage = "You did not provide valid TechnologyId")]
+        public Guid TechnologyId { get; set; }
+    }
 }

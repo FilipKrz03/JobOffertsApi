@@ -15,6 +15,7 @@ using UsersService.Producer;
 using UsersService.Repository;
 using UsersService.Services;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLogging();
@@ -70,13 +71,16 @@ builder.Services.AddQuartzHostedService();
 
 builder.Services.ConfigureOptions<UserAnalyzeBackgroundJobConfig>();
 
-FirebaseApp.Create(new AppOptions
+// Do not realy want test this external dependency during Integration tests
+if(Environment.GetEnvironmentVariable("IntegrationTests") == null)
 {
-    Credential = GoogleCredential.FromFile("firebase.json")
-});
+    FirebaseApp.Create(new AppOptions
+    {
+        Credential = GoogleCredential.FromFile("firebase.json")
+    });
+}
 
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -94,3 +98,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+public partial class Program { }
