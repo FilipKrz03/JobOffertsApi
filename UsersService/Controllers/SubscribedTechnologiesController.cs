@@ -38,7 +38,7 @@ namespace UsersService.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetSubscribedTechnolgoy([FromQuery] ResourceParamethers resourceParamethers)
+        public async Task<IActionResult> GetSubscribedTechnolgies([FromQuery] ResourceParamethers resourceParamethers)
         {
             var result = await _subscribedTechnologyService.
                 GetSubscribedTechnologies(resourceParamethers);
