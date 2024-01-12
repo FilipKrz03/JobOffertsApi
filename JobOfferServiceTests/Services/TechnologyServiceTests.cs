@@ -34,11 +34,15 @@ namespace JobOfferServiceTests.Services
         {
             _technologyRepositoryMock.Setup(x => x.GetTechnologiesAsync(It.IsAny<ResourceParamethers>(),
                 It.IsAny<Expression<Func<Technology, object>>>()))
-                .ReturnsAsync(Enumerable.Empty<Technology>);
+                .ReturnsAsync(new PagedList<Technology>(new List<Technology>() , 30 , 1 , 0));
+
+            _mapperMock.Setup(x => x.Map<PagedList<TechnologyBasicResponse>>
+            (It.IsAny<PagedList<Technology>>()))
+                .Returns(new PagedList<TechnologyBasicResponse>(new List<TechnologyBasicResponse>(), 1, 1, 1));
 
             var response = await _technologyService.GetTechnologies(new ResourceParamethers());
 
-            Assert.IsAssignableFrom<IEnumerable<TechnologyBasicResponse>>(response);
+            Assert.IsAssignableFrom<PagedList<TechnologyBasicResponse>>(response);
         }
 
         [Fact]

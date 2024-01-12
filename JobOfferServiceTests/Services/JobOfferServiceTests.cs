@@ -72,15 +72,17 @@ namespace JobOfferServiceTests.Services
 
             _jobOfferRepositoryMock.Setup(x => x.GetJobOffersAsync(It.IsAny<ResourceParamethers>(),
                 It.IsAny<Expression<Func<JobOffer, object>>>()))
-                .ReturnsAsync(Enumerable.Empty<JobOffer>());
+                .ReturnsAsync(new PagedList<JobOffer>(new List<JobOffer>() , 30 , 1 , 0));
 
-            _mapperMock.Setup(x => x.Map<IEnumerable<JobOfferBasicResponse>>(It.IsAny<IEnumerable<JobOfferBasicResponse>>()));
-
+            _mapperMock.Setup(x => x.Map<PagedList<JobOfferBasicResponse>>
+            (It.IsAny<PagedList<JobOffer>>()))
+                .Returns(new PagedList<JobOfferBasicResponse>(new List<JobOfferBasicResponse>(), 1, 1, 1));
+                
             ResourceParamethers resourceParamethers = new();
 
             var response = await _offerService.GetJobOffers(resourceParamethers);
 
-            Assert.IsAssignableFrom<IEnumerable<JobOfferBasicResponse>>(response);
+            Assert.IsAssignableFrom<PagedList<JobOfferBasicResponse>>(response);
         }
     }
 }
