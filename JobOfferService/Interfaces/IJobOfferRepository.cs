@@ -8,7 +8,7 @@ namespace JobOffersService.Interfaces
     public interface IJobOfferRepository : IBaseRepository<JobOffer>
     {
         Task<bool> IsDatabaseInitalizedAsync();
-        Task<IEnumerable<JobOffer>> GetJobOffersAsync(ResourceParamethers resourceParamethers ,
+        Task<PagedList<JobOffer>> GetJobOffersAsync(ResourceParamethers resourceParamethers ,
             Expression<Func<JobOffer, object>> keySelector);
         Task<JobOffer?> GetJobOfferWithTechnologies(Guid id);
     }

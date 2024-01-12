@@ -3,6 +3,7 @@ using JobOffersService.Dto;
 using JobOffersService.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace JobOffersService.Controllers
 {
@@ -32,6 +33,10 @@ namespace JobOffersService.Controllers
             GetTechnologies([FromQuery] ResourceParamethers resourceParamethers)
         {
             var result = await _technologyService.GetTechnologies(resourceParamethers);
+
+            var paginationMetadata = new PaginationMetadata<TechnologyBasicResponse>(result);
+
+            Response.Headers.Add("X-Pagination" , JsonSerializer.Serialize(paginationMetadata));
 
             return Ok(result);
         }

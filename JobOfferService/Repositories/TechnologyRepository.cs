@@ -23,7 +23,7 @@ namespace JobOffersService.Repositories
                 (t => technologyNames.Any(tn => t.TechnologyName == tn)).ToListAsync();
         }
 
-        public async Task<IEnumerable<Technology>> GetTechnologiesAsync
+        public async Task<PagedList<Technology>> GetTechnologiesAsync
             (ResourceParamethers resourceParamethers ,Expression<Func<Technology , object>> keySelector)
         {
             var query = Query();

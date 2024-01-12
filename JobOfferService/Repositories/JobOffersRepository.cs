@@ -17,7 +17,7 @@ namespace JobOffersService.Repositories
             return await Query().AnyAsync();
         }
 
-        public async Task<IEnumerable<JobOffer>> GetJobOffersAsync(ResourceParamethers resourceParamethers , 
+        public async Task<PagedList<JobOffer>> GetJobOffersAsync(ResourceParamethers resourceParamethers , 
             Expression<Func<JobOffer , object>> keySelector)
         {
             var query = Query();

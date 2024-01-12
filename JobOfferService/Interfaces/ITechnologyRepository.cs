@@ -10,7 +10,7 @@ namespace JobOffersService.Interfaces
         Task<IEnumerable<Technology>> GetAllTechnologiesAsync();
         Task<List<Technology>> GetEntitiesFromTechnologiesNamesAsync(IEnumerable<string> technologyNames);
 
-        Task<IEnumerable<Technology>> GetTechnologiesAsync
+        Task<PagedList<Technology>> GetTechnologiesAsync
             (ResourceParamethers resourceParamethers, Expression<Func<Technology, object>> keySelector);
 
         Task<Technology?>

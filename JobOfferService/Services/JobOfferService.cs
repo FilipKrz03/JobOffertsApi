@@ -41,7 +41,7 @@ namespace JobOffersService.Services
             return _mapper.Map<JobOfferDetailResponse>(jobOffer);
         }
 
-        public async Task<IEnumerable<JobOfferBasicResponse>>
+        public async Task<PagedList<JobOfferBasicResponse>>
             GetJobOffers(ResourceParamethers resourceParamethers)
         {
             Expression<Func<JobOffer, object>> keySelector = resourceParamethers.SortColumn?.ToLower() switch
@@ -57,7 +57,7 @@ namespace JobOffersService.Services
             
             var jobOffers = await _jobOfferRepository.GetJobOffersAsync(resourceParamethers , keySelector);
 
-            return _mapper.Map<IEnumerable<JobOfferBasicResponse>>(jobOffers);
+            return _mapper.Map<PagedList<JobOfferBasicResponse>>(jobOffers);
         }
 
         public async Task JobOfferExist(Guid id)
