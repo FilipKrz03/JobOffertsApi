@@ -1,4 +1,5 @@
 ﻿
+using FirebaseAdmin;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
@@ -19,6 +20,8 @@ namespace UsersServiceTests.Common
             var appFactory = new WebApplicationFactory<Program>()
                 .WithWebHostBuilder(builder =>
                 {
+                    Environment.SetEnvironmentVariable("IntegrationTests", "true");
+
                     builder.ConfigureTestServices(services =>
                     {
                         // To avoid errors due to rabbitMqConnection
