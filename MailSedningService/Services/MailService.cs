@@ -1,6 +1,7 @@
 ﻿using MailKit.Net.Smtp;
 using MailSedningService.Dto;
 using MailSedningService.Interfaces;
+using Microsoft.Extensions.Logging;
 using MimeKit;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,14 @@ namespace MailSedningService.Services
 {
     public class MailService : IMailService
     {
+
+        private readonly ILogger<MailService> _logger;
+        
+        public MailService(ILogger<MailService> logger)
+        {
+            _logger = logger;
+        }
+
         public void SendMail(MailToSendDto mailToSend)
         {
             var sendingEmail = Environment.GetEnvironmentVariable("sendingEmail");
@@ -32,13 +41,20 @@ namespace MailSedningService.Services
             email.Subject = mailToSend.Subject;
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = mailToSend.MailContent};
 
-            using var smtp = new SmtpClient();
+            try
+            {
+                using var smtp = new SmtpClient();
 
-            smtp.Connect(smtpServer, smtpPort, true);
-            smtp.Authenticate(smtpLogin, smtpPassword);
-            smtp.Send(email);
+                smtp.Connect(smtpServer, smtpPort, true);
+                smtp.Authenticate(smtpLogin, smtpPassword);
+                smtp.Send(email);
 
-            smtp.Disconnect(true);
+                smtp.Disconnect(true);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError("Mail sending service exception {ex}", ex);
+            }
         }
     }
 }
