@@ -363,5 +363,22 @@ namespace UsersServiceTests.Controllers
                 .Should()
                 .Be(System.Net.HttpStatusCode.Conflict);
         }
+
+        [Fact]
+        public async Task Controller_AddFollowedJobOffer_ShouldReturn400Response_WhenBadRequestBody()
+        {
+            SetJwtUserEntitieId(Guid.NewGuid());
+
+            var badBody = new
+            {
+                badProperty = "bad prop"
+            };
+
+            var request = await _httpClient.PostAsJsonAsync("api/followedjoboffers", badBody);
+
+            request.StatusCode
+                .Should()
+                .Be(System.Net.HttpStatusCode.BadRequest);
+        }
     }
 }
