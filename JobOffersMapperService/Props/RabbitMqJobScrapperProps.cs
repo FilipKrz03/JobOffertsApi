@@ -10,8 +10,8 @@ namespace JobOffersMapperService.Props
     {
         public const string JOB_SCRAPPER_EVENTS_EXCHANGE = "job_scrapper_events";
 
-        public const string JOB_CHECK_IF_OUTDATED_QUEUE = "job.check_if_outdated";
-        public const string JOB_CHECK_IF_OUTDATED_ROUTING_KEY = "job.check_if_outdated";
+        public const string JOB_CHECK_IF_OUTDATED_QUEUE = "job_offer.check_if_outdated";
+        public const string JOB_CHECK_IF_OUTDATED_ROUTING_KEY = "job_offer.check_if_outdated";
         public const string JOB_CHECK_IF_OUTDATED_CLIENT_PROVIDED_NAME = "Job Check If Outdated Event Sender";
     }
 }

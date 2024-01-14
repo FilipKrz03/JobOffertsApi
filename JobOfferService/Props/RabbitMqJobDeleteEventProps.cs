@@ -6,8 +6,8 @@
         // They need exchange with type Fanout . Whic is diffrent from RabbitMqJobProps exchange
 
         public const string JOB_DELETE_EXCHANGE = "job_delete_events";
-        public const string JOB_DELETE_QUEUE = "job.delete";
-        public const string JOB_DELETE_ROUTING_KEY = "job.deletew";
+        public const string JOB_DELETE_QUEUE = "job_offer.delete";
+        public const string JOB_DELETE_ROUTING_KEY = "job_offer.delete";
 
         public const string JOB_DELETE_CLIENT_PROVIDED_NAME = "Job Delete Event Conusmer";
     }

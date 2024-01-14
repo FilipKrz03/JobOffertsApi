@@ -39,7 +39,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OffersAndUsersDatabaseMigra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MailSendingService", "MailSendingService", "{6FC9E8B2-E276-4705-921B-7DFDDB8E1376}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailSedningService", "MailSedningService\MailSedningService.csproj", "{B60A874A-8B93-4966-A116-A6F170D4E9AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MailSedningService", "MailSedningService\MailSedningService.csproj", "{B60A874A-8B93-4966-A116-A6F170D4E9AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailSendingServiceTests", "MailSendingServiceTests\MailSendingServiceTests.csproj", "{1D1FC451-791D-4528-B755-12BE0A02BC0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +101,10 @@ Global
 		{B60A874A-8B93-4966-A116-A6F170D4E9AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B60A874A-8B93-4966-A116-A6F170D4E9AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B60A874A-8B93-4966-A116-A6F170D4E9AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D1FC451-791D-4528-B755-12BE0A02BC0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D1FC451-791D-4528-B755-12BE0A02BC0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D1FC451-791D-4528-B755-12BE0A02BC0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D1FC451-791D-4528-B755-12BE0A02BC0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -115,6 +121,7 @@ Global
 		{2C875743-C085-4316-B29F-0689EE3C4302} = {349E37CC-2A9B-4885-9031-E5BA9FFA04C2}
 		{FCAFD0A0-D13C-4206-B669-F0D7CA6093C7} = {349E37CC-2A9B-4885-9031-E5BA9FFA04C2}
 		{B60A874A-8B93-4966-A116-A6F170D4E9AB} = {6FC9E8B2-E276-4705-921B-7DFDDB8E1376}
+		{1D1FC451-791D-4528-B755-12BE0A02BC0D} = {6FC9E8B2-E276-4705-921B-7DFDDB8E1376}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {302C81D0-E9D8-4ADB-B2D4-8155C79FDC67}
