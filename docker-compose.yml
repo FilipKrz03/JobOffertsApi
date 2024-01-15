@@ -55,8 +55,8 @@ services:
     ports:
       - "4444:4444"
     environment:
-      - SE_NODE_SESSION_TIMEOUT=7200
-      - SE_SESSION_REQUEST_TIMEOUT=7200
+      - SE_NODE_SESSION_TIMEOUT=10800
+      - SE_SESSION_REQUEST_TIMEOUT=10800
       - SE_NODE_MAX_SESSIONS=10
     volumes:
       - /dev/shm:/dev/shm
@@ -64,7 +64,7 @@ services:
   joboffersservice:
     container_name: "joboffersservice"
     image: ${DOCKER_REGISTRY-}joboffersservice
-    restart: on-failure
+    restart: on-failure:3
     build:
       context: .
       dockerfile: JobOfferService/Dockerfile 
@@ -76,6 +76,8 @@ services:
       offersdb:
        condition: service_started
     environment:
+     - ASPNETCORE_ENVIRONMENT=Development
+     - ASPNETCORE_URLS=http://*:80
      - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
      - ConnectionStrings__DefaultConnection=Server=host.docker.internal,1432;Initial Catalog=Offers;User ID = sa;Password=offersdbpwd123@;TrustServerCertificate=true
 
@@ -99,7 +101,7 @@ services:
   joboffersmapperserivce:
     container_name: "joboffersmapperservice"
     image: ${DOCKER_REGISTRY}joboffersmapperservice
-    restart: on-failure
+    restart: on-failure:3
     build:
         context: .
         dockerfile: JobOffersMapperService/Dockerfile
@@ -115,7 +117,7 @@ services:
   usersservice:
     container_name: usersservice
     image: ${DOCKER_REGISTRY-}usersservice
-    restart: on-failure
+    restart: on-failure:3
     build:
      context: .
      dockerfile: UsersService/Dockerfile
@@ -129,15 +131,18 @@ services:
     environment:
      - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
      - ConnectionStrings__DefaultConnection=Server=host.docker.internal,1432;Initial Catalog=Offers;User ID = sa;Password=offersdbpwd123@;TrustServerCertificate=true
-     - TokenUri=https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBsoEs2qyaopc2QhsnA_0o51e0Ityhw_uk
-     - RefreshUri=https://securetoken.googleapis.com/v1/token?key=AIzaSyBsoEs2qyaopc2QhsnA_0o51e0Ityhw_uk
-     - Audience=joboffersapiauth
-     - ValidIssuer=https://securetoken.google.com/joboffersapiauth
+     - ASPNETCORE_ENVIRONMENT=Development
+     - ASPNETCORE_URLS=http://*:80
+     - TokenUri=https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=YOURAPIKEYHERE
+     - RefreshUri=https://securetoken.googleapis.com/v1/token?key=YOURAPIKEYHERE
+     - Audience=YOURAPPNAMEHERE
+     - ValidIssuer=https://securetoken.google.com/YOURAPPNAMEHERE
+
 
   mailsendingservice:
     container_name: mailsendingservice
     image: ${DOCKER_REGISTRY-}mailsendingservice
-    restart: on-failure:always
+    restart: on-failure:3
     build : 
       context: .
       dockerfile: MailSedningService/Dockerfile
@@ -146,8 +151,8 @@ services:
        condition: service_healthy
     environment : 
      - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
-     - sendingEmail=filipos2003@gmail.com
-     - smtpServer=smtp.gmail.com
-     - smtpPort=465
-     - smtpLogin=filipos2003@gmail.com
-     - smtpPassword=uwgm gwce wmbk jvvg
+     - sendingEmail=YOURSENDINGMAIL
+     - smtpServer=YOURSMTPSERVER
+     - smtpPort=YOURSMTPPORT
+     - smtpLogin=YOURSMTPLOGIN
+     - smtpPassword=YOURSMTPPASSWORD
