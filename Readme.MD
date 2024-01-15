@@ -6,18 +6,34 @@
 
 Project aim was to aggregate job offers from most popular polish services with IT job offers into one place
 Thanks to it Application provide features like : 
-- Adding job offer to favourite techologies . 
-- Subscribe some technologie that user is intrestet in 
+- Adding job offer to favourite offers . 
+- Subscribe technologie that user is intrestet in 
 - Set desired seniority
 
-Based on subscribed technologies application will send mail to all users with new personalized job offers special for each user.
+Based on subscribed technologies and desired seniority application will send mail to all users with new personalized job offers special for each user.
 
-Endopints : 
-- Job offer service have endopints related to job offers
+Events timing : 
+- On first aplication start offers will be scrapped (init scrap) , later after every 3 hours database will be updated with new added offers(update scrap)
+- Mail sending feature(sending mail to users with personalized job offers) by default will run every 3 hours
+- Outdated offers by default will be delated at 22:00 and 04:00
+
+## Endpoints
+- Job offer service have endpoints related to job offers
 ![JobOffers](jobofferserviceendpoints.png) 
 
-- Users service have endopints realted to user 
+- Users service have endpoints realted to user 
 ![Users](userserviceendpoints.png)
+
+After application start you can explore this endoints :
+- JobOffersService : https://localhost:7206/swagger/index.html
+- UsersService : https://localhost:7104/swagger/index.html
+
+By default services avaliable on : 
+- JobOffersService : http://localhost:7206/
+- UsersService : http://localhost:7104/
+
+## Requirements
+- Docker
 
 
 ## How to run it ?
@@ -33,7 +49,7 @@ Before starting docker-compose if you want to access auth routes and/or mail sen
 - Go to Service accounts tab and click Generate new private key (You will download json file)
 - Name this file firebase.json
 - Place firebase.json at the root of UsersService
-- Go to docker.compose.yml at the root of the project - find user service and complete env variables with adding firebase project api key and project name to appropriate places
+- Go to docker-compose.yml at the root of the project - find user service and complete env variables with adding firebase project api key and project name to appropriate places
 
 Simple video of getting firebase.json and api key : https://www.youtube.com/watch?v=xBuLWaDcvu0 . Between 00:57 - 2:40
 
