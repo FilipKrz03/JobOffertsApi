@@ -133,10 +133,11 @@ services:
      - ConnectionStrings__DefaultConnection=Server=host.docker.internal,1432;Initial Catalog=Offers;User ID = sa;Password=offersdbpwd123@;TrustServerCertificate=true
      - ASPNETCORE_ENVIRONMENT=Development
      - ASPNETCORE_URLS=http://*:80
-     - TokenUri=https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBsoEs2qyaopc2QhsnA_0o51e0Ityhw_uk
-     - RefreshUri=https://securetoken.googleapis.com/v1/token?key=AIzaSyBsoEs2qyaopc2QhsnA_0o51e0Ityhw_uk
-     - Audience=joboffersapiauth
-     - ValidIssuer=https://securetoken.google.com/joboffersapiauth
+     - TokenUri=https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=YOURAPIKEYHERE
+     - RefreshUri=https://securetoken.googleapis.com/v1/token?key=YOURAPIKEYHERE
+     - Audience=YOURAPPNAMEHERE
+     - ValidIssuer=https://securetoken.google.com/YOURAPPNAMEHERE
+
 
 
   mailsendingservice:
@@ -151,8 +152,8 @@ services:
        condition: service_healthy
     environment : 
      - RabbitConnectionUri=amqp://RabbitUser:RabbitPassword@host.docker.internal:5672
-     - sendingEmail=filipos2003@gmail.com
-     - smtpServer=smtp.gmail.com
-     - smtpPort=465
-     - smtpLogin=filipos2003@gmail.com
-     - smtpPassword=uwgm gwce wmbk jvvg
+     - sendingEmail=YOURSENDINGMAIL
+     - smtpServer=YOURSMTPSERVER
+     - smtpPort=YOURSMTPPORT
+     - smtpLogin=YOURSMTPLOGIN
+     - smtpPassword=YOURSMTPPASSWORD
