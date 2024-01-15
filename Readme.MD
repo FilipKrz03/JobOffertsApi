@@ -7,10 +7,10 @@
 Project aim was to aggregate job offers from most popular polish services with IT job offers into one place
 Thanks to it Application provide features like : 
 - Adding job offer to favourite offers . 
-- Subscribe technologie that user is intrestet in 
+- Subscribe technologie that user is intrested in 
 - Set desired seniority
 
-Based on subscribed technologies and desired seniority application will send mail to all users with new personalized job offers special for each user.
+Based on subscribed technologies and desired seniority application will send mails to all users with new personalized job offers special for each user.
 
 Events timing : 
 - On first aplication start offers will be scrapped (init scrap) , later after every 3 hours database will be updated with new added offers(update scrap)
@@ -18,15 +18,15 @@ Events timing :
 - Outdated offers by default will be delated at 22:00 and 04:00
 
 ## Endpoints
-- Job offer service have endpoints related to job offers
+- Job offer service has endpoints related to job offers
 ![JobOffers](jobofferserviceendpoints.png) 
 
-- Users service have endpoints realted to user 
+- Users service has endpoints realted to user 
 ![Users](userserviceendpoints.png)
 
-After application start you can explore this endoints :
-- JobOffersService : https://localhost:7206/swagger/index.html
-- UsersService : https://localhost:7104/swagger/index.html
+After application start you can explore this endpoints :
+- JobOffersService : http://localhost:7206/swagger/index.html
+- UsersService : http://localhost:7104/swagger/index.html
 
 By default services avaliable on : 
 - JobOffersService : http://localhost:7206/
@@ -34,7 +34,6 @@ By default services avaliable on :
 
 ## Requirements
 - Docker
-
 
 ## How to run it ?
 
@@ -53,11 +52,11 @@ Before starting docker-compose if you want to access auth routes and/or mail sen
 
 Simple video of getting firebase.json and api key : https://www.youtube.com/watch?v=xBuLWaDcvu0 . Between 00:57 - 2:40
 
-- If you want emails with personalized offers for the user to be sent, you need to configure environmental variables in mailsendingservice in docker-compose.yml
+- If you want emails with personalized offers for the user to be sent, you need to configure smtp environmental variables in mailsendingservice in docker-compose.yml
 
 Simple video how to get this env variables : https://www.youtube.com/watch?v=1YXVdyVuFGA
 
-After this config navigate to the root of the Project and run the command
+After this config navigate to the root of the Project and run the command : 
 
 ```shell 
 docker-compose up -d

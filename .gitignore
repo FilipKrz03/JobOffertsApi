@@ -366,3 +366,5 @@ launchSettings.json
 /JobOfferService/Properties/launchSettings.json
 /WebScrapper/Properties/launchSettings.json
 /UsersService/firebase.json
+
+docker-compose.yml
