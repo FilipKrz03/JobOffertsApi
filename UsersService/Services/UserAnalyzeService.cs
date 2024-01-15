@@ -32,7 +32,7 @@ namespace UsersService.Services
 
         public async Task LetUsersKnowAboutNewMatchingOffers()
         {
-            DateTime tresholdDate = DateTime.UtcNow - TimeSpan.FromHours(150);
+            DateTime tresholdDate = DateTime.UtcNow - TimeSpan.FromHours(3);
 
             var newlyCreatedOffers = await _jobOfferRepository.
               GetJobOffersWithLinkCompanyTitleSeniorityTechnologiesFromTresholdDateAsync(tresholdDate);

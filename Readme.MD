@@ -2,6 +2,23 @@
 
 ![Architecture](architecture.drawio.png)
 
+## Project description
+
+Project aim was to aggregate job offers from most popular polish services with IT job offers into one place
+Thanks to it Application provide features like : 
+- Adding job offer to favourite techologies . 
+- Subscribe some technologie that user is intrestet in 
+- Set desired seniority
+
+Based on subscribed technologies application will send mail to all users with new personalized job offers special for each user.
+
+Endopints : 
+- Job offer service have endopints related to job offers
+![JobOffers](jobofferserviceendpoints.png) 
+
+- Users service have endopints realted to user 
+![Users](userserviceendpoints.png)
+
 
 ## How to run it ?
 
