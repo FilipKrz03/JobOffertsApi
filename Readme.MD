@@ -32,6 +32,11 @@ By default services avaliable on :
 - JobOffersService : http://localhost:7206/
 - UsersService : http://localhost:7104/
 
+## List of used technologies/libraries/frameworks :
+- Application: ASP.NET Core , Entity Framework , RabbitMq , SqlServer , Firebase Auth , Serilog , Quartz , AutoMapper , MailKit ,
+- Testing: xUnit , Moq ,  FlunetAssertions , Bogus , WebApplicationFactory
+- Infrastructure : Docker , Docker Compose , Shell 
+
 ## Requirements
 - Docker
 
