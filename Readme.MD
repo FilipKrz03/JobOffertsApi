@@ -1,6 +1,6 @@
 ## Architecture
 
-![Architecture](architecture.drawio.png)
+![Architecture](images/architecture.drawio.png)
 
 ## Project description
 
@@ -19,10 +19,10 @@ Events timing :
 
 ## Endpoints
 - Job offer service has endpoints related to job offers
-![JobOffers](jobofferserviceendpoints.png) 
+![JobOffers](images/jobofferserviceendpoints.png) 
 
 - Users service has endpoints realted to user 
-![Users](userserviceendpoints.png)
+![Users](images/userserviceendpoints.png)
 
 After application start you can explore this endpoints :
 - JobOffersService : http://localhost:7206/swagger/index.html
