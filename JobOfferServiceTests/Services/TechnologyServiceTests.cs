@@ -40,7 +40,7 @@ namespace JobOfferServiceTests.Services
             (It.IsAny<PagedList<Technology>>()))
                 .Returns(new PagedList<TechnologyBasicResponse>(new List<TechnologyBasicResponse>(), 1, 1, 1));
 
-            var response = await _technologyService.GetTechnologies(new ResourceParamethers());
+            var response = await _technologyService.GetTechnologiesAsync(new ResourceParamethers());
 
             Assert.IsAssignableFrom<PagedList<TechnologyBasicResponse>>(response);
         }
@@ -53,7 +53,7 @@ namespace JobOfferServiceTests.Services
                 .ReturnsAsync((Technology)null!);
 
             async Task testCode() => await _technologyService.
-                GetTechnologyWithJobOffers(Guid.Empty, new ResourceParamethers());
+                GetTechnologyWithJobOffersAsync(Guid.Empty, new ResourceParamethers());
 
             await Assert.ThrowsAsync<ResourceNotFoundException>(testCode);
         }
@@ -70,7 +70,7 @@ namespace JobOfferServiceTests.Services
                 .Returns(new TechnologyDetailResponse(Guid.Empty , "" , Enumerable.Empty<JobOfferBasicResponse>()));
 
             var repsonse = await _technologyService.
-                GetTechnologyWithJobOffers(Guid.Empty, new ResourceParamethers());
+                GetTechnologyWithJobOffersAsync(Guid.Empty, new ResourceParamethers());
 
             Assert.IsType<TechnologyDetailResponse>(repsonse);
         }

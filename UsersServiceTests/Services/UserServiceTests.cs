@@ -40,10 +40,10 @@ namespace UsersServiceTests.Services
         [Fact]
         public async Task Service_UpdateUserSeniority_Should_ThrowInvalidAccesTokenException_WhenUserFromRepositoryEqualsNull()
         {
-            _userRepositoryMock.Setup(x => x.GetById(It.IsAny<Guid>()))
+            _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((User)null!);
 
-            await _userService.Invoking(x => x.UpdateUserSeniority(Seniority.Unknown))
+            await _userService.Invoking(x => x.UpdateUserSeniorityAsync(Seniority.Unknown))
                 .Should()
                 .ThrowAsync<InvalidAccesTokenException>();
         }
@@ -51,10 +51,10 @@ namespace UsersServiceTests.Services
         [Fact]
         public async Task Service_UpdateUserSeniority_ShouldNot_ThrowInvalidAccesTokenException_WhenUserFromRepositoryIsNotNull()
         {
-            _userRepositoryMock.Setup(x => x.GetById(It.IsAny<Guid>()))
+            _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(new User());
 
-            await _userService.Invoking(x => x.UpdateUserSeniority(Seniority.Unknown))
+            await _userService.Invoking(x => x.UpdateUserSeniorityAsync(Seniority.Unknown))
                 .Should()
                 .NotThrowAsync<InvalidAccesTokenException>();
         }
@@ -62,10 +62,10 @@ namespace UsersServiceTests.Services
         [Fact]
         public async Task Service_UpdateUserSeniority_Should_SaveChangesIntoRepository_WhenUserFromRepositoryIsNotNull()
         {
-            _userRepositoryMock.Setup(x => x.GetById(It.IsAny<Guid>()))
+            _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(new User());
 
-            await _userService.UpdateUserSeniority(Seniority.Unknown);
+            await _userService.UpdateUserSeniorityAsync(Seniority.Unknown);
 
             _userRepositoryMock.Verify(x => x.SaveChangesAsync(), Times.Once);
         }

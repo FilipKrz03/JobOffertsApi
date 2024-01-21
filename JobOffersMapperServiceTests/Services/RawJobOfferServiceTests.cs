@@ -41,7 +41,7 @@ namespace JobOffersMapperServiceTests.Services
         [Fact]
         public async Task Service_ShouldNot_CheckIfOfferExist_WhenDeserializationFailed()
         {
-            await _rawOfferService.HandleRawOffer("bad object");
+            await _rawOfferService.HandleRawOfferAsync("bad object");
 
             _offersBaseRepositoryMock.Verify(r => r.OfferExistAsync(It.IsAny<JobOfferRaw>()), Times.Never);
         }
@@ -49,7 +49,7 @@ namespace JobOffersMapperServiceTests.Services
         [Fact]
         public async Task Service_Should_CheckIfOfferExist_WhenDeserializationSucceded()
         {
-            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            await _rawOfferService.HandleRawOfferAsync(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _offersBaseRepositoryMock.Verify(r => r.OfferExistAsync(It.IsAny<JobOfferRaw>()), Times.Once);
         }
@@ -59,7 +59,7 @@ namespace JobOffersMapperServiceTests.Services
         {
             SetupOfferBaseRepositoryMockOfferExistAsyncMethod(true);
 
-            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            await _rawOfferService.HandleRawOfferAsync(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _mapperMock.Verify(m => m.Map<JobOfferRaw, JobOfferBase>(It.IsAny<JobOfferRaw>()), Times.Never);
         }
@@ -69,7 +69,7 @@ namespace JobOffersMapperServiceTests.Services
         {
             SetupOfferBaseRepositoryMockOfferExistAsyncMethod(false);
 
-            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            await _rawOfferService.HandleRawOfferAsync(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _mapperMock.Verify(m => m.Map<JobOfferRaw, JobOfferBase>(It.IsAny<JobOfferRaw>()), Times.Once);
         }
@@ -79,7 +79,7 @@ namespace JobOffersMapperServiceTests.Services
         {
             SetupOfferBaseRepositoryMockOfferExistAsyncMethod(false);
 
-            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            await _rawOfferService.HandleRawOfferAsync(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _offersBaseRepositoryMock.Verify(x => x.Insert(It.IsAny<JobOfferBase>()), Times.Once);
             _offersBaseRepositoryMock.Verify(x => x.SaveChangesAsync(), Times.Once);
@@ -90,7 +90,7 @@ namespace JobOffersMapperServiceTests.Services
         {
             SetupOfferBaseRepositoryMockOfferExistAsyncMethod(true);
 
-            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            await _rawOfferService.HandleRawOfferAsync(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _offersBaseRepositoryMock.Verify(x => x.Insert(It.IsAny<JobOfferBase>()), Times.Never);
             _offersBaseRepositoryMock.Verify(x => x.SaveChangesAsync(), Times.Never);
@@ -101,7 +101,7 @@ namespace JobOffersMapperServiceTests.Services
         {
             SetupOfferBaseRepositoryMockOfferExistAsyncMethod(false);
 
-            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            await _rawOfferService.HandleRawOfferAsync(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _mapperMock.Verify(m => m.Map<JobOfferRaw, JobOfferProcessed>
             (It.IsAny<JobOfferRaw>() , It.IsAny<System.Action<IMappingOperationOptions<JobOfferRaw , JobOfferProcessed>>>()),
@@ -113,7 +113,7 @@ namespace JobOffersMapperServiceTests.Services
         {
             SetupOfferBaseRepositoryMockOfferExistAsyncMethod(false);
 
-            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            await _rawOfferService.HandleRawOfferAsync(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _jobCreateMessageProducerMock.Verify(x => x.SendMessage
             (It.IsAny<string>(), It.IsAny<string>(), It.IsAny<JobOfferProcessed>()), Times.Once);
@@ -124,7 +124,7 @@ namespace JobOffersMapperServiceTests.Services
         {
             SetupOfferBaseRepositoryMockOfferExistAsyncMethod(true);
 
-            await _rawOfferService.HandleRawOffer(JsonConvert.SerializeObject(_simpleJobOfferRaw));
+            await _rawOfferService.HandleRawOfferAsync(JsonConvert.SerializeObject(_simpleJobOfferRaw));
 
             _jobCreateMessageProducerMock.Verify(x => x.SendMessage
             (It.IsAny<string>(), It.IsAny<string>(), It.IsAny<JobOfferProcessed>()), Times.Never);

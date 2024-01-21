@@ -43,7 +43,7 @@ namespace JobOfferServiceTests.Services
             _jobOfferRepositoryMock.Setup(x => x.GetJobOfferWithTechnologies(It.IsAny<Guid>()))
                 .ReturnsAsync((JobOffer)null!);
 
-            async Task testCode() => await _offerService.GetJobOfferDetail(It.IsAny<Guid>());
+            async Task testCode() => await _offerService.GetJobOfferDetailAsync(It.IsAny<Guid>());
 
             await Assert.ThrowsAsync<ResourceNotFoundException>(testCode);
 
@@ -60,7 +60,7 @@ namespace JobOfferServiceTests.Services
             _mapperMock.Setup(x => x.Map<JobOfferDetailResponse>(It.IsAny<JobOffer>()))
                 .Returns(new JobOfferDetailResponse());
 
-            var response = await _offerService.GetJobOfferDetail(It.IsAny<Guid>());
+            var response = await _offerService.GetJobOfferDetailAsync(It.IsAny<Guid>());
 
             Assert.IsType<JobOfferDetailResponse>(response);
         }
@@ -80,7 +80,7 @@ namespace JobOfferServiceTests.Services
                 
             ResourceParamethers resourceParamethers = new();
 
-            var response = await _offerService.GetJobOffers(resourceParamethers);
+            var response = await _offerService.GetJobOffersAsync(resourceParamethers);
 
             Assert.IsAssignableFrom<PagedList<JobOfferBasicResponse>>(response);
         }

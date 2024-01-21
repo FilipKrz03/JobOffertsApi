@@ -45,8 +45,8 @@ namespace JobOfferServiceTests.Services
         }
 
         [Theory]
-        [InlineData(false, RabbitMQOffersScraperProps.OFFERS_CREATE_MESSAGE)]
-        [InlineData(true, RabbitMQOffersScraperProps.OFFERS_UPDATE_MESSAGE)]
+        [InlineData(false, OFFERS_CREATE_MESSAGE)]
+        [InlineData(true, OFFERS_UPDATE_MESSAGE)]
         public async Task
             Service_Should_SendProperRabbitEventMessage_DependingOnDatabaseInitialization(bool isDbInitalized, string message)
         {

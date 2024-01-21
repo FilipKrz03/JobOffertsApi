@@ -44,7 +44,7 @@ namespace JobOfferServiceTests.Services
         [Fact]
         public async Task Service_ShouldNot_CallGetAllTechnologiesToRepository_When_DeserializationFailed()
         {
-            await _processedJobOfferService.HandleProcessedOffer("Not serializable offer");
+            await _processedJobOfferService.HandleProcessedOfferAsync("Not serializable offer");
 
             _technologyRepositoryMock.Verify(x => x.GetAllTechnologiesAsync(), Times.Never());
         }
@@ -52,7 +52,7 @@ namespace JobOfferServiceTests.Services
         [Fact]
         public async Task Service_Should_LogError_When_DeserializationFailed()
         {
-            await _processedJobOfferService.HandleProcessedOffer("Not serializable offer");
+            await _processedJobOfferService.HandleProcessedOfferAsync("Not serializable offer");
 
             _loggerMock.Verify(logger => logger.Log(
                 It.Is<LogLevel>(logLevel => logLevel == LogLevel.Error),
@@ -66,7 +66,7 @@ namespace JobOfferServiceTests.Services
         [Fact]
         public async Task Service_ShouldNot_AddJobOfferToDatabase_When_DeserializationFailed()
         {
-            await _processedJobOfferService.HandleProcessedOffer(JsonConvert.SerializeObject("Not deserializable object"));
+            await _processedJobOfferService.HandleProcessedOfferAsync(JsonConvert.SerializeObject("Not deserializable object"));
 
             _jobOfferRepositoryMock.Verify(x => x.Insert(It.IsAny<JobOffer>()), Times.Never);
             _jobOfferRepositoryMock.Verify(x => x.SaveChangesAsync(), Times.Never);
@@ -76,7 +76,7 @@ namespace JobOfferServiceTests.Services
         [Fact]
         public async Task Service_Should_CallGetAllTechnologiesToRepository_When_DeserializationSucceed()
         {
-            await _processedJobOfferService.HandleProcessedOffer(JsonConvert.SerializeObject(_procesedJobOfferSimple));
+            await _processedJobOfferService.HandleProcessedOfferAsync(JsonConvert.SerializeObject(_procesedJobOfferSimple));
 
             _technologyRepositoryMock.Verify(x => x.GetAllTechnologiesAsync(), Times.Once);
         }
@@ -84,7 +84,7 @@ namespace JobOfferServiceTests.Services
         [Fact]
         public async Task Service_Should_MapNewTechnologiesToTechnologiesEntities_When_DeserializationSucceed()
         {
-            await _processedJobOfferService.HandleProcessedOffer(JsonConvert.SerializeObject(_procesedJobOfferSimple));
+            await _processedJobOfferService.HandleProcessedOfferAsync(JsonConvert.SerializeObject(_procesedJobOfferSimple));
 
             _mapperMock.Verify(m => m.Map<IEnumerable<Technology>>(It.IsAny<IEnumerable<string>>()) , Times.Once);
         }
@@ -92,7 +92,7 @@ namespace JobOfferServiceTests.Services
         [Fact]
         public async Task Service_Should_AddTechnologieEntitiesToDatabase_WhenDeserializationSucceed()
         {
-            await _processedJobOfferService.HandleProcessedOffer(JsonConvert.SerializeObject(_procesedJobOfferSimple));
+            await _processedJobOfferService.HandleProcessedOfferAsync(JsonConvert.SerializeObject(_procesedJobOfferSimple));
 
             _technologyRepositoryMock.Verify(x => x.AddRange(It.IsAny<IEnumerable<Technology>>()), Times.Once);
             _technologyRepositoryMock.Verify(x => x.SaveChangesAsync(), Times.Once);
@@ -101,7 +101,7 @@ namespace JobOfferServiceTests.Services
         [Fact]
         public async Task Service_Should_MapProcessedJobOfferToJobOfferEntite_WhenDeserializationSucceed()
         {
-            await _processedJobOfferService.HandleProcessedOffer(JsonConvert.SerializeObject(_procesedJobOfferSimple));
+            await _processedJobOfferService.HandleProcessedOfferAsync(JsonConvert.SerializeObject(_procesedJobOfferSimple));
 
             _mapperMock.Verify(x => x.Map<JobOffer>(It.IsAny<JobOfferProcessed>()) , Times.Once);
         }
@@ -109,7 +109,7 @@ namespace JobOfferServiceTests.Services
         [Fact]
         public async Task Service_Should_CallGetEntitiesFromTechnologyNamesToRepository_When_Deserialization_Succeed()
         {
-            await _processedJobOfferService.HandleProcessedOffer(JsonConvert.SerializeObject(_procesedJobOfferSimple));
+            await _processedJobOfferService.HandleProcessedOfferAsync(JsonConvert.SerializeObject(_procesedJobOfferSimple));
 
             _technologyRepositoryMock.Verify(x => x.GetEntitiesFromTechnologiesNamesAsync(It.IsAny<IEnumerable<string>>()), Times.Once);
         }
@@ -120,7 +120,7 @@ namespace JobOfferServiceTests.Services
             _mapperMock.Setup(x => x.Map<JobOffer>(It.IsAny<JobOfferProcessed>()))
                 .Returns(new JobOffer());
 
-            await _processedJobOfferService.HandleProcessedOffer(JsonConvert.SerializeObject(_procesedJobOfferSimple));
+            await _processedJobOfferService.HandleProcessedOfferAsync(JsonConvert.SerializeObject(_procesedJobOfferSimple));
 
             _jobOfferRepositoryMock.Verify(x => x.Insert(It.IsAny<JobOffer>()), Times.Once);
             _jobOfferRepositoryMock.Verify(x => x.SaveChangesAsync(), Times.Once);

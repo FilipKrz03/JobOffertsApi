@@ -46,10 +46,10 @@ namespace UsersServiceTests.Services
         [Fact]
         public async Task Service_AddSubscribedTechnology_Should_ThrowInvalidAccesTokenException_WhenUserNotFound()
         {
-            _userRepositoryMock.Setup(x => x.GetById(It.IsAny<Guid>()))
+            _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((User)null!);
 
-            await _subscribedTechnologyService.Invoking(x => x.AddSubscribedTechnology(Guid.NewGuid()))
+            await _subscribedTechnologyService.Invoking(x => x.AddSubscribedTechnologyAsync(Guid.NewGuid()))
                 .Should()
                 .ThrowAsync<InvalidAccesTokenException>();
         }
@@ -57,13 +57,13 @@ namespace UsersServiceTests.Services
         [Fact]
         public async Task Service_AddSubscribedTechnology_Should_ThrowResourceNotFoundException_WhenTechnologyNotFound()
         {
-            _userRepositoryMock.Setup(x => x.GetById(It.IsAny<Guid>()))
+            _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(new User());
 
-            _technologyRepositoryMock.Setup(x => x.GetById(It.IsAny<Guid>()))
+            _technologyRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((Technology)null!);
 
-            await _subscribedTechnologyService.Invoking(x => x.AddSubscribedTechnology(Guid.NewGuid()))
+            await _subscribedTechnologyService.Invoking(x => x.AddSubscribedTechnologyAsync(Guid.NewGuid()))
                 .Should()
                 .ThrowAsync<ResourceNotFoundException>();
         }
@@ -71,16 +71,16 @@ namespace UsersServiceTests.Services
         [Fact]
         public async Task Service_AddSubscribedTechnology_Should_ThrowResourceAlreadyExistException_WhenUserTechnologyJoinEntityAlreadyExist()
         {
-            _userRepositoryMock.Setup(x => x.GetById(It.IsAny<Guid>()))
+            _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(new User());
 
-            _technologyRepositoryMock.Setup(x => x.GetById(It.IsAny<Guid>()))
+            _technologyRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(new Technology());
 
             _technologyUserJoinRepositoryMock.Setup(x => x.UserTechnologyExistAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .ReturnsAsync(true);
 
-            await _subscribedTechnologyService.Invoking(x => x.AddSubscribedTechnology(Guid.NewGuid()))
+            await _subscribedTechnologyService.Invoking(x => x.AddSubscribedTechnologyAsync(Guid.NewGuid()))
                 .Should()
                 .ThrowAsync<ResourceAlreadyExistException>();
         }
@@ -94,16 +94,16 @@ namespace UsersServiceTests.Services
 
             var technologyToAdd = new Technology() { TechnologyName = technologyName };
 
-            _userRepositoryMock.Setup(x => x.GetById(It.IsAny<Guid>()))
+            _userRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
               .ReturnsAsync(userToAddTechnologyTo);
 
-            _technologyRepositoryMock.Setup(x => x.GetById(It.IsAny<Guid>()))
+            _technologyRepositoryMock.Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(technologyToAdd);
 
             _technologyUserJoinRepositoryMock.Setup(x => x.UserTechnologyExistAsync(It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .ReturnsAsync(false);
 
-            await _subscribedTechnologyService.AddSubscribedTechnology(Guid.NewGuid());
+            await _subscribedTechnologyService.AddSubscribedTechnologyAsync(Guid.NewGuid());
 
             userToAddTechnologyTo.Technologies.Last().Should().Be(technologyToAdd);
 
@@ -117,7 +117,7 @@ namespace UsersServiceTests.Services
             (It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .ReturnsAsync((TechnologyUser)null!);
 
-            await _subscribedTechnologyService.Invoking(x => x.DeleteSubscribedTechnology(Guid.Empty))
+            await _subscribedTechnologyService.Invoking(x => x.DeleteSubscribedTechnologyAsync(Guid.Empty))
                 .Should()
                 .ThrowAsync<ResourceNotFoundException>();
         }
@@ -129,7 +129,7 @@ namespace UsersServiceTests.Services
             (It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .ReturnsAsync(new TechnologyUser());
 
-            await _subscribedTechnologyService.DeleteSubscribedTechnology(Guid.Empty);
+            await _subscribedTechnologyService.DeleteSubscribedTechnologyAsync(Guid.Empty);
 
             _technologyUserJoinRepositoryMock.Verify
                 (x => x.DeleteTechnologyUserJoinEntity(It.IsAny<TechnologyUser>()), Times.Once);
@@ -154,7 +154,7 @@ namespace UsersServiceTests.Services
             _mapperMock.Setup(x => x.Map<PagedList<TechnologyBasicResponseDto>>(It.IsAny<PagedList<Technology>>()))
                 .Returns(mappedTechnologies);
 
-            var result = await _subscribedTechnologyService.GetSubscribedTechnologies(resourceParamethers);
+            var result = await _subscribedTechnologyService.GetSubscribedTechnologiesAsync(resourceParamethers);
 
             result.Should().BeOfType<PagedList<TechnologyBasicResponseDto>>();
             result[0].TechnologyName.Should().Be(technolgoyName);

@@ -47,14 +47,14 @@ namespace UsersServiceTests.Services
               x.GetAllUsersWithEmailSeniorityAndTechnologiesAsync())
                 .ReturnsAsync(Enumerable.Empty<UserWithEmailSeniorityAndTechnolgiesDto>());
 
-            await _userAnalyzeService.LetUsersKnowAboutNewMatchingOffers();
+            await _userAnalyzeService.LetUsersKnowAboutNewMatchingOffersAsync();
 
             _rabbitMessageProducerMock.Verify(x =>
               x.SendMessage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<object>()), Times.Never);
         }
 
         [Fact]
-        public async Task Service_LetUsersKnowAboutNewMatchingOffers_Should_SendOneMessage_WhenOnlyUsersWithoutSubscribedTechnologiesExists()
+        public async Task Service_LetUsersKnowAboutNewMatchingOffersAsync_Should_SendOneMessage_WhenOnlyUsersWithoutSubscribedTechnologiesExists()
        
         {
             var usersWithNoSubscribedTechFake = new Faker<UserWithEmailSeniorityAndTechnolgiesDto>()
@@ -71,7 +71,7 @@ namespace UsersServiceTests.Services
               x.GetAllUsersWithEmailSeniorityAndTechnologiesAsync())
                 .ReturnsAsync(listOfUserWithNoSubscribedTech);
 
-            await _userAnalyzeService.LetUsersKnowAboutNewMatchingOffers();
+            await _userAnalyzeService.LetUsersKnowAboutNewMatchingOffersAsync();
 
             _rabbitMessageProducerMock.Verify(x =>
               x.SendMessage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<object>()), Times.Once);
@@ -79,7 +79,7 @@ namespace UsersServiceTests.Services
 
         [Fact]
         public async Task
-            Service_LetUsersKnowAboutNewMatchingOffers_Should_SendTwoMessages_WhenUsersWithoutSubscribedTechnologiesExistsAndUsersWithSubscribedTechnologiesExists()
+            Service_LetUsersKnowAboutNewMatchingOffersAsync_Should_SendTwoMessages_WhenUsersWithoutSubscribedTechnologiesExistsAndUsersWithSubscribedTechnologiesExists()
 
         {
             var usersWithNoSubscribedTechFake = new Faker<UserWithEmailSeniorityAndTechnolgiesDto>()
@@ -105,7 +105,7 @@ namespace UsersServiceTests.Services
               x.GetAllUsersWithEmailSeniorityAndTechnologiesAsync())
                 .ReturnsAsync(listOfUsers);
 
-            await _userAnalyzeService.LetUsersKnowAboutNewMatchingOffers();
+            await _userAnalyzeService.LetUsersKnowAboutNewMatchingOffersAsync();
 
             _rabbitMessageProducerMock.Verify(x =>
               x.SendMessage(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<object>()), Times.Exactly(2));
