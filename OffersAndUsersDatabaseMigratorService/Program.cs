@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using OffersAndUsersDatabaseMigratorService.DbContexts;
 
 /*
@@ -31,7 +32,9 @@ IHost _host = Host.CreateDefaultBuilder()
 using (var scope = _host.Services.CreateScope())
 {
     var serviceProvider = scope.ServiceProvider;
+
     var dbContext = serviceProvider.GetRequiredService<OffersApiDbContext>();
+    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
 
     try
     {
@@ -44,7 +47,7 @@ using (var scope = _host.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        Console.WriteLine(ex.Message);
+        logger.LogError("{ex}", ex);
         throw;
     }
 }
