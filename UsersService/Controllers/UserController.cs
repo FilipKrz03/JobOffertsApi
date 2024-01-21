@@ -24,7 +24,7 @@ namespace UsersService.Controllers
         [HttpPut("seniority")]
         public async Task<IActionResult> PutSeniority([FromBody] PutSeniorityRequestDto request)
         {
-            await _userService.UpdateUserSeniority(request.Seniority);
+            await _userService.UpdateUserSeniorityAsync(request.Seniority);
 
             return NoContent();
         }

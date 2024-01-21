@@ -19,7 +19,7 @@ namespace UsersService.Jobs
             IUserAnalyzeService userAnalyzeService = 
                 serviceScope.ServiceProvider.GetRequiredService<IUserAnalyzeService>();
 
-            await userAnalyzeService.LetUsersKnowAboutNewMatchingOffers();
+            await userAnalyzeService.LetUsersKnowAboutNewMatchingOffersAsync();
         }
     }
 }

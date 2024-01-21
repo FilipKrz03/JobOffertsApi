@@ -13,7 +13,7 @@ namespace UsersService.Repository
     {
         public JobOfferRepository(UsersDbContext context) : base(context) { }
 
-        public async Task<JobOffer?> GetUserJobOffer(Guid userId, Guid jobOfferId)
+        public async Task<JobOffer?> GetUserJobOfferAsync(Guid userId, Guid jobOfferId)
         {
             return await Query()
                 .Where(x => x.Id == jobOfferId && x.Users.Any(x => x.Id == userId))

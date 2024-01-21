@@ -5,9 +5,9 @@ namespace UsersService.Interfaces.ServicesInterfaces
 {
     public interface ISubscribedTechnologyService
     {
-        Task AddSubscribedTechnology(Guid technologyId);
-        Task DeleteSubscribedTechnology(Guid subscribedTechnologyId);
+        Task AddSubscribedTechnologyAsync(Guid technologyId);
+        Task DeleteSubscribedTechnologyAsync(Guid subscribedTechnologyId);
         Task<PagedList<TechnologyBasicResponseDto>>
-            GetSubscribedTechnologies(ResourceParamethers resourceParamethers);
+            GetSubscribedTechnologiesAsync(ResourceParamethers resourceParamethers);
     }
 }

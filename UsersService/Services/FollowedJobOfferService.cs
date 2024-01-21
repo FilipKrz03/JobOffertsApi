@@ -35,11 +35,11 @@ namespace UsersService.Services
             _mapper = mapper;
         }
 
-        public async Task AddFolowedJobOffer(Guid offerId)
+        public async Task AddFolowedJobOfferAsync(Guid offerId)
         {
             var userId = _claimService.GetUserIdFromTokenClaim();
 
-            var user = await _userRepository.GetById(userId);
+            var user = await _userRepository.GetByIdAsync(userId);
 
             if (user == null)
             {
@@ -47,7 +47,7 @@ namespace UsersService.Services
                     ("User with id from your acces token do not exist provide valid token !");
             }
 
-            var jobOffer = await _jobOfferRepository.GetById(offerId);
+            var jobOffer = await _jobOfferRepository.GetByIdAsync(offerId);
 
             if (jobOffer == null)
             {
@@ -68,7 +68,7 @@ namespace UsersService.Services
             await _userRepository.SaveChangesAsync();
         }
 
-        public async Task DeleteFollowedJobOffer(Guid followedJobOfferId)
+        public async Task DeleteFollowedJobOfferAsync(Guid followedJobOfferId)
         {
             var userId = _claimService.GetUserIdFromTokenClaim();
 
@@ -86,12 +86,12 @@ namespace UsersService.Services
             await _jobOfferUserJoinRepository.SaveChangesAsync();
         }
 
-        public async Task<JobOfferDetailResponseDto?> GetFollowedJobOffer(Guid followedJobOfferId)
+        public async Task<JobOfferDetailResponseDto?> GetFollowedJobOfferAsync(Guid followedJobOfferId)
         {
             var userId = _claimService.GetUserIdFromTokenClaim();
 
             var userJobOffer = await _jobOfferRepository.
-                GetUserJobOffer(userId, followedJobOfferId);
+                GetUserJobOfferAsync(userId, followedJobOfferId);
 
             if (userJobOffer == null)
             {
@@ -103,7 +103,7 @@ namespace UsersService.Services
         }
 
         public async Task<PagedList<JobOfferBasicResponseDto>>
-            GetFollowedJobOffers(ResourceParamethers resourceParamethers)
+            GetFollowedJobOffersAsync(ResourceParamethers resourceParamethers)
         {
             var usedId = _claimService.GetUserIdFromTokenClaim();
 

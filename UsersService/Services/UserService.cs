@@ -20,11 +20,11 @@ namespace UsersService.Services
             _claimService = claimService;
         }
 
-        public async Task UpdateUserSeniority(Seniority seniority)
+        public async Task UpdateUserSeniorityAsync(Seniority seniority)
         {
             var userId = _claimService.GetUserIdFromTokenClaim();
 
-            var user = await _userRepository.GetById(userId);
+            var user = await _userRepository.GetByIdAsync(userId);
 
             if(user == null)
             {

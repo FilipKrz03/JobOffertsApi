@@ -24,7 +24,7 @@ namespace UsersService.Controllers
         [HttpPost]
         public async Task<IActionResult> AddSubscribedTechnology([FromBody] SubscribedTechnologyRequestDto request)
         {
-            await _subscribedTechnologyService.AddSubscribedTechnology(request.TechnologyId);
+            await _subscribedTechnologyService.AddSubscribedTechnologyAsync(request.TechnologyId);
 
             return StatusCode(201);
         }
@@ -32,7 +32,7 @@ namespace UsersService.Controllers
         [HttpDelete("{subscribedTechnologyId}")]
         public async Task<IActionResult> DeleteSubscribedTechnology(Guid subscribedTechnologyId)
         {
-            await _subscribedTechnologyService.DeleteSubscribedTechnology(subscribedTechnologyId);
+            await _subscribedTechnologyService.DeleteSubscribedTechnologyAsync(subscribedTechnologyId);
 
             return NoContent();
         }
@@ -41,7 +41,7 @@ namespace UsersService.Controllers
         public async Task<IActionResult> GetSubscribedTechnolgies([FromQuery] ResourceParamethers resourceParamethers)
         {
             var result = await _subscribedTechnologyService.
-                GetSubscribedTechnologies(resourceParamethers);
+                GetSubscribedTechnologiesAsync(resourceParamethers);
 
             var paginationMetadata = new PaginationMetadata<TechnologyBasicResponseDto>(result);
 

@@ -30,7 +30,7 @@ namespace UsersService.Services
             _mailContentCreatorService = mailContentCreatorService;
         }
 
-        public async Task LetUsersKnowAboutNewMatchingOffers()
+        public async Task LetUsersKnowAboutNewMatchingOffersAsync()
         {
             DateTime tresholdDate = DateTime.UtcNow - TimeSpan.FromHours(3);
 

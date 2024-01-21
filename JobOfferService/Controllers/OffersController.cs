@@ -22,7 +22,7 @@ namespace JobOffersService.Controllers
         [HttpGet("{jobOfferId}")]
         public async Task<ActionResult<JobOfferDetailResponse>> GetJobOfferDetail(Guid jobOfferId)
         {
-            var result = await _jobOffersService.GetJobOfferDetail(jobOfferId);
+            var result = await _jobOffersService.GetJobOfferDetailAsync(jobOfferId);
 
             return Ok(result);
         }
@@ -31,7 +31,7 @@ namespace JobOffersService.Controllers
         public async Task<ActionResult<IEnumerable<JobOfferBasicResponse>>>
             GetJobOffers([FromQuery] ResourceParamethers resourceParamethers)
         {
-            var result = await _jobOffersService.GetJobOffers(resourceParamethers);
+            var result = await _jobOffersService.GetJobOffersAsync(resourceParamethers);
 
             var paginationMetadata = new PaginationMetadata<JobOfferBasicResponse>(result);
 

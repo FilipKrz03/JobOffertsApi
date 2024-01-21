@@ -5,8 +5,8 @@ namespace JobOffersService.Interfaces
 {
     public interface ITechnologyService
     {
-        Task<PagedList<TechnologyBasicResponse>>GetTechnologies(ResourceParamethers resourceParamethers);
+        Task<PagedList<TechnologyBasicResponse>>GetTechnologiesAsync(ResourceParamethers resourceParamethers);
 
-        Task<TechnologyDetailResponse> GetTechnologyWithJobOffers (Guid id, ResourceParamethers resourceParamethers);
+        Task<TechnologyDetailResponse> GetTechnologyWithJobOffersAsync(Guid id, ResourceParamethers resourceParamethers);
     }
 }

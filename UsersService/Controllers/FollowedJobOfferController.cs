@@ -26,7 +26,7 @@ namespace UsersService.Controllers
         [HttpPost]
         public async Task<IActionResult> AddFolowedJobOffer([FromBody] FollowedOfferToAddRequestDto request)
         {
-            await _followedJobOfferService.AddFolowedJobOffer(request.OfferId);
+            await _followedJobOfferService.AddFolowedJobOfferAsync(request.OfferId);
 
             return StatusCode(201);
         }
@@ -34,7 +34,7 @@ namespace UsersService.Controllers
         [HttpDelete("{followedJobOfferId}")]
         public async Task<IActionResult> DeleteFollowedJobOffer(Guid followedJobOfferId)
         {
-            await _followedJobOfferService.DeleteFollowedJobOffer(followedJobOfferId);
+            await _followedJobOfferService.DeleteFollowedJobOfferAsync(followedJobOfferId);
 
             return NoContent();
         }
@@ -42,7 +42,7 @@ namespace UsersService.Controllers
         [HttpGet("{followedJobOfferId}")]
         public async Task<IActionResult> GetFollowedJobOffer(Guid followedJobOfferId)
         {
-            var jobOffer = await _followedJobOfferService.GetFollowedJobOffer(followedJobOfferId);
+            var jobOffer = await _followedJobOfferService.GetFollowedJobOfferAsync(followedJobOfferId);
 
             return Ok(jobOffer);
         }
@@ -50,7 +50,7 @@ namespace UsersService.Controllers
         [HttpGet]
         public async Task<IActionResult> GetFollowedJobOffers([FromQuery] ResourceParamethers resourceParamethers)
         {
-            var result = await _followedJobOfferService.GetFollowedJobOffers(resourceParamethers);
+            var result = await _followedJobOfferService.GetFollowedJobOffersAsync(resourceParamethers);
 
             var paginationMetadata = new PaginationMetadata<JobOfferBasicResponseDto>(result);
 

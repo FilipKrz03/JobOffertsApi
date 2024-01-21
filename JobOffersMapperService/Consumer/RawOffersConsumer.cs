@@ -39,7 +39,7 @@ namespace JobOffersMapperService.Consumer
                 IRawJobOfferService rawOffersService =
                     scope.ServiceProvider.GetRequiredService<IRawJobOfferService>();
 
-                await rawOffersService.HandleRawOffer(message);
+                await rawOffersService.HandleRawOfferAsync(message);
             };
         }
     }

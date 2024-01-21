@@ -43,7 +43,7 @@ namespace JobOffersMapperService.Consumer
             IJobOfferBaseService jobOfferBaseService =
                 scope.ServiceProvider.GetRequiredService<IJobOfferBaseService>();
 
-            await jobOfferBaseService.DeleteJobOfferFromEvent(message);
+            await jobOfferBaseService.DeleteJobOfferFromEventAsync(message);
         }
     }
 }

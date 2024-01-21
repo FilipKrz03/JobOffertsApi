@@ -5,10 +5,10 @@ namespace UsersService.Interfaces.ServicesInterfaces
 {
     public interface IFollowedJobOfferService
     {
-        Task AddFolowedJobOffer(Guid offerId);
-        Task DeleteFollowedJobOffer(Guid followedJobOfferId);
-        Task<JobOfferDetailResponseDto?> GetFollowedJobOffer(Guid followedJobOfferId);
+        Task AddFolowedJobOfferAsync(Guid offerId);
+        Task DeleteFollowedJobOfferAsync(Guid followedJobOfferId);
+        Task<JobOfferDetailResponseDto?> GetFollowedJobOfferAsync(Guid followedJobOfferId);
         Task<PagedList<JobOfferBasicResponseDto>>
-            GetFollowedJobOffers(ResourceParamethers resourceParamethers);
+            GetFollowedJobOffersAsync(ResourceParamethers resourceParamethers);
     }
 }

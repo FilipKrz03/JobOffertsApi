@@ -34,11 +34,11 @@ namespace UsersService.Services
             _mapper = mapper;
         }
 
-        public async Task AddSubscribedTechnology(Guid technologyId)
+        public async Task AddSubscribedTechnologyAsync(Guid technologyId)
         {
             var userId = _claimService.GetUserIdFromTokenClaim();
 
-            var user = await _userRepository.GetById(userId);
+            var user = await _userRepository.GetByIdAsync(userId);
 
             if (user == null)
             {
@@ -46,7 +46,7 @@ namespace UsersService.Services
                     ("User with id from your acces token do not exist provide valid token !");
             }
 
-            var technology = await _tecnologyRepository.GetById(technologyId);
+            var technology = await _tecnologyRepository.GetByIdAsync(technologyId);
 
             if (technology == null)
             {
@@ -67,7 +67,7 @@ namespace UsersService.Services
             await _userRepository.SaveChangesAsync();
         }
 
-        public async Task DeleteSubscribedTechnology(Guid subscribedTechnologyId)
+        public async Task DeleteSubscribedTechnologyAsync(Guid subscribedTechnologyId)
         {
             var userId = _claimService.GetUserIdFromTokenClaim();
 
@@ -85,7 +85,7 @@ namespace UsersService.Services
         }
 
         public async Task<PagedList<TechnologyBasicResponseDto>>
-            GetSubscribedTechnologies(ResourceParamethers resourceParamethers)
+            GetSubscribedTechnologiesAsync(ResourceParamethers resourceParamethers)
         {
             var userId = _claimService.GetUserIdFromTokenClaim();
 

@@ -34,7 +34,7 @@ namespace JobOffersService.Consumer
             IProcessedOfferService processedOfferService =
                 scope.ServiceProvider.GetService<IProcessedOfferService>()!;
 
-            await processedOfferService.HandleProcessedOffer(message);
+            await processedOfferService.HandleProcessedOfferAsync(message);
         }
     }
 }

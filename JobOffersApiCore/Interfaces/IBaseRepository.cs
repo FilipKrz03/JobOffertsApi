@@ -14,7 +14,7 @@ namespace JobOffersApiCore.Interfaces
         Task SaveChangesAsync();
         void AddRange(IEnumerable<TEntity> entities);
         IQueryable<TEntity> Query();
-        Task<TEntity?> GetById(Guid id);
+        Task<TEntity?> GetByIdAsync(Guid id);
         IQueryable<TEntity> GetByIdQuery(Guid id);
         Task<bool> EntityExistAsync(Guid id);
         void DeleteEntity(TEntity entity);

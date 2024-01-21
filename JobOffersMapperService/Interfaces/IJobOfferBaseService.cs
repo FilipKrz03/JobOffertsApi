@@ -8,6 +8,6 @@ namespace JobOffersMapperService.Interfaces
 {
     public interface IJobOfferBaseService
     {
-        Task DeleteJobOfferFromEvent(string message);
+        Task DeleteJobOfferFromEventAsync(string message);
     }
 }

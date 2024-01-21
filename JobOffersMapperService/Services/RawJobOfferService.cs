@@ -33,7 +33,7 @@ namespace JobOffersMapperService.Services
             _jobCreateMessageProducer = jobCreateMessageProducer;
         }
 
-        public async Task HandleRawOffer(string body)
+        public async Task HandleRawOfferAsync(string body)
         {
             try
             {

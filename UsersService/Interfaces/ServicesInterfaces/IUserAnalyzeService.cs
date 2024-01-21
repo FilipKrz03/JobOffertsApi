@@ -2,6 +2,6 @@
 {
     public interface IUserAnalyzeService
     {
-        Task LetUsersKnowAboutNewMatchingOffers();
+        Task LetUsersKnowAboutNewMatchingOffersAsync();
     }
 }

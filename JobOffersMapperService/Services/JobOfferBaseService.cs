@@ -25,7 +25,7 @@ namespace JobOffersMapperService.Services
             _logger = logger;
         }
 
-        public async Task DeleteJobOfferFromEvent(string message)
+        public async Task DeleteJobOfferFromEventAsync(string message)
         {
             var jobOfferToDelete = JsonConvert.DeserializeObject<JobOfferToDeleteFromEventDto>(message);
 
@@ -35,7 +35,7 @@ namespace JobOffersMapperService.Services
                 return;
             }
 
-            var jobOfferEntitie = await _jobOffersBaseRepository.GetById(jobOfferToDelete.Id);
+            var jobOfferEntitie = await _jobOffersBaseRepository.GetByIdAsync(jobOfferToDelete.Id);
 
             if (jobOfferEntitie == null)
             {

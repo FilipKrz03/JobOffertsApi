@@ -24,7 +24,7 @@ namespace JobOffersService.Services
         }
 
         public async Task<PagedList<TechnologyBasicResponse>>
-            GetTechnologies(ResourceParamethers resourceParamethers)
+            GetTechnologiesAsync(ResourceParamethers resourceParamethers)
         {
             Expression<Func<Technology, object>> keySelector = resourceParamethers.SortColumn?.ToLower() switch
             {
@@ -38,7 +38,7 @@ namespace JobOffersService.Services
             return _mapper.Map<PagedList<TechnologyBasicResponse>>(technologieEntities);
         }
 
-        public async Task<TechnologyDetailResponse> GetTechnologyWithJobOffers
+        public async Task<TechnologyDetailResponse> GetTechnologyWithJobOffersAsync
             (Guid id, ResourceParamethers resourceParamethers)
         {
             var technologyEntityWithJobOffers = await _technologyRepository.

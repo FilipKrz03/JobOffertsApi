@@ -29,7 +29,7 @@ namespace JobOffersService.Services
             _logger = logger;   
         }
 
-        public async Task<JobOfferDetailResponse> GetJobOfferDetail(Guid jobId)
+        public async Task<JobOfferDetailResponse> GetJobOfferDetailAsync(Guid jobId)
         {
             var jobOffer = await _jobOfferRepository.GetJobOfferWithTechnologies(jobId);
 
@@ -42,7 +42,7 @@ namespace JobOffersService.Services
         }
 
         public async Task<PagedList<JobOfferBasicResponse>>
-            GetJobOffers(ResourceParamethers resourceParamethers)
+            GetJobOffersAsync(ResourceParamethers resourceParamethers)
         {
             Expression<Func<JobOffer, object>> keySelector = resourceParamethers.SortColumn?.ToLower() switch
             {
@@ -60,7 +60,7 @@ namespace JobOffersService.Services
             return _mapper.Map<PagedList<JobOfferBasicResponse>>(jobOffers);
         }
 
-        public async Task JobOfferExist(Guid id)
+        public async Task JobOfferExistAsync(Guid id)
         {
             bool jobOfferExist =  await _jobOfferRepository.EntityExistAsync(id);
 
@@ -70,7 +70,7 @@ namespace JobOffersService.Services
             }
         }
 
-        public async Task DeleteJobOfferFromEvent(string message)
+        public async Task DeleteJobOfferFromEventAsync(string message)
         {
             var jobOfferFromEvent = JsonConvert.DeserializeObject<JobOfferToDeleteFromEventDto>(message);
 
@@ -80,7 +80,7 @@ namespace JobOffersService.Services
                 return;
             }
 
-            var jobOfferEntitie =  await _jobOfferRepository.GetById(jobOfferFromEvent.Id);
+            var jobOfferEntitie =  await _jobOfferRepository.GetByIdAsync(jobOfferFromEvent.Id);
 
             if(jobOfferEntitie == null)
             {

@@ -23,7 +23,7 @@ namespace JobOffersService.Controllers
         public async Task<ActionResult<TechnologyDetailResponse>>GetTechnologyWithJobOffersList
             (Guid technologyId , [FromQuery]ResourceParamethers resourceParamethers)
         {
-            var result = await _technologyService.GetTechnologyWithJobOffers(technologyId, resourceParamethers);
+            var result = await _technologyService.GetTechnologyWithJobOffersAsync(technologyId, resourceParamethers);
 
             return Ok(result);
         }
@@ -32,7 +32,7 @@ namespace JobOffersService.Controllers
         public async Task<ActionResult<IEnumerable<TechnologyBasicResponse>>>
             GetTechnologies([FromQuery] ResourceParamethers resourceParamethers)
         {
-            var result = await _technologyService.GetTechnologies(resourceParamethers);
+            var result = await _technologyService.GetTechnologiesAsync(resourceParamethers);
 
             var paginationMetadata = new PaginationMetadata<TechnologyBasicResponse>(result);
 

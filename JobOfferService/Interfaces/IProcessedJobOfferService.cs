@@ -2,6 +2,6 @@
 {
     public interface IProcessedOfferService
     {
-        Task HandleProcessedOffer(string body);
+        Task HandleProcessedOfferAsync(string body);
     }
 }

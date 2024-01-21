@@ -37,7 +37,7 @@ namespace JobOffersService.Consumer
             IJobOfferService jobOfferService = 
                 scope.ServiceProvider.GetRequiredService<IJobOfferService>();
 
-            await jobOfferService.DeleteJobOfferFromEvent(message);
+            await jobOfferService.DeleteJobOfferFromEventAsync(message);
         }
     }
 }

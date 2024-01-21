@@ -30,7 +30,7 @@ namespace JobOffersService.Services
             _mapper = mapper;
         }
 
-        public async Task HandleProcessedOffer(string body)
+        public async Task HandleProcessedOfferAsync(string body)
         {
             try
             {
