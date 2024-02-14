@@ -38,7 +38,7 @@ By default services avaliable on :
 - Infrastructure : Docker , Docker Compose , Shell 
 
 ## Demo
-Personalize mail sended by application for user with technologies as bellow and desired seniority setted to junior
+Personalized mail sended by application for user with technologies as bellow and desired seniority setted to junior
 
 https://github.com/FilipKrz03/JobOffertsApi/assets/122054858/e9e39495-0e82-4d5c-8899-5eb4a59f194a
 
