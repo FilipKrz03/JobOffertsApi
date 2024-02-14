@@ -7,7 +7,7 @@
 Project aim was to aggregate job offers from most popular polish services with IT job offers into one place
 Thanks to it Application provide features like : 
 - Adding job offer to favourite offers . 
-- Subscribe technologie that user is intrested in 
+- Subscribe technologies that user is intrested in 
 - Set desired seniority
 
 Based on subscribed technologies and desired seniority application will send mails to all users with new personalized job offers special for each user.
@@ -28,7 +28,7 @@ After application start you can explore this endpoints :
 - JobOffersService : http://localhost:7206/swagger/index.html
 - UsersService : http://localhost:7104/swagger/index.html
 
-By default services avaliable on : 
+By default api services avaliable on : 
 - JobOffersService : http://localhost:7206/
 - UsersService : http://localhost:7104/
 
@@ -41,6 +41,9 @@ By default services avaliable on :
 Personalized mail sended by application for user with technologies as bellow and desired seniority setted to junior
 
 https://github.com/FilipKrz03/JobOffertsApi/assets/122054858/e9e39495-0e82-4d5c-8899-5eb4a59f194a
+
+## Tests 
+Applicaion includes more than 130 tests. Both unit and Integration tests. Integration tests are included as tests of controllers in the UsersService and JobOffersService.
 
 ## Requirements
 - Docker
@@ -71,8 +74,3 @@ After this config navigate to the root of the Project and run the command :
 ```shell 
 docker-compose up -d
 ```
-
-
-
-
-
