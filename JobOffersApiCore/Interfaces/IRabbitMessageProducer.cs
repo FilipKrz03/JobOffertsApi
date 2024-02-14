@@ -9,8 +9,6 @@ namespace JobOffersApiCore.Interfaces
     public interface IRabbitMessageProducer
     {
         void SendMessage<T>(string exchange, string routingKey, T message);
-        void SendMessage(string exchange, string routingKey);
-
         void CloseConnection();
     }
 }
